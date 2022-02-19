@@ -1,7 +1,7 @@
 ---
 title: "Refugees"
-author: 'Rebecca Frost-Brewer'
-date: '2022-02-19'
+author: "Rebecca Frost-Brewer"
+date: ''
 slug: []
 categories: []
 tags: []
@@ -9,22 +9,267 @@ tags: []
 
 
 
-<div id="r-markdown" class="section level2">
-<h2>R Markdown</h2>
-<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
-<p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
-<pre class="r"><code>summary(cars)</code></pre>
-<pre><code>##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00</code></pre>
+<div id="the-set-up" class="section level3">
+<h3>The Set Up</h3>
+<p><strong>Load libraries and initial data</strong>
+<br></p>
+<pre class="r"><code>library(tidyverse)
+library(scales)
+library(countrycode)
+library(lubridate)
+library(patchwork)
+library(ggflags)
+library(RColorBrewer)
+library(bbplot)
+
+# Load DHS refugee data
+refugees_raw &lt;- read_csv(&quot;data/refugee_status.csv&quot;, na = c(&quot;-&quot;, &quot;X&quot;, &quot;D&quot;))</code></pre>
+<p><br></p>
+<pre class="r"><code># Create vector of non-countries to filter out
+non_countries &lt;- c(&quot;Africa&quot;, &quot;Asia&quot;, &quot;Europe&quot;, &quot;North America&quot;, &quot;Oceania&quot;, 
+                   &quot;South America&quot;, &quot;Unknown&quot;, &quot;Other&quot;, &quot;Total&quot;)
+
+refugees_clean &lt;- refugees_raw %&gt;%
+  rename(origin_country = `Continent/Country of Nationality`) %&gt;%
+  filter(!(origin_country %in% non_countries)) %&gt;%
+  mutate(iso3 = countrycode(origin_country, &quot;country.name&quot;, &quot;iso3c&quot;,
+                            custom_match = c(&quot;Korea, North&quot; = &quot;PRK&quot;))) %&gt;%
+  mutate(origin_country = countrycode(iso3, &quot;iso3c&quot;, &quot;country.name&quot;),
+         origin_region = countrycode(iso3, &quot;iso3c&quot;, &quot;region&quot;),
+         origin_continent = countrycode(iso3, &quot;iso3c&quot;, &quot;continent&quot;)) %&gt;%
+  gather(year, number, -origin_country, -iso3, -origin_region,
+         -origin_continent) %&gt;%
+  mutate(year = as.numeric(year),
+         year_date = ymd(paste0(year, &quot;-01-01&quot;)))
+
+# Dataframe with total sum of refugees by country per year
+refugees_countries_cumulative &lt;- refugees_clean %&gt;%
+  arrange(year_date) %&gt;%
+  group_by(origin_country) %&gt;%
+  mutate(cumulative_total = cumsum(number))</code></pre>
+<p><br></p>
+<p><strong>Clean the data</strong>
+<br></p>
+<p>I pivoted wider to be able to calculate the rankings of each country within the 2006-2015 time period. I then sorted each year to determine the top five ranking score so that I could note the top 5 countries of origin of refugees for each year. I then returned to our tidy dataframe and created a new dataframe with all those countries that ranked in the top 5 over the 2006-2015 time period. And lastly, I saved this newly created dataframe.</p>
+<p><br></p>
+<pre class="r"><code>top_refugees_all &lt;- refugees_countries_cumulative %&gt;%
+  filter(year %in% c(2006:2015)) %&gt;% 
+  drop_na(cumulative_total) %&gt;% 
+  group_by(year) %&gt;% 
+  mutate(ranking = rank(cumulative_total)) %&gt;% 
+  ungroup() %&gt;% 
+  pivot_wider(names_from = year, names_prefix = &quot;rank_&quot;, values_from = ranking)
+
+top_refugee_countries &lt;- top_refugees_all %&gt;%
+  select(origin_country, year_date, cumulative_total, rank_2006, rank_2007,
+         rank_2008,rank_2009, rank_2010, rank_2011, rank_2012, rank_2013,
+         rank_2014, rank_2015) %&gt;%
+  filter(rank_2006 &gt;= 49.0 |
+         rank_2007 &gt;= 42.0 |
+         rank_2008 &gt;= 38.0 |
+         rank_2009 &gt;= 37.0 |
+         rank_2010 &gt;= 35 |
+         rank_2011 &gt;= 35.0 |
+         rank_2012 &gt;= 32 |
+         rank_2013 &gt;= 30 |
+         rank_2014 &gt;=30 |
+         rank_2015 &gt;= 28.0)
+
+alltime_refugee &lt;- refugees_countries_cumulative %&gt;%
+  filter(origin_country %in% c(&quot;Cuba&quot;,&quot;Iran&quot;,&quot;Russia&quot;,&quot;Somalia&quot;,&quot;Vietnam&quot;,
+                               &quot;Myanmar (Burma)&quot;,&quot;Iraq&quot;))
+
+write.csv(alltime_refugee, &quot;alltime_refugees.csv&quot;)</code></pre>
+<p><br></p>
+<p><strong>Import the refined data</strong>
+<br></p>
+<p>Offline, I added the number of refugees granted asylum each year as both a number and proportion to total number of refugees as well as the GDP per capita for each country each year. The number of refugees granted asylym came from the <a href="https://www.dhs.gov/sites/default/files/publications/Yearbook_Immigration_Statistics_2015.pdf">2015 Yearbook of Immigration Statistics</a> from the Department of Homeland Security. The GDP per capita numbers came from the <a href="https://databank.worldbank.org/home">World Bank’s DataBank</a>.</p>
+<p>I then imported that dataframe to work with for the visualizations.</p>
+<p><br></p>
+<pre class="r"><code>complete_refugees &lt;- read_csv(&quot;data/alltime_complete_refugees.csv&quot;)</code></pre>
+<p><br></p>
 </div>
-<div id="including-plots" class="section level2">
-<h2>Including Plots</h2>
-<p>You can also embed plots, for example:</p>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/pressure-1.png" width="672" /></p>
-<p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
+<div id="the-story" class="section level3">
+<h3>The Story</h3>
+<p><strong>Visualizations of refugee data</strong></p>
+<pre class="r"><code>total &lt;- refugees_countries_cumulative %&gt;%
+  group_by(year_date) %&gt;%
+  summarise(total = sum(cumulative_total, na.rm = TRUE))
+
+mypalette &lt;- brewer.pal(10,&quot;Paired&quot;)
+
+# Total number of refugees over time
+total_plot &lt;- ggplot(total,
+                     aes(x = year_date, y = total)) +
+  geom_pointrange(aes(ymin = 0, ymax = total),
+                  fatten = 5, size = 1, col = mypalette) +
+  scale_y_continuous(labels = comma) +
+  scale_x_date(date_breaks = &quot;1 year&quot;, date_labels = &quot;%Y&quot;) +
+  labs(x = NULL, y = NULL,
+       title = &quot;Total Number of Refugees to the U.S.&quot;,
+       subtitle = &quot;2006-2015&quot;,
+       caption = &quot;Source: Department of Homeland Security&quot;) +
+  bbc_style() +
+  theme(panel.grid.minor = element_blank(),
+        plot.title = element_text(face = &quot;bold&quot;, size = rel(1.7)),
+        plot.subtitle = element_text(face = &quot;plain&quot;, size = rel(1.3),
+                                     color = &quot;grey70&quot;),
+        plot.caption = element_text(face = &quot;italic&quot;, size = rel(0.9), 
+                                    color = &quot;grey70&quot;, hjust = 0),
+        axis.text = element_text(size = rel(1)),
+        legend.position = &quot;none&quot;)
+
+total_plot</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/total-refugees-plots-1.png" width="672" /></p>
+<p><br></p>
+<pre class="r"><code>year_2006 &lt;-refugees_countries_cumulative %&gt;%
+  filter(year == 2006 &amp; cumulative_total &gt;= 1000)
+
+year_2006$origin_country &lt;- factor(
+  year_2006$origin_country, levels = c(&quot;Somalia&quot;,&quot;Russia&quot;,&quot;Cuba&quot;,&quot;Vietnam&quot;,
+                                       &quot;Iran&quot;,&quot;Ukraine&quot;,&quot;Liberia&quot;,
+                                       &quot;Sudan&quot;,&quot;Myanmar (Burma)&quot;,&quot;Ethiopia&quot;))</code></pre>
+<p><br></p>
+<pre class="r"><code>year_2006 &lt;- ggplot(year_2006,
+                    aes(x = origin_country, y = cumulative_total)) +
+  geom_pointrange(aes(ymin = 0, ymax = cumulative_total),
+                  fatten = 5, size = 1, col = mypalette) +
+  scale_y_continuous(labels = comma) +
+  labs(x = NULL, y = NULL,
+       title = &quot;Total Number of Refugees to the U.S.&quot;,
+       subtitle = &quot;By Country in 2006&quot;,
+       caption = &quot;Source: Department of Homeland Security&quot;) +
+  bbc_style() +
+  theme(panel.grid.minor = element_blank(),
+        plot.title = element_text(face = &quot;bold&quot;, size = rel(1.7)),
+        plot.subtitle = element_text(face = &quot;plain&quot;, size = rel(1.3),
+                                     color = &quot;grey70&quot;),
+        plot.caption = element_text(face = &quot;italic&quot;, size = rel(0.9), 
+                                    color = &quot;grey70&quot;, hjust = 0),
+        axis.text = element_text(size = rel(1)),
+        legend.position = &quot;none&quot;) +
+  coord_flip()
+
+year_2006</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p><br></p>
+<pre class="r"><code>years2006_2009 &lt;- complete_refugees %&gt;%
+  filter(year %in% c(2006:2009))
+
+years2006_2009_plot &lt;- ggplot(years2006_2009,
+                              aes(x = year, y = cumulative_total,
+                                  fill = origin_country)) +
+  geom_col() +
+  scale_fill_brewer(palette = &quot;Paired&quot;) +
+  scale_y_continuous(labels = comma) +
+  facet_wrap(vars(origin_country)) +
+  labs(x = NULL, y = NULL,
+       title = &quot;Total Number of Refugees to the U.S.&quot;,
+       subtitle = &quot;By Country, 2006-2009&quot;,
+       caption = &quot;Source: Department of Homeland Security&quot;) +
+  bbc_style() +
+  theme(panel.grid.minor = element_blank(),
+        plot.title = element_text(face = &quot;bold&quot;, size = rel(1.7)),
+        plot.subtitle = element_text(face = &quot;plain&quot;, size = rel(1.3),
+                                     color = &quot;grey70&quot;),
+        plot.caption = element_text(face = &quot;italic&quot;, size = rel(0.9), 
+                                    color = &quot;grey70&quot;, hjust = 0),
+        axis.text.x = element_text(size = rel(.7)),
+        axis.text.y = element_text(size = rel(.5)),
+        strip.text = element_text(size = rel(1), hjust = 0),
+        legend.position = &quot;none&quot;,
+        strip.background = element_rect(fill = &quot;grey90&quot;, color = NA),
+        panel.border = element_rect(color = &quot;grey90&quot;, fill = NA))</code></pre>
+<p><br></p>
+<pre class="r"><code>years2010_2015 &lt;- complete_refugees %&gt;%
+  filter(year %in% c(2010:2015))
+
+years2010_2015_plot &lt;- ggplot(years2010_2015,
+                              aes(x = year, y = cumulative_total,
+                                  fill = origin_country)) +
+  geom_col() +
+  scale_fill_brewer(palette = &quot;Paired&quot;) +
+  scale_y_continuous(labels = comma) +
+  facet_wrap(vars(origin_country)) +
+  labs(x = NULL, y = NULL,
+       title = &quot;Total Number of Refugees to the U.S.&quot;,
+       subtitle = &quot;By Country, 2010-2015&quot;,
+       caption = &quot;Source: Department of Homeland Security&quot;) +
+  bbc_style() +
+  theme(panel.grid.minor = element_blank(),
+        plot.title = element_text(face = &quot;bold&quot;, size = rel(1.7)),
+        plot.subtitle = element_text(face = &quot;plain&quot;, size = rel(1.3),
+                                     color = &quot;grey70&quot;),
+        plot.caption = element_text(face = &quot;italic&quot;, size = rel(0.9), 
+                                    color = &quot;grey70&quot;, hjust = 0),
+        axis.text.x = element_text(size = rel(.7)),
+        axis.text.y = element_text(size = rel(.5)),
+        strip.text = element_text(size = rel(1), hjust = 0),
+        legend.position = &quot;none&quot;,
+        strip.background = element_rect(fill = &quot;grey90&quot;, color = NA),
+        panel.border = element_rect(color = &quot;grey90&quot;, fill = NA))
+
+years2006_2009_plot</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/2010-2015-1.png" width="672" /></p>
+<pre class="r"><code>years2010_2015_plot</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/2010-2015-2.png" width="672" /></p>
+<p><br></p>
+<pre class="r"><code>complete_refugees$origin_country &lt;- factor(
+  complete_refugees$origin_country, levels = c(
+    &quot;Myanmar (Burma)&quot;,&quot;Iraq&quot;,&quot;Somalia&quot;,&quot;Iran&quot;,&quot;Cuba&quot;,&quot;Russia&quot;,&quot;Vietnam&quot;))
+
+
+total_over_time_plot &lt;- ggplot(complete_refugees,
+                               mapping = aes(year, cumulative_total,
+                                             color = origin_country)) + 
+  geom_line(size = 1.1, alpha = .7) +
+  scale_color_brewer(palette = &quot;Paired&quot;) +
+  scale_x_continuous(breaks = 2006:2015, minor_breaks = 2006:2015) +
+  scale_y_continuous(labels = comma) +
+  labs(x = NULL, y = NULL) +
+  bbc_style() +
+  theme(panel.grid.minor = element_blank(),
+        axis.text = element_text(size = rel(.5)),
+        legend.position = &quot;none&quot;)</code></pre>
+<p><br></p>
+<pre class="r"><code>alltime_rank &lt;- complete_refugees %&gt;%
+  group_by(year) %&gt;% 
+  mutate(rank = dense_rank(desc(cumulative_total)))
+
+country_flags_start &lt;- data.frame(
+  x = 2006, y = 1:7, 
+  country = c(&quot;so&quot;,&quot;ru&quot;,&quot;cu&quot;,&quot;vn&quot;,&quot;ir&quot;,&quot;iq&quot;,&quot;mm&quot;),
+  stringsAsFactors = FALSE)
+
+country_flags_end &lt;- data.frame(
+  x = 2015, y = 1:7, 
+  country = c(&quot;mm&quot;,&quot;iq&quot;,&quot;so&quot;,&quot;ir&quot;,&quot;cu&quot;,&quot;ru&quot;,&quot;vn&quot;),
+  stringsAsFactors = FALSE)</code></pre>
+<p><br></p>
+<pre class="r"><code>rankings_plot &lt;- ggplot(alltime_rank,
+                        aes(x = year, y = rank, color = origin_country)) +
+  geom_line(alpha = .6, size = 1.5) +
+  geom_point(size = 1) +
+  geom_point(alpha = .6, size = 3) +
+  geom_point(size = 1) +
+  scale_color_brewer(palette = &quot;Paired&quot;) +
+  scale_y_reverse(breaks = 1:7) +
+  scale_x_continuous(breaks = 2006:2016, minor_breaks = 2006:2016) +
+  geom_flag(data = country_flags_start,
+            aes(x = x, y = y, country = country, size = 1),inherit.aes = FALSE) +
+  geom_flag(data = country_flags_end,
+            aes(x = x, y = y, country = country, size = 1),inherit.aes = FALSE) +
+  theme(legend.position = &quot;none&quot;) +
+  labs(x = NULL,
+       y = NULL) +
+  bbc_style() +
+  theme(panel.grid.minor = element_blank(),
+        axis.text = element_text(size = rel(.5)),
+        legend.position = &quot;none&quot;)
+
+rankings_plot</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/bump-chart-with-flags-1.png" width="672" /></p>
+<pre class="r"><code>total_over_time_plot</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/bump-chart-with-flags-2.png" width="672" /></p>
+<p><br></p>
 </div>

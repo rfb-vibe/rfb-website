@@ -1,6 +1,6 @@
 ---
 title: "Refugees"
-author: 'Rebecca Frost-Brewer'
+author: "Rebecca Frost-Brewer"
 date: ''
 slug: []
 categories: []
@@ -292,16 +292,6 @@ total_over_time_plot <- ggplot(complete_refugees,
         axis.text = element_text(size = rel(.5)),
         legend.position = "none")
 
-ggsave(total_over_time_plot, filename = "outputs/total_over_time_plot.png",
-       dpi = 300, type = "cairo",
-       width = 4, height = 3, units = "in")
-
-ggsave(total_over_time_plot, filename = "outputs/total_over_time_plot.pdf",
-       device = cairo_pdf,
-       width = 4, height = 3, units = "in")
-
-
-
 ```
 
 <br>
@@ -349,14 +339,6 @@ rankings_plot <- ggplot(alltime_rank,
   theme(panel.grid.minor = element_blank(),
         axis.text = element_text(size = rel(.5)),
         legend.position = "none")
-
-ggsave(rankings_plot, filename = "outputs/rankings_plot.png",
-       dpi = 300, type = "cairo",
-       width = 4, height = 3, units = "in")
-
-ggsave(rankings_plot, filename = "outputs/rankings_plot.pdf",
-       device = cairo_pdf,
-       width = 4, height = 3, units = "in")
 
 rankings_plot
 total_over_time_plot
