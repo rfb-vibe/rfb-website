@@ -33,7 +33,7 @@ enableEmoji = true
   description = "A modern, beautiful, and easily configurable blog theme for Hugo."
   favicon = ""
   logo = "/img/RFB_Logo.png"
-  mainSections = ["About", "CV", "Portfolio", "Blog"]
+  mainSections = ["About", "Portfolio", "Blog"]
   navallcaps = true
   # show/hide social icons in site header & footer
   # configure social icons and links below in [[params.social]]
@@ -41,7 +41,7 @@ enableEmoji = true
   socialInFooter = true
   # Default image for social sharing and search engines. 
   # Place image file in `static` folder and specify image name here.
-  sharing_image = "/img/papillons.jpg"
+  sharing_image = "/img/RFB_Logo.png"
   # Twitter username (without @). Used when a visitor shares your site on Twitter.
   twitter = "frostybrewer"
   
@@ -111,20 +111,15 @@ enableEmoji = true
     url = "/about/"
     weight = 1
   [[menu.header]]
-    name = "CV"
-    title = "CV"
-    url = "/cv/"
-    weight = 2
-  [[menu.header]]
     name = "Portfolio"
     title = "Portfolio"
     url = "/portfolio/"
-    weight = 3
+    weight = 2
   [[menu.header]]
     name = "Blog"
     title = "Blogs"
     url = "/blog/"
-    weight = 4
+    weight = 3
     
   # Configure footer  
   [[menu.footer]]
