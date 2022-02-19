@@ -1,7 +1,6 @@
 ---
 title: "Refugees"
-author: "Rebecca Frost-Brewer"
-date: ''
+author: 'Rebecca Frost-Brewer'
 slug: []
 categories: []
 tags: []
@@ -9,21 +8,11 @@ tags: []
 
 
 
+<p>This project was completed as an assignment for Dr. Andrew Heiss’ Data Visualization course.</p>
 <div id="the-set-up" class="section level3">
 <h3>The Set Up</h3>
 <p><strong>Load libraries and initial data</strong>
 <br></p>
-<pre class="r"><code>library(tidyverse)
-library(scales)
-library(countrycode)
-library(lubridate)
-library(patchwork)
-library(ggflags)
-library(RColorBrewer)
-library(bbplot)
-
-# Load DHS refugee data
-refugees_raw &lt;- read_csv(&quot;data/refugee_status.csv&quot;, na = c(&quot;-&quot;, &quot;X&quot;, &quot;D&quot;))</code></pre>
 <p><br></p>
 <pre class="r"><code># Create vector of non-countries to filter out
 non_countries &lt;- c(&quot;Africa&quot;, &quot;Asia&quot;, &quot;Europe&quot;, &quot;North America&quot;, &quot;Oceania&quot;, 
@@ -120,7 +109,7 @@ total_plot &lt;- ggplot(total,
         legend.position = &quot;none&quot;)
 
 total_plot</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/total-refugees-plots-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/total-refugees-plots-1.png" width="960" /></p>
 <p><br></p>
 <pre class="r"><code>year_2006 &lt;-refugees_countries_cumulative %&gt;%
   filter(year == 2006 &amp; cumulative_total &gt;= 1000)
@@ -151,7 +140,7 @@ year_2006$origin_country &lt;- factor(
   coord_flip()
 
 year_2006</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/2006-plot-1.png" width="960" /></p>
 <p><br></p>
 <pre class="r"><code>years2006_2009 &lt;- complete_refugees %&gt;%
   filter(year %in% c(2006:2009))
@@ -210,9 +199,9 @@ years2010_2015_plot &lt;- ggplot(years2010_2015,
         panel.border = element_rect(color = &quot;grey90&quot;, fill = NA))
 
 years2006_2009_plot</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/2010-2015-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/2010-2015-plot-1.png" width="960" /></p>
 <pre class="r"><code>years2010_2015_plot</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/2010-2015-2.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/2010-2015-plot-2.png" width="960" /></p>
 <p><br></p>
 <pre class="r"><code>complete_refugees$origin_country &lt;- factor(
   complete_refugees$origin_country, levels = c(
@@ -268,8 +257,8 @@ country_flags_end &lt;- data.frame(
         legend.position = &quot;none&quot;)
 
 rankings_plot</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/bump-chart-with-flags-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/bump-chart-with-flags-1.png" width="960" /></p>
 <pre class="r"><code>total_over_time_plot</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/bump-chart-with-flags-2.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/bump-chart-with-flags-2.png" width="960" /></p>
 <p><br></p>
 </div>

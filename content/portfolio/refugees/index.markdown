@@ -1,35 +1,24 @@
 ---
 title: "Refugees"
-author: "Rebecca Frost-Brewer"
-date: ''
+author: 'Rebecca Frost-Brewer'
 slug: []
 categories: []
 tags: []
 ---
 
+This project was completed as an assignment for Dr. Andrew Heiss' Data Visualization course.
+
 ### The Set Up
 **Load libraries and initial data**
 <br>
 
-```{r load-libraries-data, warning=FALSE, message=FALSE}
-library(tidyverse)
-library(scales)
-library(countrycode)
-library(lubridate)
-library(patchwork)
-library(ggflags)
-library(RColorBrewer)
-library(bbplot)
 
-# Load DHS refugee data
-refugees_raw <- read_csv("data/refugee_status.csv", na = c("-", "X", "D"))
 
-```
 
 <br>
 
-```{r clean-raw-data, warning=FALSE, message=FALSE}
 
+```r
 # Create vector of non-countries to filter out
 non_countries <- c("Africa", "Asia", "Europe", "North America", "Oceania", 
                    "South America", "Unknown", "Other", "Total")
@@ -52,8 +41,6 @@ refugees_countries_cumulative <- refugees_clean %>%
   arrange(year_date) %>%
   group_by(origin_country) %>%
   mutate(cumulative_total = cumsum(number))
-
-
 ```
 
 <br>
@@ -65,8 +52,8 @@ refugees_countries_cumulative <- refugees_clean %>%
 I pivoted wider to be able to calculate the rankings of each country within the 2006-2015 time period. I then sorted each year to determine the top five ranking score so that I could note the top 5 countries of origin of refugees for each year. I then returned to our tidy dataframe and created a new dataframe with all those countries that ranked in the top 5 over the 2006-2015 time period. And lastly, I saved this newly created dataframe.
 
 <br>
-```{r clean-data, eval=FALSE}
 
+```r
 top_refugees_all <- refugees_countries_cumulative %>%
   filter(year %in% c(2006:2015)) %>% 
   drop_na(cumulative_total) %>% 
@@ -95,7 +82,6 @@ alltime_refugee <- refugees_countries_cumulative %>%
                                "Myanmar (Burma)","Iraq"))
 
 write.csv(alltime_refugee, "alltime_refugees.csv")
-
 ```
 
 <br>
@@ -109,10 +95,9 @@ Offline, I added the number of refugees granted asylum each year as both a numbe
 I then imported that dataframe to work with for the visualizations.
 
 <br>
-```{r import-clean-data, warning=FALSE, message=FALSE}
 
+```r
 complete_refugees <- read_csv("data/alltime_complete_refugees.csv")
-
 ```
 
 <br>
@@ -122,8 +107,8 @@ complete_refugees <- read_csv("data/alltime_complete_refugees.csv")
 
 **Visualizations of refugee data**
 
-```{r total-refugees-plots}
 
+```r
 total <- refugees_countries_cumulative %>%
   group_by(year_date) %>%
   summarise(total = sum(cumulative_total, na.rm = TRUE))
@@ -152,13 +137,14 @@ total_plot <- ggplot(total,
         legend.position = "none")
 
 total_plot
-
 ```
+
+<img src="{{< blogdown/postref >}}index_files/figure-html/total-refugees-plots-1.png" width="960" />
 
 <br>
 
-```{r year-2006}
 
+```r
 year_2006 <-refugees_countries_cumulative %>%
   filter(year == 2006 & cumulative_total >= 1000)
 
@@ -166,14 +152,12 @@ year_2006$origin_country <- factor(
   year_2006$origin_country, levels = c("Somalia","Russia","Cuba","Vietnam",
                                        "Iran","Ukraine","Liberia",
                                        "Sudan","Myanmar (Burma)","Ethiopia"))
-
-
 ```
 
 <br>
 
-```{r}
 
+```r
 year_2006 <- ggplot(year_2006,
                     aes(x = origin_country, y = cumulative_total)) +
   geom_pointrange(aes(ymin = 0, ymax = cumulative_total),
@@ -195,13 +179,14 @@ year_2006 <- ggplot(year_2006,
   coord_flip()
 
 year_2006
-
 ```
+
+<img src="{{< blogdown/postref >}}index_files/figure-html/2006-plot-1.png" width="960" />
 
 <br>
 
-```{r 2006-2009}
 
+```r
 years2006_2009 <- complete_refugees %>%
   filter(year %in% c(2006:2009))
 
@@ -229,13 +214,12 @@ years2006_2009_plot <- ggplot(years2006_2009,
         legend.position = "none",
         strip.background = element_rect(fill = "grey90", color = NA),
         panel.border = element_rect(color = "grey90", fill = NA))
-
 ```
 
 <br>
 
-```{r 2010-2015}
 
+```r
 years2010_2015 <- complete_refugees %>%
   filter(year %in% c(2010:2015))
 
@@ -265,15 +249,20 @@ years2010_2015_plot <- ggplot(years2010_2015,
         panel.border = element_rect(color = "grey90", fill = NA))
 
 years2006_2009_plot
-years2010_2015_plot
-
 ```
+
+<img src="{{< blogdown/postref >}}index_files/figure-html/2010-2015-plot-1.png" width="960" />
+
+```r
+years2010_2015_plot
+```
+
+<img src="{{< blogdown/postref >}}index_files/figure-html/2010-2015-plot-2.png" width="960" />
 
 <br>
 
-```{r total-over-time}
 
-
+```r
 complete_refugees$origin_country <- factor(
   complete_refugees$origin_country, levels = c(
     "Myanmar (Burma)","Iraq","Somalia","Iran","Cuba","Russia","Vietnam"))
@@ -291,13 +280,12 @@ total_over_time_plot <- ggplot(complete_refugees,
   theme(panel.grid.minor = element_blank(),
         axis.text = element_text(size = rel(.5)),
         legend.position = "none")
-
 ```
 
 <br>
 
-```{r set-countries-for-flags}
 
+```r
 alltime_rank <- complete_refugees %>%
   group_by(year) %>% 
   mutate(rank = dense_rank(desc(cumulative_total)))
@@ -311,14 +299,12 @@ country_flags_end <- data.frame(
   x = 2015, y = 1:7, 
   country = c("mm","iq","so","ir","cu","ru","vn"),
   stringsAsFactors = FALSE)
-
-
 ```
 
 <br>
 
-```{r bump-chart-with-flags}
 
+```r
 rankings_plot <- ggplot(alltime_rank,
                         aes(x = year, y = rank, color = origin_country)) +
   geom_line(alpha = .6, size = 1.5) +
@@ -341,8 +327,14 @@ rankings_plot <- ggplot(alltime_rank,
         legend.position = "none")
 
 rankings_plot
-total_over_time_plot
-
 ```
+
+<img src="{{< blogdown/postref >}}index_files/figure-html/bump-chart-with-flags-1.png" width="960" />
+
+```r
+total_over_time_plot
+```
+
+<img src="{{< blogdown/postref >}}index_files/figure-html/bump-chart-with-flags-2.png" width="960" />
 
 <br>
