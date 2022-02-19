@@ -1,0 +1,71 @@
+,origin_country,iso3,origin_region,origin_continent,year,number,year_date,cumulative_total,num_granted_asylum,percent_asylum,gdp_per_capita
+1,Myanmar (Burma),MMR,East Asia & Pacific,Asia,2006,1612,1/1/06,1612,97,0.060,295.64
+2,Cuba,CUB,Latin America & Caribbean,Americas,2006,3143,1/1/06,3143,50,0.016,4683.57
+3,Iran,IRN,Middle East & North Africa,Asia,2006,2792,1/1/06,2792,139,0.050,3774.36
+4,Iraq,IRQ,Middle East & North Africa,Asia,2006,202,1/1/06,202,180,0.891,2373.21
+5,Russia,RUS,Europe & Central Asia,Europe,2006,6003,1/1/06,6003,231,0.038,6920.19
+6,Somalia,SOM,Sub-Saharan Africa,Africa,2006,10357,1/1/06,10357,62,0.006,
+7,Vietnam,VNM,East Asia & Pacific,Asia,2006,3039,1/1/06,3039,15,0.005,784.37
+8,Myanmar (Burma),MMR,East Asia & Pacific,Asia,2007,13896,1/1/07,15508,131,0.008,512.58
+9,Cuba,CUB,Latin America & Caribbean,Americas,2007,2922,1/1/07,6065,43,0.007,5208.72
+10,Iran,IRN,Middle East & North Africa,Asia,2007,5482,1/1/07,8274,171,0.021,4904.67
+11,Iraq,IRQ,Middle East & North Africa,Asia,2007,1608,1/1/07,1810,391,0.216,3182.84
+12,Russia,RUS,Europe & Central Asia,Europe,2007,1773,1/1/07,7776,284,0.037,9101.26
+13,Somalia,SOM,Sub-Saharan Africa,Africa,2007,6969,1/1/07,17326,77,0.004,
+14,Vietnam,VNM,East Asia & Pacific,Asia,2007,1500,1/1/07,4539,11,0.002,906.28
+15,Myanmar (Burma),MMR,East Asia & Pacific,Asia,2008,18139,1/1/08,33647,153,0.005,637.52
+16,Cuba,CUB,Latin America & Caribbean,Americas,2008,4177,1/1/08,10242,64,0.006,5411.27
+17,Iran,IRN,Middle East & North Africa,Asia,2008,5270,1/1/08,13544,329,0.024,5717.31
+18,Iraq,IRQ,Middle East & North Africa,Asia,2008,13822,1/1/08,15632,586,0.037,4636.64
+19,Russia,RUS,Europe & Central Asia,Europe,2008,426,1/1/08,8202,372,0.045,11635.27
+20,Somalia,SOM,Sub-Saharan Africa,Africa,2008,2523,1/1/08,19849,70,0.004,
+21,Vietnam,VNM,East Asia & Pacific,Asia,2008,1112,1/1/08,5651,21,0.004,1149.42
+22,Myanmar (Burma),MMR,East Asia & Pacific,Asia,2009,18202,1/1/09,51849,168,0.003,840.07
+23,Cuba,CUB,Latin America & Caribbean,Americas,2009,4800,1/1/09,15042,27,0.002,5529.67
+24,Iran,IRN,Middle East & North Africa,Asia,2009,5381,1/1/09,18925,257,0.014,5709.95
+25,Iraq,IRQ,Middle East & North Africa,Asia,2009,18838,1/1/09,34470,545,0.016,3853.83
+26,Russia,RUS,Europe & Central Asia,Europe,2009,495,1/1/09,8697,366,0.042,8562.81
+27,Somalia,SOM,Sub-Saharan Africa,Africa,2009,4189,1/1/09,24038,95,0.004,
+28,Vietnam,VNM,East Asia & Pacific,Asia,2009,1486,1/1/09,7137,35,0.005,1217.27
+29,Myanmar (Burma),MMR,East Asia & Pacific,Asia,2010,16693,1/1/10,68542,158,0.002,1018.13
+30,Cuba,CUB,Latin America & Caribbean,Americas,2010,4818,1/1/10,19860,24,0.001,5730.35
+31,Iran,IRN,Middle East & North Africa,Asia,2010,3543,1/1/10,22468,397,0.018,6599.66
+32,Iraq,IRQ,Middle East & North Africa,Asia,2010,18016,1/1/10,52486,276,0.005,4657.28
+33,Russia,RUS,Europe & Central Asia,Europe,2010,326,1/1/10,9023,390,0.043,10675.00
+34,Somalia,SOM,Sub-Saharan Africa,Africa,2010,4884,1/1/10,28922,62,0.002,
+35,Vietnam,VNM,East Asia & Pacific,Asia,2010,873,1/1/10,8010,24,0.003,1317.89
+36,Myanmar (Burma),MMR,East Asia & Pacific,Asia,2011,16972,1/1/11,85514,144,0.002,1061.92
+37,Cuba,CUB,Latin America & Caribbean,Americas,2011,2920,1/1/11,22780,20,0.001,6139.72
+38,Iran,IRN,Middle East & North Africa,Asia,2011,2032,1/1/11,24500,367,0.015,7781.41
+39,Iraq,IRQ,Middle East & North Africa,Asia,2011,9388,1/1/11,61874,260,0.004,6045.49
+40,Russia,RUS,Europe & Central Asia,Europe,2011,165,1/1/11,9188,464,0.051,14311.08
+41,Somalia,SOM,Sub-Saharan Africa,Africa,2011,3161,1/1/11,32083,29,0.001,
+42,Vietnam,VNM,East Asia & Pacific,Asia,2011,79,1/1/11,8089,18,0.002,1525.12
+43,Myanmar (Burma),MMR,East Asia & Pacific,Asia,2012,14160,1/1/12,99674,99,0.001,1035.80
+44,Cuba,CUB,Latin America & Caribbean,Americas,2012,1948,1/1/12,24728,24,0.001,6497.31
+45,Iran,IRN,Middle East & North Africa,Asia,2012,1758,1/1/12,26258,606,0.023,7927.84
+46,Iraq,IRQ,Middle East & North Africa,Asia,2012,12163,1/1/12,74037,315,0.004,6836.07
+47,Russia,RUS,Europe & Central Asia,Europe,2012,197,1/1/12,9385,543,0.058,15420.87
+48,Somalia,SOM,Sub-Saharan Africa,Africa,2012,4911,1/1/12,36994,55,0.001,
+49,Vietnam,VNM,East Asia & Pacific,Asia,2012,41,1/1/12,8130,15,0.002,1735.15
+50,Myanmar (Burma),MMR,East Asia & Pacific,Asia,2013,16299,1/1/13,115973,55,0.000,1121.94
+51,Cuba,CUB,Latin America & Caribbean,Americas,2013,4205,1/1/13,28933,25,0.001,6837.71
+52,Iran,IRN,Middle East & North Africa,Asia,2013,2579,1/1/13,28837,612,0.021,6018.32
+53,Iraq,IRQ,Middle East & North Africa,Asia,2013,19487,1/1/13,93524,412,0.004,7076.55
+54,Russia,RUS,Europe & Central Asia,Europe,2013,125,1/1/13,9510,345,0.036,15974.64
+55,Somalia,SOM,Sub-Saharan Africa,Africa,2013,7608,1/1/13,44602,32,0.001,297.96
+56,Vietnam,VNM,East Asia & Pacific,Asia,2013,69,1/1/13,8199,8,0.001,1886.69
+57,Myanmar (Burma),MMR,East Asia & Pacific,Asia,2014,14598,1/1/14,130571,34,0.000,1140.77
+58,Cuba,CUB,Latin America & Caribbean,Americas,2014,4062,1/1/14,32995,11,0.000,7133.34
+59,Iran,IRN,Middle East & North Africa,Asia,2014,2846,1/1/14,31683,572,0.018,5585.53
+60,Iraq,IRQ,Middle East & North Africa,Asia,2014,19769,1/1/14,113293,538,0.005,6637.68
+61,Russia,RUS,Europe & Central Asia,Europe,2014,139,1/1/14,9649,218,0.023,14095.65
+62,Somalia,SOM,Sub-Saharan Africa,Africa,2014,9000,1/1/14,53602,24,0.000,295.27
+63,Vietnam,VNM,East Asia & Pacific,Asia,2014,67,1/1/14,8266,12,0.001,2030.28
+64,Myanmar (Burma),MMR,East Asia & Pacific,Asia,2015,18386,1/1/15,148957,43,0.000,1144.47
+65,Cuba,CUB,Latin America & Caribbean,Americas,2015,1527,1/1/15,34522,6,0.000,7694.01
+66,Iran,IRN,Middle East & North Africa,Asia,2015,3109,1/1/15,34792,640,0.018,4904.33
+67,Iraq,IRQ,Middle East & North Africa,Asia,2015,12676,1/1/15,125969,711,0.006,4688.32
+68,Russia,RUS,Europe & Central Asia,Europe,2015,281,1/1/15,9930,308,0.031,9313.01
+69,Somalia,SOM,Sub-Saharan Africa,Africa,2015,8858,1/1/15,62460,12,0.000,293.46
+70,Vietnam,VNM,East Asia & Pacific,Asia,2015,22,1/1/15,8288,12,0.001,2085.10

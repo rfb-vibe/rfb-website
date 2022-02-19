@@ -7,31 +7,53 @@ categories: []
 tags: []
 ---
 
-# Set Up
-<br>
+This project was completed as an assignment for Dr. Andrew Heiss' Data Visualization course.
+
+### Set Up
 
 To begin, I set up my R Markdown file, loaded all the libraries I will be using, and uploaded the rat sightings data. This rat sighting data is [made publicly available](https://www.kaggle.com/new-york-city/nyc-rat-sightings/data). This data is every rat sighting reported to the NYC Health Department from 2010-2017.
 
 <br>
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      message = FALSE, 
+                      warning = FALSE, 
+                      fig.width = 10, 
+                      fig.height = 8)
 
 
+```
 
+```{r load-libraries, include=FALSE, warning=FALSE}
 
+library(tidyverse)  
+library(ggridges)   
+library(wesanderson)
+library(scales)
+library(esquisse)
+library(ggThemeAssist)
+library(DataExplorer)
+library(janitor)
+library(lubridate)
 
-```r
+```
+
+```{r load-data, message=FALSE, warning=FALSE}
+
 rats_raw <- read_csv("data/Rat_Sightings.csv", na = c("", "NA", "N/A"))
+
 ```
 
 <br>
 
-# Data Wrangling
+### Data Wrangling
 
-<br>
 In the following steps, I cleaned the original data set and created a smaller data frame, `rats_count`. This will be the data frame I will use in my visualizations.
 
 <br>
+```{r data-cleaning, message=FALSE, warning=FALSE}
 
-```r
 # Here I wanted to make the column titles more syntactically appropriate
 # for R. I also found that there was one entry of "Unspecified" that needed to be
 # removed to make for more clean and accurately visualizations.
@@ -60,12 +82,12 @@ rats_count <- rats_clean %>%
 rats_year_count <- rats_count %>%
   group_by(sighting_year) %>%
   summarise(total = sum(num_rats))
+
 ```
 
 <br>
-<br>
 
-# Data Exploration
+### Data Exploration
 
 **What story are you telling with your new graphic?**
 <br>
@@ -79,8 +101,8 @@ I chose to explore the frequency of rat sightings each year by borough and it is
 
 Lastly, I again showed the number of rat sighting by month and by borough. With this level of detail, we can see that the Bronx experiences less variation across the months of the year whereas Queens and Brooklyn sees defined spikes during the summer months.
 
-<br>
-**How did you apply the principles of CRAP?**
+
+**How did you apply the principles of CRAP (Contrast, Repetition, Alignment, Proximity?**
 <br>
 When creating these initial four graphs, I wanted to ensure I was applying the principles of CRAP - contrast, repetition, alignment, and proximity. I utilized consistent color palettes within the graphs for contrast and repetition and I used the same font family throughout the graphs as well. For alignment, I kept titles and subtitles left-aligned.
 
@@ -90,8 +112,8 @@ Lastly - but perhaps most importantly - I created visualizations that are truthf
 
 <br>
 <br>
+```{r visualizations}
 
-```r
 # Total rat sightings by year
 ggplot(rats_year_count) +
   aes(x = sighting_year, y = total) +
@@ -107,11 +129,8 @@ ggplot(rats_year_count) +
   theme(panel.grid.minor = element_blank(),
         plot.title = element_text(face = "bold", size = rel(1.7)),
         axis.title.y = element_text(margin = margin(r = 10)))
-```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/visualizations-1.png" width="960" />
 
-```r
 # Total rat sightings by month
 ggplot(rats_count) +
   aes(x = month, y = num_rats, fill = highlight) +
@@ -129,11 +148,8 @@ ggplot(rats_count) +
   theme(panel.grid.minor = element_blank(),
         plot.title = element_text(face = "bold", size = rel(1.7)),
         axis.title.y = element_text(margin = margin(r = 10)))
-```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/visualizations-2.png" width="960" />
 
-```r
 # Rat sightings per year, by borough
 ggplot(rats_count) +
   aes(x = sighting_year, y = num_rats, fill = borough) +
@@ -155,11 +171,8 @@ ggplot(rats_count) +
         axis.title.y = element_text(margin = margin(r = 10)),
         strip.background = element_rect(fill = "grey90", color = NA),
         panel.border = element_rect(color = "grey90", fill = NA))
-```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/visualizations-3.png" width="960" />
 
-```r
 # Rat sightings per month, by borough
 ggplot(rats_count) +
   aes(x = month, y = num_rats, fill = borough) +
@@ -183,12 +196,11 @@ ggplot(rats_count) +
         axis.title.y = element_text(margin = margin(r = 10)),
         strip.background = element_rect(fill = "grey90", color = NA),
         panel.border = element_rect(color = "grey90", fill = NA))
-```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/visualizations-4.png" width="960" />
+```
 <br>
 
-# The Effect of Hurricane Sandy on Rat Sightings
+### The Effect of Hurricane Sandy on Rat Sightings
 
 <br>
 Hurricane Sandy hit New York City on October 29, 2012, and suffered its effects for several days later. How did Sandy affect our rat friends of NYC? Were they able to seek shelter from the storm, or did the storm disrupt their lives as it did the rats' human neighbors?
@@ -205,8 +217,7 @@ As I did in my visualizations above, I used Kieran Healy’s principles of great
 
 <br>
 <br>
-
-```r
+```{r hurricane-sandy-rats}
 # Create the Sandy rats data set
 sandy_rats <- rats_count %>%
   filter(sighting_year == 2012) %>%
@@ -230,66 +241,10 @@ ggplot(sandy_rats, aes(x = sighting_weekday,
   theme(panel.grid.minor = element_blank(),
         plot.title = element_text(face = "bold", size = rel(1.7)),
         axis.title.y = element_text(margin = margin(r = 10)))
+  
+
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/hurricane-sandy-rats-1.png" width="960" />
 
-<br>
-<br>
-
-# Saving the Figures
-
-
-```r
-# First, I will store the plots of interest as objects
-# Rat sightings per year, by borough
-rats_by_yr_plot <- ggplot(rats_count) +
-  aes(x = sighting_year, y = num_rats, fill = borough) +
-  geom_col() +
-  scale_y_continuous(labels = comma) +
-  scale_fill_manual(values = wes_palette(n = 5, name = "Cavalcanti1")) +
-  facet_wrap(vars(borough)) +
-  guides(fill = FALSE) +
-  theme_minimal(base_family = "Roboto Condensed", base_size = 12) +
-  labs(title = "Total Rat Sightings by Year",
-       subtitle = "By Borough",
-       x = NULL,
-       y = "Number of Rat Sightings") +
-  theme(panel.grid.minor = element_blank(),
-        plot.title = element_text(face = "bold", size = rel(1.7)),
-        plot.subtitle = element_text(face = "plain", size = rel(1.3), color = "grey70"),
-        strip.text = element_text(face = "bold", size = rel(1.1), hjust = 0),
-        axis.title = element_text(face = "bold"),
-        axis.title.y = element_text(margin = margin(r = 10)),
-        strip.background = element_rect(fill = "grey90", color = NA),
-        panel.border = element_rect(color = "grey90", fill = NA))
-
-sandy_plot <- ggplot(sandy_rats, aes(x = sighting_weekday,
-                                     y = num_rats, group = borough, color = borough)) +
-  geom_line() +
-  geom_point(aes(color = borough), size = 4) +
-  scale_color_manual(values = wes_palette(n = 5, name = "Cavalcanti1")) +
-  scale_y_continuous(breaks = scales::pretty_breaks(n = 20)) +
-  theme_minimal(base_family = "Roboto Condensed", base_size = 12) +
-  labs(title = "Increase in Rat Sightings",
-       subtitle = "During Hurricane Sandy",
-       x = NULL,
-       y = "Number of Rat Sightings") +
-  theme(panel.grid.minor = element_blank(),
-        plot.title = element_text(face = "bold", size = rel(1.7)),
-        axis.title.y = element_text(margin = margin(r = 10)))
-
-# Second, I will save the plots
-ggsave("rats_by_yr_plot.png", rats_by_yr_plot,
-       width = 8, height = 5, units = "in", type = "cairo")
-ggsave("rats_by_yr_plot.pdf", rats_by_yr_plot,
-       width = 8, height = 5, units = "in", device = cairo_pdf)
-ggsave("sandy_plot.png", sandy_plot,
-       width = 8, height = 5, units = "in", type = "cairo")
-ggsave("sandy_plot.pdf", sandy_plot,
-       width = 8, height = 5, units = "in", device = cairo_pdf)
-```
-
-<br>
 <br>
 <br>
