@@ -1,10 +1,11 @@
 ---
-title: Rebecca Frost-Brewer
+title: Rebecca \nFrost-Brewer
 subtitle: An aspiring data-scientist
 description: Thank you for visiting! As I teach myself R and Python, I will be sharing examples of my projects here; as I prepare for a career in data science, I hope this portfolio demonstrates my proficiency, creativity, and commitment.
-images: 
-image_left: true
-text_align_left: false
+images:
+  - rfb-headshot-blazer.jpg
+image_left: false
+text_align_left: true
 show_action_link: true
 show_social_links: true
 action_link: /about
