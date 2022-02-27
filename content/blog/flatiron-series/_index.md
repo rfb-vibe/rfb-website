@@ -20,24 +20,20 @@ cascade:
   tags:
   - rfb-website
 description: |
-  A forking fun new feature for series.
+  Keeping track of all I am learning from the Flatiron School on my way to a career in data science.
 layout: list-sidebar
 show_author_byline: true
 show_post_date: true
 show_post_thumbnail: false
 sidebar:
-  author: Alison Hill
+  author: Rebecca Frost-Brewer
   description: |
-    A forking fun new feature for series.
-    Even this sidebar offers a ton of customizations!
-
-    Check out the _index.md file in the /blog/spoonful-series
-    folder to edit this content.
+    Keeping track of all I am learning from the Flatiron School on my way to a career in data science.
   show_sidebar_adunit: false
   text_link_label: ""
   text_link_url: ""
-  title: A Spoonful of Hugo
-title: A Spoonful of Hugo
+  title: The Flatiron Files
+title: The Flatiron Files
 ---
 
 ** No content below YAML for the series _index. This file is a leaf bundle, and provides settings for the listing page layout and sidebar content.**

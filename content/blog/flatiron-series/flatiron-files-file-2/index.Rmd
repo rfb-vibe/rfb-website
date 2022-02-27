@@ -1,0 +1,29 @@
+---
+title: 'Flatiron Files: File 2'
+author: Rebecca Frost-Brewer
+date: '2022-02-27'
+slug: []
+categories: []
+tags: []
+output: html_document
+---
+
+This blogpost is going to summarize the lessons on data analysis in base python and pandas. These lessons and content are from the Flatiron School.
+
+## Introduction to Data Analysis - Cumulative Lab
+The objectives of this lab are to:
+
+- Practice reading serialized JSON and CSV data from files into Python objects
+- Practice extracting information from nested data structures
+- Practice cleaning data (filtering, normalizing locations, converting types)
+- Combine data from multiple sources into a single data structure
+- Interpret descriptive statistics and data visualizations to present my findings
+
+### The Task: To Analyze the Relationship between Population and Men's World Cup Success
+Using data from the 2018 Men's World Cup, we are going to ascertain if any relationship exists between participating countries' population and success (as measured by cumulative wins).
+
+### Data Understanding
+
+
+
+
