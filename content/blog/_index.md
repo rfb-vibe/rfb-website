@@ -17,7 +17,7 @@ show_post_date: true
 show_post_thumbnail: true
 sidebar:
   author: Rebecca Frost-Brewer
-  description: ""Sharing reflections, code-throughs, and other thoughts on AlL tHe ThInGs as I change careers into data science."
+  description: "Sharing reflections, code-throughs, and other thoughts on AlL tHe ThInGs as I change careers into data science."
   show_sidebar_adunit: true
   text_link_label: Subscribe via RSS
   text_link_url: /index.xml
