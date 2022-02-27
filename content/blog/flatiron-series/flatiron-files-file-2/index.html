@@ -65,4 +65,108 @@ population_data = list(csv.DictReader(population_file))
 population_file.close()</code></pre>
 </div>
 </div>
+<div id="working-on-the-mens-world-cup-data" class="section level3">
+<h3>Working on the Men’s World Cup Data</h3>
+<p>What is the structure of the <code>world_cup_data</code>?</p>
+<pre class="python"><code>
+world_cup_data.keys()</code></pre>
+<pre><code>## dict_keys([&#39;name&#39;, &#39;rounds&#39;])</code></pre>
+<p>This indicates the World Cup data is a dictionary, with two keys, ‘name’ and ‘rounds’</p>
+<p><strong>Extracting the Rounds</strong>
+<br>
+First, we want to extract the rounds of the World Cup matches, so we can determine the number of wins from those matches.</p>
+<pre class="python"><code>
+# Create a variable called &quot;rounds&quot; from the &quot;rounds&quot; key.
+rounds = world_cup_data[&quot;rounds&quot;]
+
+# This prints the type of data of &quot;rounds&quot; (a list), the length of the &quot;rounds&quot; variable (20 rounds), and prints the three ...
+print(&quot;type(rounds):&quot;, type(rounds))</code></pre>
+<pre><code>## type(rounds): &lt;class &#39;list&#39;&gt;</code></pre>
+<pre class="python"><code>print(&quot;len(rounds):&quot;, len(rounds))</code></pre>
+<pre><code>## len(rounds): 20</code></pre>
+<pre class="python"><code>print(&quot;rounds[3]:&quot;)</code></pre>
+<pre><code>## rounds[3]:</code></pre>
+<pre class="python"><code>rounds[3]</code></pre>
+<pre><code>## {&#39;name&#39;: &#39;Matchday 4&#39;, &#39;matches&#39;: [{&#39;num&#39;: 9, &#39;date&#39;: &#39;2018-06-17&#39;, &#39;time&#39;: &#39;21:00&#39;, &#39;team1&#39;: {&#39;name&#39;: &#39;Brazil&#39;, &#39;code&#39;: &#39;BRA&#39;}, &#39;team2&#39;: {&#39;name&#39;: &#39;Switzerland&#39;, &#39;code&#39;: &#39;SUI&#39;}, &#39;score1&#39;: 1, &#39;score2&#39;: 1, &#39;score1i&#39;: 1, &#39;score2i&#39;: 0, &#39;goals1&#39;: [{&#39;name&#39;: &#39;Coutinho&#39;, &#39;minute&#39;: 20, &#39;score1&#39;: 1, &#39;score2&#39;: 0}], &#39;goals2&#39;: [{&#39;name&#39;: &#39;Zuber&#39;, &#39;minute&#39;: 50, &#39;score1&#39;: 1, &#39;score2&#39;: 1}], &#39;group&#39;: &#39;Group E&#39;, &#39;stadium&#39;: {&#39;key&#39;: &#39;rostov&#39;, &#39;name&#39;: &#39;Rostov Arena&#39;}, &#39;city&#39;: &#39;Rostov-on-Don&#39;, &#39;timezone&#39;: &#39;UTC+3&#39;}, {&#39;num&#39;: 10, &#39;date&#39;: &#39;2018-06-17&#39;, &#39;time&#39;: &#39;16:00&#39;, &#39;team1&#39;: {&#39;name&#39;: &#39;Costa Rica&#39;, &#39;code&#39;: &#39;CRC&#39;}, &#39;team2&#39;: {&#39;name&#39;: &#39;Serbia&#39;, &#39;code&#39;: &#39;SRB&#39;}, &#39;score1&#39;: 0, &#39;score2&#39;: 1, &#39;score1i&#39;: 0, &#39;score2i&#39;: 0, &#39;goals1&#39;: [], &#39;goals2&#39;: [{&#39;name&#39;: &#39;Kolarov&#39;, &#39;minute&#39;: 56, &#39;score1&#39;: 0, &#39;score2&#39;: 1}], &#39;group&#39;: &#39;Group E&#39;, &#39;stadium&#39;: {&#39;key&#39;: &#39;samara&#39;, &#39;name&#39;: &#39;Samara Arena&#39;}, &#39;city&#39;: &#39;Samara&#39;, &#39;timezone&#39;: &#39;UTC+4&#39;}, {&#39;num&#39;: 11, &#39;date&#39;: &#39;2018-06-17&#39;, &#39;time&#39;: &#39;18:00&#39;, &#39;team1&#39;: {&#39;name&#39;: &#39;Germany&#39;, &#39;code&#39;: &#39;GER&#39;}, &#39;team2&#39;: {&#39;name&#39;: &#39;Mexico&#39;, &#39;code&#39;: &#39;MEX&#39;}, &#39;score1&#39;: 0, &#39;score2&#39;: 1, &#39;score1i&#39;: 0, &#39;score2i&#39;: 1, &#39;goals1&#39;: [], &#39;goals2&#39;: [{&#39;name&#39;: &#39;Lozano&#39;, &#39;minute&#39;: 35, &#39;score1&#39;: 0, &#39;score2&#39;: 1}], &#39;group&#39;: &#39;Group F&#39;, &#39;stadium&#39;: {&#39;key&#39;: &#39;luzhniki&#39;, &#39;name&#39;: &#39;Luzhniki Stadium&#39;}, &#39;city&#39;: &#39;Moscow&#39;, &#39;timezone&#39;: &#39;UTC+3&#39;}]}</code></pre>
+<p>The <code>rounds</code> variable we have created is a list of dictionaries, with each dictionary of inside of <code>rounds</code> containing a name (such as ‘Matchday 4’) as well as the list of matches that occurred on that day (along with match details)</p>
+<p><strong>Extracting the Matches</strong>
+<br></p>
+<pre class="python"><code>
+# Create a variable, &quot;matches,&quot; that is an empty list
+matches = []
+
+# This is a looping function
+for round_ in rounds:
+    # Extract the list of matches for this round
+    round_matches = round_[&quot;matches&quot;]
+    # Add them to the overall list of matches, which is the variable we created at the beginning
+    matches.extend(round_matches)
+    
+# View the first entry
+matches[0]</code></pre>
+<pre><code>## {&#39;num&#39;: 1, &#39;date&#39;: &#39;2018-06-14&#39;, &#39;time&#39;: &#39;18:00&#39;, &#39;team1&#39;: {&#39;name&#39;: &#39;Russia&#39;, &#39;code&#39;: &#39;RUS&#39;}, &#39;team2&#39;: {&#39;name&#39;: &#39;Saudi Arabia&#39;, &#39;code&#39;: &#39;KSA&#39;}, &#39;score1&#39;: 5, &#39;score2&#39;: 0, &#39;score1i&#39;: 2, &#39;score2i&#39;: 0, &#39;goals1&#39;: [{&#39;name&#39;: &#39;Gazinsky&#39;, &#39;minute&#39;: 12, &#39;score1&#39;: 1, &#39;score2&#39;: 0}, {&#39;name&#39;: &#39;Cheryshev&#39;, &#39;minute&#39;: 43, &#39;score1&#39;: 2, &#39;score2&#39;: 0}, {&#39;name&#39;: &#39;Dzyuba&#39;, &#39;minute&#39;: 71, &#39;score1&#39;: 3, &#39;score2&#39;: 0}, {&#39;name&#39;: &#39;Cheryshev&#39;, &#39;minute&#39;: 90, &#39;offset&#39;: 1, &#39;score1&#39;: 4, &#39;score2&#39;: 0}, {&#39;name&#39;: &#39;Golovin&#39;, &#39;minute&#39;: 90, &#39;offset&#39;: 4, &#39;score1&#39;: 5, &#39;score2&#39;: 0}], &#39;goals2&#39;: [], &#39;group&#39;: &#39;Group A&#39;, &#39;stadium&#39;: {&#39;key&#39;: &#39;luzhniki&#39;, &#39;name&#39;: &#39;Luzhniki Stadium&#39;}, &#39;city&#39;: &#39;Moscow&#39;, &#39;timezone&#39;: &#39;UTC+3&#39;}</code></pre>
+<p><strong>Extracting the Teams</strong>
+<br></p>
+<p>We know that each match has two teams, <code>team1</code> and <code>team2</code>, so we’re going to create a list of all unique team names by looping over every match in <code>matches</code> and adding the “name” values associated with both <code>team1</code> and <code>team2</code></p>
+<pre class="python"><code>
+# Create a variable, &quot;teams_set&quot;, that is an empty set
+teams_set = set()
+
+for match in matches:
+    # Add team1 value to teams_set
+    teams_set.add(match[&quot;team1&quot;][&quot;name&quot;])
+    # Add team2 value to teams_set
+    teams_set.add(match[&quot;team2&quot;][&quot;name&quot;])
+    
+# Create a &quot;teams&quot; variable that is a sorted list based on the teams_set
+teams = sorted(list(teams_set))
+
+# View the list
+print(teams)</code></pre>
+<pre><code>## [&#39;Argentina&#39;, &#39;Australia&#39;, &#39;Belgium&#39;, &#39;Brazil&#39;, &#39;Colombia&#39;, &#39;Costa Rica&#39;, &#39;Croatia&#39;, &#39;Denmark&#39;, &#39;Egypt&#39;, &#39;England&#39;, &#39;France&#39;, &#39;Germany&#39;, &#39;Iceland&#39;, &#39;Iran&#39;, &#39;Japan&#39;, &#39;Mexico&#39;, &#39;Morocco&#39;, &#39;Nigeria&#39;, &#39;Panama&#39;, &#39;Peru&#39;, &#39;Poland&#39;, &#39;Portugal&#39;, &#39;Russia&#39;, &#39;Saudi Arabia&#39;, &#39;Senegal&#39;, &#39;Serbia&#39;, &#39;South Korea&#39;, &#39;Spain&#39;, &#39;Sweden&#39;, &#39;Switzerland&#39;, &#39;Tunisia&#39;, &#39;Uruguay&#39;]</code></pre>
+<p>Now that we have our <code>teams</code> variable that is comprised of all the participating teams at the 2018 Men’s World Cup, we move on to connecting each team name with its performance at the World Cup, as measured by the count of total wins.</p>
+<p><br></p>
+</div>
+<div id="mens-world-cup-performance" class="section level3">
+<h3>Men’s World Cup Performance</h3>
+<p>In this section, we start by initializing a dictionary called <code>combined_data</code> containing:</p>
+<ul>
+<li>Keys: the strings from teams</li>
+<li>Values: each value the same, a dictionary containing the key ‘wins’ with the associated value 0.</li>
+</ul>
+<pre class="python"><code>
+# This uses dictionary comprehension, creating a dictionary (noted by {}) with the team as the key and the value set to number of wins - for each team in the teams list
+combined_data = {team: {&quot;wins&quot;: 0} for team in teams}</code></pre>
+<p>To add wins to the dictionary, we’re going to write a function that we can call on the <code>match</code> dictionary.</p>
+<pre class="python"><code>
+def find_winner(match):
+    &quot;&quot;&quot;
+    Given a dictionary containing information about a match,
+    return the name of the winner (or None in the case of a tie)
+    &quot;&quot;&quot;
+    score_1 = match[&quot;score1&quot;]
+    score_2 = match[&quot;score2&quot;]
+    
+    if score_1 &gt; score_2:
+        return match[&quot;team1&quot;][&quot;name&quot;]
+    elif score_2 &gt; score_1:
+        return match[&quot;team2&quot;][&quot;name&quot;]
+    else:
+        return None
+    # ^ this else: return None is not actually necessary since Python returns
+    # None if nothing is returned</code></pre>
+<p>Once this function is defined, we can loop over every match in <code>matches</code> to find the winner and add +1 to associated count in <code>combined_data</code></p>
+<pre class="python"><code>
+for match in matches:
+    # Get the name of the winner
+    winner = find_winner(match)
+    # Only proceed to the next step if there was a winner
+    if winner:
+        # Add 1 to the associated count of wins
+        combined_data[winner][&quot;wins&quot;] += 1
+        
+# Visually inspect the output to ensure the wins are different for different countries
+combined_data</code></pre>
+<pre><code>## {&#39;Argentina&#39;: {&#39;wins&#39;: 1}, &#39;Australia&#39;: {&#39;wins&#39;: 0}, &#39;Belgium&#39;: {&#39;wins&#39;: 6}, &#39;Brazil&#39;: {&#39;wins&#39;: 3}, &#39;Colombia&#39;: {&#39;wins&#39;: 2}, &#39;Costa Rica&#39;: {&#39;wins&#39;: 0}, &#39;Croatia&#39;: {&#39;wins&#39;: 3}, &#39;Denmark&#39;: {&#39;wins&#39;: 1}, &#39;Egypt&#39;: {&#39;wins&#39;: 0}, &#39;England&#39;: {&#39;wins&#39;: 3}, &#39;France&#39;: {&#39;wins&#39;: 6}, &#39;Germany&#39;: {&#39;wins&#39;: 1}, &#39;Iceland&#39;: {&#39;wins&#39;: 0}, &#39;Iran&#39;: {&#39;wins&#39;: 1}, &#39;Japan&#39;: {&#39;wins&#39;: 1}, &#39;Mexico&#39;: {&#39;wins&#39;: 2}, &#39;Morocco&#39;: {&#39;wins&#39;: 0}, &#39;Nigeria&#39;: {&#39;wins&#39;: 1}, &#39;Panama&#39;: {&#39;wins&#39;: 0}, &#39;Peru&#39;: {&#39;wins&#39;: 1}, &#39;Poland&#39;: {&#39;wins&#39;: 1}, &#39;Portugal&#39;: {&#39;wins&#39;: 1}, &#39;Russia&#39;: {&#39;wins&#39;: 2}, &#39;Saudi Arabia&#39;: {&#39;wins&#39;: 1}, &#39;Senegal&#39;: {&#39;wins&#39;: 1}, &#39;Serbia&#39;: {&#39;wins&#39;: 1}, &#39;South Korea&#39;: {&#39;wins&#39;: 1}, &#39;Spain&#39;: {&#39;wins&#39;: 1}, &#39;Sweden&#39;: {&#39;wins&#39;: 3}, &#39;Switzerland&#39;: {&#39;wins&#39;: 1}, &#39;Tunisia&#39;: {&#39;wins&#39;: 1}, &#39;Uruguay&#39;: {&#39;wins&#39;: 4}}</code></pre>
+</div>
 </div>

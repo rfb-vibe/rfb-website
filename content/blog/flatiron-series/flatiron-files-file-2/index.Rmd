@@ -80,7 +80,138 @@ population_file.close()
 
 ```
 
+### Working on the Men's World Cup Data
 
+What is the structure of the `world_cup_data`?
+```{python}
+
+world_cup_data.keys()
+
+```
+
+This indicates the World Cup data is a dictionary, with two keys, 'name' and 'rounds'
+
+**Extracting the Rounds**
+<br>
+First, we want to extract the rounds of the World Cup matches, so we can determine the number of wins from those matches.
+
+```{python}
+
+# Create a variable called "rounds" from the "rounds" key.
+rounds = world_cup_data["rounds"]
+
+# This prints the type of data of "rounds" (a list), the length of the "rounds" variable (20 rounds), and prints the three ...
+print("type(rounds):", type(rounds))
+print("len(rounds):", len(rounds))
+print("rounds[3]:")
+rounds[3]
+
+```
+
+The `rounds` variable we have created is a list of dictionaries, with each dictionary of inside of `rounds` containing a name (such as 'Matchday 4') as well as the list of matches that occurred on that day (along with match details)
+
+**Extracting the Matches**
+<br>
+
+```{python}
+
+# Create a variable, "matches," that is an empty list
+matches = []
+
+# This is a looping function
+for round_ in rounds:
+    # Extract the list of matches for this round
+    round_matches = round_["matches"]
+    # Add them to the overall list of matches, which is the variable we created at the beginning
+    matches.extend(round_matches)
+    
+# View the first entry
+matches[0]
+
+```
+
+
+**Extracting the Teams**
+<br>
+
+We know that each match has two teams, `team1` and `team2`, so we're going to create a list of all unique team names by looping over every match in `matches` and adding the "name" values associated with both `team1` and `team2`
+
+```{python}
+
+# Create a variable, "teams_set", that is an empty set
+teams_set = set()
+
+for match in matches:
+    # Add team1 value to teams_set
+    teams_set.add(match["team1"]["name"])
+    # Add team2 value to teams_set
+    teams_set.add(match["team2"]["name"])
+    
+# Create a "teams" variable that is a sorted list based on the teams_set
+teams = sorted(list(teams_set))
+
+# View the list
+print(teams)
+
+```
+
+
+Now that we have our `teams` variable that is comprised of all the participating teams at the 2018 Men's World Cup, we move on to connecting each team name with its performance at the World Cup, as measured by the count of total wins.
+
+<br>
+
+### Men's World Cup Performance
+In this section, we start by initializing a dictionary called `combined_data` containing:
+
+- Keys: the strings from teams
+- Values: each value the same, a dictionary containing the key 'wins' with the associated value 0.
+
+```{python}
+
+# This uses dictionary comprehension, creating a dictionary (noted by {}) with the team as the key and the value set to number of wins - for each team in the teams list
+combined_data = {team: {"wins": 0} for team in teams}
+
+```
+
+To add wins to the dictionary, we're going to write a function that we can call on the `match` dictionary.
+
+```{python}
+
+def find_winner(match):
+    """
+    Given a dictionary containing information about a match,
+    return the name of the winner (or None in the case of a tie)
+    """
+    score_1 = match["score1"]
+    score_2 = match["score2"]
+    
+    if score_1 > score_2:
+        return match["team1"]["name"]
+    elif score_2 > score_1:
+        return match["team2"]["name"]
+    else:
+        return None
+    # ^ this else: return None is not actually necessary since Python returns
+    # None if nothing is returned
+
+```
+
+Once this function is defined, we can loop over every match in `matches` to find the winner and add +1 to associated count in `combined_data`
+
+```{python}
+
+for match in matches:
+    # Get the name of the winner
+    winner = find_winner(match)
+    # Only proceed to the next step if there was a winner
+    if winner:
+        # Add 1 to the associated count of wins
+        combined_data[winner]["wins"] += 1
+        
+# Visually inspect the output to ensure the wins are different for different countries
+combined_data
+
+```
 
 
 
