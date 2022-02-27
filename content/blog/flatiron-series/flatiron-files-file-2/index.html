@@ -27,5 +27,42 @@ output: html_document
 </div>
 <div id="data-understanding" class="section level3">
 <h3>Data Understanding</h3>
+<p>The data sources for this analysis will be pulled from two separate files.</p>
+<p><code>world_cup_2018.json</code></p>
+<ul>
+<li>Source: This dataset comes from <a href="http://openfootball.github.io/">football.db</a>, a “free and open public domain football database &amp; schema for use in any (programming) language”</li>
+<li>Contents: Data about all games in the 2018 World Cup, including date, location (city and stadium), teams, goals scored (and by whom), and tournament group</li>
+<li>Format: Nested JSON data (dictionary containing a list of rounds, each of which contains a list of matches, each of which contains information about the teams involved and the points scored)</li>
+</ul>
+<p><code>country_populations.csv</code></p>
+<ul>
+<li>Source: This dataset comes from a curated collection by <a href="https://datahub.io/core/population">DataHub.io</a>, originally sourced from the World Bank</li>
+<li>Contents: Data about populations by country for all available years from 1960 to 2018</li>
+<li>Format: CSV data, where each row contains a country name, a year, and a population</li>
+</ul>
+<div id="getting-the-data" class="section level4">
+<h4>Getting the Data</h4>
+<pre class="python"><code>
+# Import necessary packages
+import json
+import csv</code></pre>
+<p>Open the relevant files</p>
+<pre class="python"><code>
+world_cup_file = open(&quot;data/world_cup_2018.json&quot;, encoding=&#39;utf8&#39;)
+population_file = open(&quot;data/country_populations.csv&quot;)</code></pre>
+<p>Here, we use the <code>json</code> package to load the data from the <code>world_cup_file</code> into a dictionary (which we’ll use for analysis) called <code>world_cup_data</code> and we’ll use the <code>csv</code> package to to load the data from <code>population_file</code> into a list of dictionaries called <code>population_data</code></p>
+<pre class="python"><code>
+# Men&#39;s World Cup Data
+world_cup_data = json.load(world_cup_file)
+
+# Close the file now that we&#39;re done reading from it
+world_cup_file.close()
+
+# Population Data
+population_data = list(csv.DictReader(population_file))
+
+# Close the file now that we&#39;re done reading from it
+population_file.close()</code></pre>
+</div>
 </div>
 </div>

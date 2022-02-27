@@ -8,6 +8,12 @@ tags: []
 output: html_document
 ---
 
+```{r include=FALSE}
+library(reticulate)
+use_condaenv("learn-env")
+```
+
+
 This blogpost is going to summarize the lessons on data analysis in base python and pandas. These lessons and content are from the Flatiron School.
 
 ## Introduction to Data Analysis - Cumulative Lab
@@ -23,6 +29,58 @@ The objectives of this lab are to:
 Using data from the 2018 Men's World Cup, we are going to ascertain if any relationship exists between participating countries' population and success (as measured by cumulative wins).
 
 ### Data Understanding
+
+The data sources for this analysis will be pulled from two separate files.
+
+`world_cup_2018.json`
+
+- Source: This dataset comes from [football.db](http://openfootball.github.io/), a "free and open public domain football database & schema for use in any (programming) language"
+- Contents: Data about all games in the 2018 World Cup, including date, location (city and stadium), teams, goals scored (and by whom), and tournament group
+- Format: Nested JSON data (dictionary containing a list of rounds, each of which contains a list of matches, each of which contains information about the teams involved and the points scored)
+
+
+`country_populations.csv`
+
+- Source: This dataset comes from a curated collection by [DataHub.io](https://datahub.io/core/population), originally sourced from the World Bank
+- Contents: Data about populations by country for all available years from 1960 to 2018
+- Format: CSV data, where each row contains a country name, a year, and a population
+
+#### Getting the Data
+```{python}
+
+# Import necessary packages
+import json
+import csv
+
+```
+
+Open the relevant files
+```{python}
+
+world_cup_file = open("data/world_cup_2018.json", encoding='utf8')
+population_file = open("data/country_populations.csv")
+
+```
+
+Here, we use the `json` package to load the data from the `world_cup_file` into a dictionary (which we'll use for analysis) called `world_cup_data` and we'll use the `csv` package to to load the data from `population_file` into a list of dictionaries called `population_data`
+
+```{python}
+
+# Men's World Cup Data
+world_cup_data = json.load(world_cup_file)
+
+# Close the file now that we're done reading from it
+world_cup_file.close()
+
+# Population Data
+population_data = list(csv.DictReader(population_file))
+
+# Close the file now that we're done reading from it
+population_file.close()
+
+```
+
+
 
 
 
