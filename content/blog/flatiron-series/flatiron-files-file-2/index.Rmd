@@ -9,8 +9,9 @@ tags: []
 output: html_document
 ---
 
-```{r include=FALSE}
+```{r include=FALSE, warning=FALSE}
 library(reticulate)
+library(jsonlite)
 use_condaenv("learn-env")
 ```
 
@@ -213,6 +214,212 @@ for match in matches:
 combined_data
 
 ```
+
+### Analysis of Wins
+
+While we could try to understand all 32 of those numbers just by scanning through them, let's use some descriptive statistics and data visualizations instead!
+
+**Statistical Summary of Wins**
+<br>
+The code below calculates the mean, median, and standard deviation of the number of wins. If it doesn't work, that is an indication that something went wrong with the creation of the `combined_data` variable, and you might want to look at the solution branch and fix your code before proceeding.
+
+```{python}
+
+import numpy as np
+
+wins = [val["wins"] for val in combined_data.values()]
+
+print("Mean number of wins:", np.mean(wins))
+print("Median number of wins:", np.median(wins))
+print("Standard deviation of number of wins:", np.std(wins))
+
+```
+
+**Visualization**
+
+```{python}
+
+import matplotlib.pyplot as plt
+
+# Set up figure and axes
+fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(12, 7))
+fig.set_tight_layout(True)
+
+# Histogram of Wins and Frequencies
+ax1.hist(x=wins, bins=range(8), align="left", color="green")
+ax1.set_xticks(range(7))
+ax1.set_xlabel("Wins in 2018 World Cup")
+ax1.set_ylabel("Frequency")
+ax1.set_title("Distribution of Wins")
+
+# Horizontal Bar Graph of Wins by Country
+ax2.barh(teams[::-1], wins[::-1], color="green")
+ax2.set_xlabel("Wins in 2018 World Cup")
+ax2.set_title("Wins by Country");
+
+```
+
+
+### Working on the World Population Data
+We need to filter the `population_data` dataset to include only those populations from 2018 and only those countries listed in the `teams` dataset we completed above.
+
+First, we need to normalize the country names to ensure country names match.
+
+```{python}
+
+def normalize_location(country_name):
+    """
+    Given a country name, return the name that the
+    country uses when playing in the FIFA World Cup
+    """
+    name_sub_dict = {
+        "Russian Federation": "Russia",
+        "Egypt, Arab Rep.": "Egypt",
+        "Iran, Islamic Rep.": "Iran",
+        "Korea, Rep.": "South Korea",
+        "United Kingdom": "England"
+    }
+    # The .get method returns the corresponding value from
+    # the dict if present, otherwise returns country_name
+    return name_sub_dict.get(country_name, country_name)
+    
+```
+
+Then we can create our filtered population dataset.
+
+```{python}
+
+population_data_filtered = []
+
+for record in population_data:
+    # Get normalized country name
+    normalized_name = normalize_location(record["Country Name"])
+    # Add record to population_data_filtered if relevant
+    if (normalized_name in teams) and (record["Year"] == "2018"):
+        # Replace the country name in the record
+        record["Country Name"] = normalized_name
+        # Append to list
+        population_data_filtered.append(record)
+
+```
+
+Unfortunately, the population values from the `population_data` file are entered as objects/characters, not integers, so we need to change the values' datatype.
+
+```{python}
+
+for record in population_data_filtered:
+    # Convert the population value from str to int
+    record["Value"] = int(record["Value"])
+    
+```
+
+Now, we can loop over `population_data_filtered` and add information about population to each country in `combined_data`!
+
+```{python}
+
+for record in population_data_filtered:
+    # Extract the country name from the record
+    country = record["Country Name"]
+    # Extract the population value from the record
+    population = record["Value"]
+    # Add this information to combined_data
+    combined_data[country]["population"] = population
+    
+# Look combined_data
+combined_data
+
+```
+
+**Statistical Analysis of Population**
+```{python}
+
+populations = [val["population"] for val in combined_data.values()]
+
+print("Mean population:", np.mean(populations))
+print("Median population:", np.median(populations))
+print("Standard deviation of population:", np.std(populations))
+
+```
+
+**Visualizations of Population**
+```{python}
+
+# Set up figure and axes
+fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(12, 7))
+fig.set_tight_layout(True)
+
+# Histogram of Populations and Frequencies
+ax1.hist(x=populations, color="blue")
+ax1.set_xlabel("2018 Population")
+ax1.set_ylabel("Frequency")
+ax1.set_title("Distribution of Population")
+
+# Horizontal Bar Graph of Population by Country
+ax2.barh(teams[::-1], populations[::-1], color="blue")
+ax2.set_xlabel("2018 Population")
+ax2.set_title("Population by Country");
+
+```
+
+
+### Analysis of Performance vs. Population
+**Statistical Measure - Correlation**
+```{python}
+
+np.corrcoef(wins, populations)[0][1]
+
+```
+
+This indicates a very weak positive correlation between population and performance.
+
+**Data Visualization of Correlation**
+```{python}
+
+# Set up figure
+fig, ax = plt.subplots(figsize=(8, 5))
+
+# Basic scatter plot
+ax.scatter(
+    x=populations,
+    y=wins,
+    color="gray", alpha=0.5, s=100
+)
+ax.set_xlabel("2018 Population")
+ax.set_ylabel("2018 World Cup Wins")
+ax.set_title("Population vs. World Cup Wins")
+
+# Add annotations for specific points of interest
+highlighted_points = {
+    "Belgium": 2, # Numbers are the index of that
+    "Brazil": 3,  # country in populations & wins
+    "France": 10,
+    "Nigeria": 17
+}
+for country, index in highlighted_points.items():
+    # Get x and y position of data point
+    x = populations[index]
+    y = wins[index]
+    # Move each point slightly down and to the left
+    # (numbers were chosen by manually tweaking)
+    xtext = x - (1.25e6 * len(country))
+    ytext = y - 0.5
+    # Annotate with relevant arguments
+    ax.annotate(
+        text=country,
+        xy=(x, y),
+        xytext=(xtext, ytext)
+    )
+
+```
+
+## Final Analysis
+**What is the relationship between the population of a country and their performance in the 2018 FIFA World Cup?**
+
+Logic would dictate that the greater a country's population, the more likely they are to have a better soccer team because they have a larger player pool than countries with smaller populations. The more people, the more possible players.
+
+However, sheer numbers of people doesn't equate to succes in sports - in this case, the men's World Cup. Yes, Brazil makes a good case, but what about China, India, or the United States? And why would such a small country like Belgium be so good at soccer if its population is comparatively so much smaller?
+
+I'd want to evaluate available government funding of soccer in these countries. How much state support do the national soccer federations receive? Is there a correlation with country wealth as well? Maybe measured by GDP per capita or income per capita.
 
 
 

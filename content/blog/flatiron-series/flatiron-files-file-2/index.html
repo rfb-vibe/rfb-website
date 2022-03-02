@@ -170,4 +170,179 @@ for match in matches:
 combined_data</code></pre>
 <pre><code>## {&#39;Argentina&#39;: {&#39;wins&#39;: 1}, &#39;Australia&#39;: {&#39;wins&#39;: 0}, &#39;Belgium&#39;: {&#39;wins&#39;: 6}, &#39;Brazil&#39;: {&#39;wins&#39;: 3}, &#39;Colombia&#39;: {&#39;wins&#39;: 2}, &#39;Costa Rica&#39;: {&#39;wins&#39;: 0}, &#39;Croatia&#39;: {&#39;wins&#39;: 3}, &#39;Denmark&#39;: {&#39;wins&#39;: 1}, &#39;Egypt&#39;: {&#39;wins&#39;: 0}, &#39;England&#39;: {&#39;wins&#39;: 3}, &#39;France&#39;: {&#39;wins&#39;: 6}, &#39;Germany&#39;: {&#39;wins&#39;: 1}, &#39;Iceland&#39;: {&#39;wins&#39;: 0}, &#39;Iran&#39;: {&#39;wins&#39;: 1}, &#39;Japan&#39;: {&#39;wins&#39;: 1}, &#39;Mexico&#39;: {&#39;wins&#39;: 2}, &#39;Morocco&#39;: {&#39;wins&#39;: 0}, &#39;Nigeria&#39;: {&#39;wins&#39;: 1}, &#39;Panama&#39;: {&#39;wins&#39;: 0}, &#39;Peru&#39;: {&#39;wins&#39;: 1}, &#39;Poland&#39;: {&#39;wins&#39;: 1}, &#39;Portugal&#39;: {&#39;wins&#39;: 1}, &#39;Russia&#39;: {&#39;wins&#39;: 2}, &#39;Saudi Arabia&#39;: {&#39;wins&#39;: 1}, &#39;Senegal&#39;: {&#39;wins&#39;: 1}, &#39;Serbia&#39;: {&#39;wins&#39;: 1}, &#39;South Korea&#39;: {&#39;wins&#39;: 1}, &#39;Spain&#39;: {&#39;wins&#39;: 1}, &#39;Sweden&#39;: {&#39;wins&#39;: 3}, &#39;Switzerland&#39;: {&#39;wins&#39;: 1}, &#39;Tunisia&#39;: {&#39;wins&#39;: 1}, &#39;Uruguay&#39;: {&#39;wins&#39;: 4}}</code></pre>
 </div>
+<div id="analysis-of-wins" class="section level3">
+<h3>Analysis of Wins</h3>
+<p>While we could try to understand all 32 of those numbers just by scanning through them, let’s use some descriptive statistics and data visualizations instead!</p>
+<p><strong>Statistical Summary of Wins</strong>
+<br>
+The code below calculates the mean, median, and standard deviation of the number of wins. If it doesn’t work, that is an indication that something went wrong with the creation of the <code>combined_data</code> variable, and you might want to look at the solution branch and fix your code before proceeding.</p>
+<pre class="python"><code>
+import numpy as np
+
+wins = [val[&quot;wins&quot;] for val in combined_data.values()]
+
+print(&quot;Mean number of wins:&quot;, np.mean(wins))</code></pre>
+<pre><code>## Mean number of wins: 1.5625</code></pre>
+<pre class="python"><code>print(&quot;Median number of wins:&quot;, np.median(wins))</code></pre>
+<pre><code>## Median number of wins: 1.0</code></pre>
+<pre class="python"><code>print(&quot;Standard deviation of number of wins:&quot;, np.std(wins))</code></pre>
+<pre><code>## Standard deviation of number of wins: 1.5194057226429023</code></pre>
+<p><strong>Visualization</strong></p>
+<pre class="python"><code>
+import matplotlib.pyplot as plt
+
+# Set up figure and axes
+fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(12, 7))
+fig.set_tight_layout(True)
+
+# Histogram of Wins and Frequencies
+ax1.hist(x=wins, bins=range(8), align=&quot;left&quot;, color=&quot;green&quot;)</code></pre>
+<pre><code>## (array([ 6., 16.,  3.,  4.,  1.,  0.,  2.]), array([0, 1, 2, 3, 4, 5, 6, 7]), &lt;BarContainer object of 7 artists&gt;)</code></pre>
+<pre class="python"><code>ax1.set_xticks(range(7))
+ax1.set_xlabel(&quot;Wins in 2018 World Cup&quot;)
+ax1.set_ylabel(&quot;Frequency&quot;)
+ax1.set_title(&quot;Distribution of Wins&quot;)
+
+# Horizontal Bar Graph of Wins by Country
+ax2.barh(teams[::-1], wins[::-1], color=&quot;green&quot;)</code></pre>
+<pre><code>## &lt;BarContainer object of 32 artists&gt;</code></pre>
+<pre class="python"><code>ax2.set_xlabel(&quot;Wins in 2018 World Cup&quot;)
+ax2.set_title(&quot;Wins by Country&quot;);</code></pre>
+</div>
+<div id="working-on-the-world-population-data" class="section level3">
+<h3>Working on the World Population Data</h3>
+<p>We need to filter the <code>population_data</code> dataset to include only those populations from 2018 and only those countries listed in the <code>teams</code> dataset we completed above.</p>
+<p>First, we need to normalize the country names to ensure country names match.</p>
+<pre class="python"><code>
+def normalize_location(country_name):
+    &quot;&quot;&quot;
+    Given a country name, return the name that the
+    country uses when playing in the FIFA World Cup
+    &quot;&quot;&quot;
+    name_sub_dict = {
+        &quot;Russian Federation&quot;: &quot;Russia&quot;,
+        &quot;Egypt, Arab Rep.&quot;: &quot;Egypt&quot;,
+        &quot;Iran, Islamic Rep.&quot;: &quot;Iran&quot;,
+        &quot;Korea, Rep.&quot;: &quot;South Korea&quot;,
+        &quot;United Kingdom&quot;: &quot;England&quot;
+    }
+    # The .get method returns the corresponding value from
+    # the dict if present, otherwise returns country_name
+    return name_sub_dict.get(country_name, country_name)
+    </code></pre>
+<p>Then we can create our filtered population dataset.</p>
+<pre class="python"><code>
+population_data_filtered = []
+
+for record in population_data:
+    # Get normalized country name
+    normalized_name = normalize_location(record[&quot;Country Name&quot;])
+    # Add record to population_data_filtered if relevant
+    if (normalized_name in teams) and (record[&quot;Year&quot;] == &quot;2018&quot;):
+        # Replace the country name in the record
+        record[&quot;Country Name&quot;] = normalized_name
+        # Append to list
+        population_data_filtered.append(record)</code></pre>
+<p>Unfortunately, the population values from the <code>population_data</code> file are entered as objects/characters, not integers, so we need to change the values’ datatype.</p>
+<pre class="python"><code>
+for record in population_data_filtered:
+    # Convert the population value from str to int
+    record[&quot;Value&quot;] = int(record[&quot;Value&quot;])
+    </code></pre>
+<p>Now, we can loop over <code>population_data_filtered</code> and add information about population to each country in <code>combined_data</code>!</p>
+<pre class="python"><code>
+for record in population_data_filtered:
+    # Extract the country name from the record
+    country = record[&quot;Country Name&quot;]
+    # Extract the population value from the record
+    population = record[&quot;Value&quot;]
+    # Add this information to combined_data
+    combined_data[country][&quot;population&quot;] = population
+    
+# Look combined_data
+combined_data</code></pre>
+<pre><code>## {&#39;Argentina&#39;: {&#39;wins&#39;: 1, &#39;population&#39;: 44494502}, &#39;Australia&#39;: {&#39;wins&#39;: 0, &#39;population&#39;: 24982688}, &#39;Belgium&#39;: {&#39;wins&#39;: 6, &#39;population&#39;: 11433256}, &#39;Brazil&#39;: {&#39;wins&#39;: 3, &#39;population&#39;: 209469333}, &#39;Colombia&#39;: {&#39;wins&#39;: 2, &#39;population&#39;: 49648685}, &#39;Costa Rica&#39;: {&#39;wins&#39;: 0, &#39;population&#39;: 4999441}, &#39;Croatia&#39;: {&#39;wins&#39;: 3, &#39;population&#39;: 4087843}, &#39;Denmark&#39;: {&#39;wins&#39;: 1, &#39;population&#39;: 5793636}, &#39;Egypt&#39;: {&#39;wins&#39;: 0, &#39;population&#39;: 98423595}, &#39;England&#39;: {&#39;wins&#39;: 3, &#39;population&#39;: 66460344}, &#39;France&#39;: {&#39;wins&#39;: 6, &#39;population&#39;: 66977107}, &#39;Germany&#39;: {&#39;wins&#39;: 1, &#39;population&#39;: 82905782}, &#39;Iceland&#39;: {&#39;wins&#39;: 0, &#39;population&#39;: 352721}, &#39;Iran&#39;: {&#39;wins&#39;: 1, &#39;population&#39;: 81800269}, &#39;Japan&#39;: {&#39;wins&#39;: 1, &#39;population&#39;: 126529100}, &#39;Mexico&#39;: {&#39;wins&#39;: 2, &#39;population&#39;: 126190788}, &#39;Morocco&#39;: {&#39;wins&#39;: 0, &#39;population&#39;: 36029138}, &#39;Nigeria&#39;: {&#39;wins&#39;: 1, &#39;population&#39;: 195874740}, &#39;Panama&#39;: {&#39;wins&#39;: 0, &#39;population&#39;: 4176873}, &#39;Peru&#39;: {&#39;wins&#39;: 1, &#39;population&#39;: 31989256}, &#39;Poland&#39;: {&#39;wins&#39;: 1, &#39;population&#39;: 37974750}, &#39;Portugal&#39;: {&#39;wins&#39;: 1, &#39;population&#39;: 10283822}, &#39;Russia&#39;: {&#39;wins&#39;: 2, &#39;population&#39;: 144478050}, &#39;Saudi Arabia&#39;: {&#39;wins&#39;: 1, &#39;population&#39;: 33699947}, &#39;Senegal&#39;: {&#39;wins&#39;: 1, &#39;population&#39;: 15854360}, &#39;Serbia&#39;: {&#39;wins&#39;: 1, &#39;population&#39;: 6982604}, &#39;South Korea&#39;: {&#39;wins&#39;: 1, &#39;population&#39;: 51606633}, &#39;Spain&#39;: {&#39;wins&#39;: 1, &#39;population&#39;: 46796540}, &#39;Sweden&#39;: {&#39;wins&#39;: 3, &#39;population&#39;: 10175214}, &#39;Switzerland&#39;: {&#39;wins&#39;: 1, &#39;population&#39;: 8513227}, &#39;Tunisia&#39;: {&#39;wins&#39;: 1, &#39;population&#39;: 11565204}, &#39;Uruguay&#39;: {&#39;wins&#39;: 4, &#39;population&#39;: 3449299}}</code></pre>
+<p><strong>Statistical Analysis of Population</strong></p>
+<pre class="python"><code>
+populations = [val[&quot;population&quot;] for val in combined_data.values()]
+
+print(&quot;Mean population:&quot;, np.mean(populations))</code></pre>
+<pre><code>## Mean population: 51687460.84375</code></pre>
+<pre class="python"><code>print(&quot;Median population:&quot;, np.median(populations))</code></pre>
+<pre><code>## Median population: 34864542.5</code></pre>
+<pre class="python"><code>print(&quot;Standard deviation of population:&quot;, np.std(populations))</code></pre>
+<pre><code>## Standard deviation of population: 55195121.60871871</code></pre>
+<p><strong>Visualizations of Population</strong></p>
+<pre class="python"><code>
+# Set up figure and axes
+fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(12, 7))
+fig.set_tight_layout(True)
+
+# Histogram of Populations and Frequencies
+ax1.hist(x=populations, color=&quot;blue&quot;)</code></pre>
+<pre><code>## (array([13.,  5.,  4.,  4.,  1.,  0.,  3.,  0.,  0.,  2.]), array([3.52721000e+05, 2.12643822e+07, 4.21760434e+07, 6.30877046e+07,
+##        8.39993658e+07, 1.04911027e+08, 1.25822688e+08, 1.46734349e+08,
+##        1.67646011e+08, 1.88557672e+08, 2.09469333e+08]), &lt;BarContainer object of 10 artists&gt;)</code></pre>
+<pre class="python"><code>ax1.set_xlabel(&quot;2018 Population&quot;)
+ax1.set_ylabel(&quot;Frequency&quot;)
+ax1.set_title(&quot;Distribution of Population&quot;)
+
+# Horizontal Bar Graph of Population by Country
+ax2.barh(teams[::-1], populations[::-1], color=&quot;blue&quot;)</code></pre>
+<pre><code>## &lt;BarContainer object of 32 artists&gt;</code></pre>
+<pre class="python"><code>ax2.set_xlabel(&quot;2018 Population&quot;)
+ax2.set_title(&quot;Population by Country&quot;);</code></pre>
+</div>
+<div id="analysis-of-performance-vs.-population" class="section level3">
+<h3>Analysis of Performance vs. Population</h3>
+<p><strong>Statistical Measure - Correlation</strong></p>
+<pre class="python"><code>
+np.corrcoef(wins, populations)[0][1]</code></pre>
+<pre><code>## 0.07592816849178588</code></pre>
+<p>This indicates a very weak positive correlation between population and performance.</p>
+<p><strong>Data Visualization of Correlation</strong></p>
+<pre class="python"><code>
+# Set up figure
+fig, ax = plt.subplots(figsize=(8, 5))
+
+# Basic scatter plot
+ax.scatter(
+    x=populations,
+    y=wins,
+    color=&quot;gray&quot;, alpha=0.5, s=100
+)
+ax.set_xlabel(&quot;2018 Population&quot;)
+ax.set_ylabel(&quot;2018 World Cup Wins&quot;)
+ax.set_title(&quot;Population vs. World Cup Wins&quot;)
+
+# Add annotations for specific points of interest
+highlighted_points = {
+    &quot;Belgium&quot;: 2, # Numbers are the index of that
+    &quot;Brazil&quot;: 3,  # country in populations &amp; wins
+    &quot;France&quot;: 10,
+    &quot;Nigeria&quot;: 17
+}
+for country, index in highlighted_points.items():
+    # Get x and y position of data point
+    x = populations[index]
+    y = wins[index]
+    # Move each point slightly down and to the left
+    # (numbers were chosen by manually tweaking)
+    xtext = x - (1.25e6 * len(country))
+    ytext = y - 0.5
+    # Annotate with relevant arguments
+    ax.annotate(
+        text=country,
+        xy=(x, y),
+        xytext=(xtext, ytext)
+    )</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-21-1.png" width="768" /></p>
+</div>
+</div>
+<div id="final-analysis" class="section level2">
+<h2>Final Analysis</h2>
+<p><strong>What is the relationship between the population of a country and their performance in the 2018 FIFA World Cup?</strong></p>
+<p>Logic would dictate that the greater a country’s population, the more likely they are to have a better soccer team because they have a larger player pool than countries with smaller populations. The more people, the more possible players.</p>
+<p>However, sheer numbers of people doesn’t equate to succes in sports - in this case, the men’s World Cup. Yes, Brazil makes a good case, but what about China, India, or the United States? And why would such a small country like Belgium be so good at soccer if its population is comparatively so much smaller?</p>
+<p>I’d want to evaluate available government funding of soccer in these countries. How much state support do the national soccer federations receive? Is there a correlation with country wealth as well? Maybe measured by GDP per capita or income per capita.</p>
 </div>
