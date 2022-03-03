@@ -48,16 +48,16 @@ The data sources for this analysis will be pulled from two separate files.
 - Format: CSV data, where each row contains a country name, a year, and a population
 
 #### Getting the Data
-```{python}
+```{python, eval=FALSE}
 
 # Import necessary packages
-import json
-import csv
+import json # Loads the json package, which allows us to read a .json file
+import csv # Loads the csv package, which allows us to read a csv file
 
 ```
 
 Open the relevant files
-```{python}
+```{python, eval=FALSE}
 
 world_cup_file = open("data/world_cup_2018.json", encoding='utf8')
 population_file = open("data/country_populations.csv")
@@ -66,16 +66,19 @@ population_file = open("data/country_populations.csv")
 
 Here, we use the `json` package to load the data from the `world_cup_file` into a dictionary (which we'll use for analysis) called `world_cup_data` and we'll use the `csv` package to to load the data from `population_file` into a list of dictionaries called `population_data`
 
-```{python}
+```{python, eval=FALSE}
 
 # Men's World Cup Data
 world_cup_data = json.load(world_cup_file)
+# Here's we're loading the data, and saving the data into an object, world_cup_data
+
 
 # Close the file now that we're done reading from it
 world_cup_file.close()
 
 # Population Data
 population_data = list(csv.DictReader(population_file))
+# Same as with the world_cup_data
 
 # Close the file now that we're done reading from it
 population_file.close()
@@ -85,8 +88,10 @@ population_file.close()
 ### Working on the Men's World Cup Data
 
 What is the structure of the `world_cup_data`?
-```{python}
+```{python, eval=FALSE}
 
+# This line of code will return the keys of the dictionary, which allows us to see
+# how the data is structured
 world_cup_data.keys()
 
 ```
@@ -97,7 +102,7 @@ This indicates the World Cup data is a dictionary, with two keys, 'name' and 'ro
 <br>
 First, we want to extract the rounds of the World Cup matches, so we can determine the number of wins from those matches.
 
-```{python}
+```{python, eval=FALSE}
 
 # Create a variable called "rounds" from the "rounds" key.
 rounds = world_cup_data["rounds"]
@@ -106,6 +111,8 @@ rounds = world_cup_data["rounds"]
 print("type(rounds):", type(rounds))
 print("len(rounds):", len(rounds))
 print("rounds[3]:")
+
+# This line just prints the 4th entry, so we can we that everything worked
 rounds[3]
 
 ```
@@ -115,7 +122,7 @@ The `rounds` variable we have created is a list of dictionaries, with each dicti
 **Extracting the Matches**
 <br>
 
-```{python}
+```{python, eval=FALSE}
 
 # Create a variable, "matches," that is an empty list
 matches = []
@@ -138,7 +145,7 @@ matches[0]
 
 We know that each match has two teams, `team1` and `team2`, so we're going to create a list of all unique team names by looping over every match in `matches` and adding the "name" values associated with both `team1` and `team2`
 
-```{python}
+```{python, eval=FALSE}
 
 # Create a variable, "teams_set", that is an empty set
 teams_set = set()
@@ -168,7 +175,7 @@ In this section, we start by initializing a dictionary called `combined_data` co
 - Keys: the strings from teams
 - Values: each value the same, a dictionary containing the key 'wins' with the associated value 0.
 
-```{python}
+```{python, eval=FALSE}
 
 # This uses dictionary comprehension, creating a dictionary (noted by {}) with the team as the key and the value set to number of wins - for each team in the teams list
 combined_data = {team: {"wins": 0} for team in teams}
@@ -177,8 +184,9 @@ combined_data = {team: {"wins": 0} for team in teams}
 
 To add wins to the dictionary, we're going to write a function that we can call on the `match` dictionary.
 
-```{python}
+```{python, eval=FALSE}
 
+# This first chunk is defining the function, find_winner()
 def find_winner(match):
     """
     Given a dictionary containing information about a match,
@@ -200,11 +208,11 @@ def find_winner(match):
 
 Once this function is defined, we can loop over every match in `matches` to find the winner and add +1 to associated count in `combined_data`
 
-```{python}
+```{python, eval=FALSE}
 
 for match in matches:
     # Get the name of the winner
-    winner = find_winner(match)
+    winner = find_winner(match) # the function we wrote above
     # Only proceed to the next step if there was a winner
     if winner:
         # Add 1 to the associated count of wins
@@ -223,9 +231,10 @@ While we could try to understand all 32 of those numbers just by scanning throug
 <br>
 The code below calculates the mean, median, and standard deviation of the number of wins. If it doesn't work, that is an indication that something went wrong with the creation of the `combined_data` variable, and you might want to look at the solution branch and fix your code before proceeding.
 
-```{python}
+```{python, eval=FALSE}
 
 import numpy as np
+# numpy is a python package that allows us to do statistical analysis
 
 wins = [val["wins"] for val in combined_data.values()]
 
@@ -237,9 +246,10 @@ print("Standard deviation of number of wins:", np.std(wins))
 
 **Visualization**
 
-```{python}
+```{python, eval=FALSE}
 
 import matplotlib.pyplot as plt
+# matplotlib is a python package that allows us to create visualizations
 
 # Set up figure and axes
 fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(12, 7))
@@ -259,13 +269,14 @@ ax2.set_title("Wins by Country");
 
 ```
 
+![distribution of wins](images/distribution-of-wins.png)
 
 ### Working on the World Population Data
 We need to filter the `population_data` dataset to include only those populations from 2018 and only those countries listed in the `teams` dataset we completed above.
 
 First, we need to normalize the country names to ensure country names match.
 
-```{python}
+```{python, eval=FALSE}
 
 def normalize_location(country_name):
     """
@@ -287,7 +298,7 @@ def normalize_location(country_name):
 
 Then we can create our filtered population dataset.
 
-```{python}
+```{python, eval=FALSE}
 
 population_data_filtered = []
 
@@ -305,7 +316,7 @@ for record in population_data:
 
 Unfortunately, the population values from the `population_data` file are entered as objects/characters, not integers, so we need to change the values' datatype.
 
-```{python}
+```{python, eval=FALSE}
 
 for record in population_data_filtered:
     # Convert the population value from str to int
@@ -315,7 +326,7 @@ for record in population_data_filtered:
 
 Now, we can loop over `population_data_filtered` and add information about population to each country in `combined_data`!
 
-```{python}
+```{python, eval=FALSE}
 
 for record in population_data_filtered:
     # Extract the country name from the record
@@ -325,13 +336,10 @@ for record in population_data_filtered:
     # Add this information to combined_data
     combined_data[country]["population"] = population
     
-# Look combined_data
-combined_data
-
 ```
 
 **Statistical Analysis of Population**
-```{python}
+```{python, eval=FALSE}
 
 populations = [val["population"] for val in combined_data.values()]
 
@@ -341,8 +349,13 @@ print("Standard deviation of population:", np.std(populations))
 
 ```
 
+Mean population: 51687460.84
+Median population: 34864542.5
+Standard deviation of population: 55195121.61
+
+
 **Visualizations of Population**
-```{python}
+```{python, eval=FALSE}
 
 # Set up figure and axes
 fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(12, 7))
@@ -361,19 +374,22 @@ ax2.set_title("Population by Country");
 
 ```
 
+![distribution of population](images/distribution-of-population.png)
 
 ### Analysis of Performance vs. Population
 **Statistical Measure - Correlation**
-```{python}
+```{python, eval=FALSE}
 
 np.corrcoef(wins, populations)[0][1]
 
 ```
 
-This indicates a very weak positive correlation between population and performance.
+Correlation coefficient: 0.0759
+
+This returns a correlation  a very weak positive correlation between population and performance.
 
 **Data Visualization of Correlation**
-```{python}
+```{python, eval=FALSE}
 
 # Set up figure
 fig, ax = plt.subplots(figsize=(8, 5))
@@ -411,6 +427,8 @@ for country, index in highlighted_points.items():
     )
 
 ```
+
+![scatterplot](images/scatterplot.png)
 
 ## Final Analysis
 **What is the relationship between the population of a country and their performance in the 2018 FIFA World Cup?**
