@@ -1,5 +1,5 @@
 ---
-title: Explore the Ames Housing Dataset with Pandas
+title: Exploring the Ames Housing Dataset with Pandas
 author: Rebecca Frost-Brewer
 date: '2022-03-03'
 slug: []
@@ -9,4 +9,223 @@ tags: []
 
 
 
+<p>This lab is a culmination of the lesson on importing, cleaning up, analyzing (using descriptive statistics) and visualizing data using pandas.</p>
+<div id="objectives-of-this-lab" class="section level3">
+<h3>Objectives of this Lab</h3>
+<p>Be able to:</p>
+<ul>
+<li>Practice loading data with pandas</li>
+<li>Practice calculating measures of centrality and dispersion with pandas</li>
+<li>Practice creating subsets of data with pandas</li>
+<li>Practice using data visualizations to explore data, and interpreting those visualizations</li>
+<li>Perform a full exploratory data analysis process to gain insight about a dataset</li>
+</ul>
+</div>
+<div id="data-understanding" class="section level3">
+<h3>Data Understanding</h3>
+<p>Each record (row) in this dataset represents a home that was sold in Ames, IA.</p>
+<p>Each feature (column) in this dataset is some attribute of that home sale. You can view the file <code>data/data_description.txt</code> in this repository for a full explanation of all variables in this dataset — 80 columns in total.</p>
+<p>We are going to focus on the following features:</p>
+<p><strong>SalePrice</strong>: <code>Sale price of the house in dollars</code></p>
+<p><strong>TotRmsAbvGrd</strong>: <code>Total rooms above grade (does not include bathrooms)</code></p>
+<p><strong>OverallCond</strong>: <code>Rates the overall condition of the house</code></p>
+<pre><code>       10   Very Excellent
+       9     Excellent
+       8     Very Good
+       7     Good
+       6     Above Average  
+       5     Average
+       4     Below Average  
+       3     Fair
+       2     Poor
+       1     Very Poor</code></pre>
+<p><strong>YrSold</strong>: <code>Year Sold (YYYY)</code></p>
+<p><strong>YearBuilt</strong>: <code>Original construction date</code></p>
+<p><strong>LandSlope</strong>: <code>Slope of property</code></p>
+<pre><code>       Gtl  Gentle slope
+       Mod  Moderate Slope  
+       Sev  Severe Slope</code></pre>
+</div>
+<div id="the-tasks" class="section level3">
+<h3>The Tasks</h3>
+<div id="load-the-dataset-with-pandas" class="section level4">
+<h4>1. Load the Dataset with Pandas</h4>
+<p>Import pandas with the standard alias <code>pd</code> and load the data into a dataframe with the standard name <code>df</code>.</p>
+<pre class="python"><code>import pandas as pd
+import matplotlib.pyplot as plt
+%matplotlib inline
 
+df = pd.read_csv(&#39;data/ames.csv&#39;, index_col = 0)
+# index_col set to 0 to avoid creating an extra Id column</code></pre>
+</div>
+<div id="explore-data-distributions" class="section level4">
+<h4>2. Explore Data Distributions</h4>
+<p>Produce summary statistics, visualizations, and interpretive text describing the distributions of <code>SalePrice</code>, <code>TotRmsAbvGrd</code>, and <code>OverallCond</code>.</p>
+<p><strong>Sale Price</strong></p>
+<pre class="python"><code># Create an object that is a list of the sale prices
+sp = df[&#39;SalePrice&#39;]
+# Create an object that is the mean of the list of sale prices
+sp.mean = df[&#39;SalePrice&#39;].mean()
+
+fig, ax = plt.subplots(figsize=(10,7))
+ax.hist(sp, bins = &quot;auto&quot;, alpha = 0.7)
+ax.axvline(sp.mean, color = &quot;black&quot;)
+ax.set_xlabel(&#39;Sale Price&#39;);
+ax.set_ylabel(&#39;Number of Houses&#39;)
+ax.set_title(&#39;Distribution of Sale Prices&#39;);</code></pre>
+<pre class="python"><code>print(&quot;The mean is:&quot;, sp.mean)
+print(&quot;The median is:&quot;, df[&#39;SalePrice&#39;].median())
+print(&quot;The standard deviation is:&quot;, df[&#39;SalePrice&#39;].std())</code></pre>
+<p>The mean is: 180921.20
+The median is: 163000.0
+The standard deviation is: 79442.50</p>
+<p>The distribution of the sale prices is left-skewed with its mean sale price of $180,900 and median sale price of $163,000. There seem to be some significant outliers that are influencing the mean, so the median is helpful to know.</p>
+<p><strong>Rooms Above Ground</strong></p>
+<pre class="python"><code># rag for &#39;Rooms Above Ground&#39;
+rag = df[&#39;TotRmsAbvGrd&#39;]
+rag.mean = df[&#39;TotRmsAbvGrd&#39;].mean()
+
+fig, ax = plt.subplots(figsize=(10,7))
+ax.hist(rag, bins = &quot;auto&quot;, alpha = 0.7)
+ax.axvline(rag.mean, color = &quot;black&quot;)
+ax.set_xlabel(&#39;Numbers of Rooms Above Ground&#39;)
+ax.set_ylabel(&#39;Number of Houses&#39;)
+ax.set_title(&#39;Distribution of Rooms Above Ground&#39;);</code></pre>
+<pre class="python"><code>print(&quot;The mean is:&quot;, rag.mean)
+print(&quot;The median is:&quot;, df[&#39;TotRmsAbvGrd&#39;].median())
+print(&quot;The standard deviation is:&quot;, df[&#39;TotRmsAbvGrd&#39;].std())</code></pre>
+<p>This looks like more of a normal distribution around the mean, with 6-7 rooms on average above ground.</p>
+<p><strong>Overall Condition</strong></p>
+<pre class="python"><code>overall = df[&#39;OverallCond&#39;]
+overall.mean = df[&#39;OverallCond&#39;].mean()
+
+fig, ax = plt.subplots(figsize=(10,7))
+ax.hist(overall, bins = &quot;auto&quot;, alpha = 0.7)
+ax.axvline(overall.mean, color = &quot;black&quot;)
+ax.set_xlabel(&#39;Overall Condition&#39;);
+ax.set_ylabel(&#39;Number of Houses&#39;)
+ax.set_title(&#39;Distribution of Overall Condition&#39;);</code></pre>
+<pre class="python"><code>print(&quot;The mean is:&quot;, overall.mean)
+print(&quot;The median is:&quot;, df[&#39;OverallCond&#39;].median())
+print(&quot;The standard deviation is:&quot;, df[&#39;OverallCond&#39;].std())</code></pre>
+<p>The mean is: 5.58
+The median is: 5.0
+The standard deviation is: 1.11</p>
+<p>The overall condition of the homes sold is normally distributed, though a 10-item scale isn’t necessarily continuous, so a histogram might not have been the best choice to visualize this data.</p>
+<p>That being said, the median condition of home sold is “Average,” with some more homes being sold above average, thus bringing the mean up a bit.</p>
+</div>
+<div id="explore-differences-between-subsets" class="section level4">
+<h4>3. Explore Differences between Subsets</h4>
+<p>Separate the data into subsets based on <code>OverallCond</code>, then demonstrate how this split impacts the distribution of <code>SalePrice</code>.</p>
+<p>To do, we’re going to create three variables, each of which represents a record-wise subset of <code>df</code> (meaning, it has the same columns as <code>df</code>, but only some of the rows).</p>
+<ul>
+<li><code>below_average_condition</code>: home sales where the overall condition was less than 5</li>
+<li><code>average_condition</code>: home sales where the overall condition was exactly 5</li>
+<li><code>above_average_condition</code>: home sales where the overall condition was greater than 5</li>
+</ul>
+<pre class="python"><code>below_average_condition = df[df[&#39;OverallCond&#39;] &lt; 5]
+average_condition = df[df[&#39;OverallCond&#39;] == 5]
+above_average_condition = df[df[&#39;OverallCond&#39;] &gt; 5]</code></pre>
+<p>Then we’ll plot of the distributions of sale price for each of these subsets.</p>
+<pre class="python"><code># Set up plot
+fig, ax = plt.subplots(figsize=(15,5))
+
+# Create custom bins so all are on the same scale
+bins = range(df[&quot;SalePrice&quot;].min(), df[&quot;SalePrice&quot;].max(), int(df[&quot;SalePrice&quot;].median()) // 20)
+
+# Plot three histograms, with reduced opacity (alpha) so we
+# can see them overlapping
+ax.hist(
+    x=above_average_condition[&quot;SalePrice&quot;],
+    label=&quot;above average condition&quot;,
+    bins=bins,
+    color=&quot;cyan&quot;,
+    alpha=0.5
+)
+ax.hist(
+    x=average_condition[&quot;SalePrice&quot;],
+    label=&quot;average condition&quot;,
+    bins=bins,
+    color=&quot;gray&quot;,
+    alpha=0.3
+)
+ax.hist(
+    x=below_average_condition[&quot;SalePrice&quot;],
+    label=&quot;below average condition&quot;,
+    bins=bins,
+    color=&quot;yellow&quot;,
+    alpha=0.5
+)
+
+# Customize labels
+ax.set_title(&quot;Distributions of Sale Price Grouped by Condition&quot;)
+ax.set_xlabel(&quot;Sale Price&quot;)
+ax.set_ylabel(&quot;Number of Houses&quot;)
+ax.legend();</code></pre>
+<p>It’s pretty clear that fewer homes were sold if their condition were below average. What’s more interesting to me is that the range of homes sold, both in number and price, seems greater for “average condition” than that of “above average.” I suppose that maybe makes sense in terms of availability, but this visualization would give me pause if someone said that above average conditioned home sell more often and for more money than average homes.</p>
+</div>
+<div id="explore-correlations" class="section level4">
+<h4>4. Explore Correlations</h4>
+<p>Find the features that have the strongest positive and negative correlations with <code>SalePrice</code>, and produce plots representing these relationships.</p>
+<pre class="python"><code>correlation_series = df.corr()[&#39;SalePrice&#39;].sort_values()
+
+max_corr_value = correlation_series.iloc[-2]
+max_corr_column = correlation_series.index[-2]
+print(&quot;Most Positively Correlated Column:&quot;, max_corr_column)
+print(&quot;Maximum Correlation Value:&quot;, max_corr_value)</code></pre>
+<p>Most Positively Correlated Column: OverallQual
+Maximum Correlation Value: 0.79</p>
+<pre class="python"><code>correlation_series = df.corr()[&#39;SalePrice&#39;].sort_values()
+
+min_corr_value = correlation_series.iloc[0]
+min_corr_column = correlation_series.index[0]
+print(&quot;Most Negatively Correlated Column:&quot;, min_corr_column)
+print(&quot;Minimum Correlation Value:&quot;, min_corr_value)</code></pre>
+<p>Most Negatively Correlated Column: KitchenAbvGr
+Minimum Correlation Value: -0.14</p>
+<p>Now, we’ll create a scatter plot of the relevant columns.</p>
+<pre class="python"><code>import seaborn as sns
+
+fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(15,5))
+
+# Plot distribution of column with highest correlation
+sns.boxplot(
+    x=df[max_corr_column],
+    y=df[&quot;SalePrice&quot;],
+    ax=ax1
+)
+# Plot distribution of column with most negative correlation
+sns.boxplot(
+    x=df[min_corr_column],
+    y=df[&quot;SalePrice&quot;],
+    ax=ax2
+)
+
+# Customize labels
+ax1.set_title(&quot;Boxplot of Overall Condition with Sale Price&quot;)
+ax1.set_xlabel(&quot;Overall Condition&quot;)
+ax1.set_ylabel(&quot;Sale Price&quot;)
+ax2.set_title(&quot;Boxplot of the Number of Kitchens Above Ground with Sale Price&quot;)
+ax2.set_xlabel(&quot;Number of Kitchens Above Ground&quot;)
+ax2.set_ylabel(&quot;Sale Price&quot;);</code></pre>
+<p>With regards to the boxplot of the overall condition of the home sold, there is a clear positive correlation, that as the overall condition improves from “Average” to “Good” to “Excellent”, so too does the sale price - logic saying that the nicer the condition, the nicer the home, the more expensive the home. We also see more variance in sale price with as the overall condition improves, so there must be more in the data to explain that.</p>
+<p>For the number of kitchens above ground, this seems like a silly correlation to highlight; while mathematically it may indicate the strongest negative correlation, what are additional factors that may be driving this other than just tbe number of kitchens above ground.</p>
+</div>
+<div id="engineer-and-explore-a-new-feature" class="section level4">
+<h4>5. Engineer and Explore a New Feature</h4>
+<p>What is the relationship between the year sold and the year built?</p>
+<p>Create a new feature <code>Age</code>, which represents the difference between the year sold and the year built, and plot the relationship between the age and sale price.</p>
+<pre class="python"><code># Make a new column, Age
+df[&quot;Age&quot;] = df[&quot;YrSold&quot;] - df[&quot;YearBuilt&quot;]
+
+# Set up plot
+fig, ax = plt.subplots(figsize=(15,5))
+
+# Plot Age vs. SalePrice
+ax.scatter(df[&quot;Age&quot;], df[&quot;SalePrice&quot;], alpha=0.3, color=&quot;green&quot;)
+ax.set_title(&quot;Home Age vs. Sale Price&quot;)
+ax.set_xlabel(&quot;Age of Home at Time of Sale&quot;)
+ax.set_ylabel(&quot;Sale Price&quot;);</code></pre>
+<p>Generally speaking, the newer the home, the more expensive the sale price. This could be associated with the overall condition of the home, so that would be an interesting factor to include in analysis.</p>
+</div>
+</div>

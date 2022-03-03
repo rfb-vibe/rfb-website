@@ -126,7 +126,7 @@ ax.set_title('Distribution of Rooms Above Ground');
 ```
 
 
-```{python}
+```{python, eval=FALSE}
 
 print("The mean is:", rag.mean)
 print("The median is:", df['TotRmsAbvGrd'].median())
