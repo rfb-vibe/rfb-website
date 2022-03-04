@@ -9,7 +9,7 @@ cascade:
     text_link_label: View all projects
     text_link_url: /portfolio/
 description: A collection of projects I've completed on my way to becoming a data scientist.
-layout: list
+layout: list-grid
 show_author_byline: true
 show_button_links: false
 show_post_date: false
