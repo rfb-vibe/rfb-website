@@ -1,7 +1,7 @@
 ---
 title: "Refugees"
 author: 'Rebecca Frost-Brewer'
-excerpt: 'Visualizing Refugees to the United States'
+excerpt: 'Visualizing refugees to the United States'
 slug: []
 categories: []
 tags: []
