@@ -5,20 +5,17 @@ excerpt: 'Visualizing refugees to the United States'
 slug: []
 categories: []
 tags: []
+output: html_document
 ---
 
 This project was completed as an assignment for Dr. Andrew Heiss' Data Visualization course.
 
-### The Set Up
+# The Set Up
 **Load libraries and initial data**
 <br>
 
 
 
-
-
-
-<br>
 
 
 ```r
@@ -49,7 +46,7 @@ refugees_countries_cumulative <- refugees_clean %>%
 <br>
 
 
-**Clean the data**
+# Clean the data
 <br>
 
 I pivoted wider to be able to calculate the rankings of each country within the 2006-2015 time period. I then sorted each year to determine the top five ranking score so that I could note the top 5 countries of origin of refugees for each year. I then returned to our tidy dataframe and created a new dataframe with all those countries that ranked in the top 5 over the 2006-2015 time period. And lastly, I saved this newly created dataframe.
@@ -105,7 +102,7 @@ complete_refugees <- read_csv("data/alltime_complete_refugees.csv")
 
 <br>
 
-### The Story
+# The Story
 
 
 **Visualizations of refugee data**
