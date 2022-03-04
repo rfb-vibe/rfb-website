@@ -1,12 +1,16 @@
 ---
-title: Spotify
+title: 'Spotify'
 author: 'Rebecca Frost-Brewer'
+excerpt: 'Visualizing Spotify by the Numbers: 2020'
 date: ''
 slug: []
 categories: []
 tags: []
 ---
 
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
 
 ```{r load-libraries, warning=FALSE, message=FALSE}
 

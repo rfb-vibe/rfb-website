@@ -1,11 +1,13 @@
 ---
-title: Spotify
+title: 'Spotify'
 author: 'Rebecca Frost-Brewer'
+excerpt: 'Visualizing Spotify by the Numbers: 2020'
 date: ''
 slug: []
 categories: []
 tags: []
 ---
+
 
 
 
@@ -46,76 +48,20 @@ charts_usa_2020 %>%
   count() %>%
   arrange(desc(n)) %>%
   head(10)
-```
 
-```
-## # A tibble: 10 x 2
-## # Groups:   artist [10]
-##    artist            n
-##    <chr>         <int>
-##  1 Juice WRLD      246
-##  2 The Weeknd      229
-##  3 Roddy Ricch     209
-##  4 DaBaby          207
-##  5 Drake           180
-##  6 Pop Smoke       173
-##  7 Lil Mosey       152
-##  8 Ariana Grande   148
-##  9 Taylor Swift    133
-## 10 Cardi B         111
-```
-
-```r
 # Top 10 artists based on their songs with the most number of streams
 charts_usa_2020 %>%
   select(artist, streams) %>%
   group_by(artist) %>%
   summarise(streams = sum(streams)) %>%
   arrange(desc(streams))
-```
 
-```
-## # A tibble: 101 x 2
-##    artist          streams
-##    <chr>             <dbl>
-##  1 Roddy Ricch   341381067
-##  2 Juice WRLD    287124051
-##  3 The Weeknd    262617125
-##  4 DaBaby        256919122
-##  5 Drake         228032320
-##  6 Taylor Swift  208798570
-##  7 Cardi B       177278749
-##  8 Ariana Grande 168068062
-##  9 Lil Mosey     166738428
-## 10 Pop Smoke     162273054
-## # … with 91 more rows
-```
-
-```r
 # Top 10 artists based on how the number of times they had a song ranked #1 in streams
 charts_usa_2020 %>%
   filter(rank == 1) %>%
   group_by(artist) %>%
   count() %>%
   arrange(desc(n))
-```
-
-```
-## # A tibble: 23 x 2
-## # Groups:   artist [23]
-##    artist                                 n
-##    <chr>                              <int>
-##  1 Roddy Ricch                           78
-##  2 DaBaby                                65
-##  3 Cardi B                               64
-##  4 Ariana Grande                         32
-##  5 Drake                                 21
-##  6 Taylor Swift                          13
-##  7 THE SCOTTS, Travis Scott, Kid Cudi    13
-##  8 Internet Money                        11
-##  9 Juice WRLD                            11
-## 10 The Weeknd                            11
-## # … with 13 more rows
 ```
 
 
@@ -170,8 +116,6 @@ top_artists <- ggplot(top_artists_2020,
 
 top_artists
 ```
-
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 
 
 
@@ -234,8 +178,6 @@ top_songs <- ggplot(top10_songs_ordered,
 top_songs
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-1.png" width="672" />
-
 
 
 ```r
@@ -279,8 +221,6 @@ top_listens <- ggplot(listens_2020,
 top_listens
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-7-1.png" width="672" />
-
 
 
 ```r
@@ -294,14 +234,7 @@ christmas <- charts_usa %>%
   summarise(total_streams = sum(streams, na.rm = TRUE)) %>%
   filter(total_streams != 0) %>%
   arrange(desc(total_streams))
-```
 
-```
-## `summarise()` has grouped output by 'title', 'artist'. You can override using
-## the `.groups` argument.
-```
-
-```r
 christmas <- christmas %>%
   mutate(stream_date = ymd(date)) %>%
   mutate(year = year(stream_date)) %>%
@@ -328,13 +261,7 @@ christmas_by_year <- christmas %>%
   summarise(year_streams = sum(total_streams),
             ave_streams = mean(total_streams)) %>%
   arrange(desc(year_streams))
-```
 
-```
-## Adding missing grouping variables: `artist`
-```
-
-```r
 year_color <- c("#7BABC9","#54758A","#2B658A","#25343D")
 ```
 
@@ -373,6 +300,4 @@ christmas_plot <- ggplot(data = christmas,
 
 christmas_plot
 ```
-
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 

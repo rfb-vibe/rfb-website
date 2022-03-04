@@ -1,11 +1,14 @@
 ---
-title: NYC Rats
+title: 'NYC Rats'
 author: 'Rebecca Frost-Brewer'
-date: '2022-02-19'
+excerpt: 'Data visualizations and the effect of Hurricane Sandy on rat sightings in NYC'
+date: ''
 slug: []
 categories: []
 tags: []
 ---
+
+
 
 This project was completed as an assignment for Dr. Andrew Heiss' Data Visualization course.
 
@@ -14,7 +17,6 @@ This project was completed as an assignment for Dr. Andrew Heiss' Data Visualiza
 To begin, I set up my R Markdown file, loaded all the libraries I will be using, and uploaded the rat sightings data. This rat sighting data is [made publicly available](https://www.kaggle.com/new-york-city/nyc-rat-sightings/data). This data is every rat sighting reported to the NYC Health Department from 2010-2017.
 
 <br>
-
 
 
 
@@ -106,11 +108,8 @@ ggplot(rats_year_count) +
   theme(panel.grid.minor = element_blank(),
         plot.title = element_text(face = "bold", size = rel(1.7)),
         axis.title.y = element_text(margin = margin(r = 10)))
-```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/visualizations-1.png" width="960" />
 
-```r
 # Total rat sightings by month
 ggplot(rats_count) +
   aes(x = month, y = num_rats, fill = highlight) +
@@ -128,11 +127,8 @@ ggplot(rats_count) +
   theme(panel.grid.minor = element_blank(),
         plot.title = element_text(face = "bold", size = rel(1.7)),
         axis.title.y = element_text(margin = margin(r = 10)))
-```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/visualizations-2.png" width="960" />
 
-```r
 # Rat sightings per year, by borough
 ggplot(rats_count) +
   aes(x = sighting_year, y = num_rats, fill = borough) +
@@ -154,11 +150,8 @@ ggplot(rats_count) +
         axis.title.y = element_text(margin = margin(r = 10)),
         strip.background = element_rect(fill = "grey90", color = NA),
         panel.border = element_rect(color = "grey90", fill = NA))
-```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/visualizations-3.png" width="960" />
 
-```r
 # Rat sightings per month, by borough
 ggplot(rats_count) +
   aes(x = month, y = num_rats, fill = borough) +
@@ -183,9 +176,9 @@ ggplot(rats_count) +
         strip.background = element_rect(fill = "grey90", color = NA),
         panel.border = element_rect(color = "grey90", fill = NA))
 ```
-
-<img src="{{< blogdown/postref >}}index_files/figure-html/visualizations-4.png" width="960" />
 <br>
+
+
 
 ### The Effect of Hurricane Sandy on Rat Sightings
 
@@ -231,7 +224,9 @@ ggplot(sandy_rats, aes(x = sighting_weekday,
         axis.title.y = element_text(margin = margin(r = 10)))
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/hurricane-sandy-rats-1.png" width="960" />
+![rats by year](rats_by_yr_plot.png)
+
+![hurricane sandy](sandy_plot.png)
 
 
 <br>

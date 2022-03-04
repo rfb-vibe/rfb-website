@@ -1,6 +1,7 @@
 ---
 title: "Refugees"
 author: 'Rebecca Frost-Brewer'
+excerpt: 'Visualizing Refugees to the United States'
 slug: []
 categories: []
 tags: []
@@ -11,16 +12,11 @@ This project was completed as an assignment for Dr. Andrew Heiss' Data Visualiza
 ### The Set Up
 **Load libraries and initial data**
 <br>
-```{r setup, include=FALSE}
 
-knitr::opts_chunk$set(echo = TRUE, 
-                      message = FALSE, 
-                      warning = FALSE, 
-                      fig.width = 10, 
-                      fig.height = 8)
-
-
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(eval = FALSE)
 ```
+
 
 ```{r load-libraries-data, include = FALSE, warning=FALSE, message=FALSE}
 library(tidyverse)

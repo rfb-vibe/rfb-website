@@ -1,11 +1,16 @@
 ---
-title: Exploring the Ames Housing Dataset with Pandas
-author: Rebecca Frost-Brewer
+title: 'Exploring the Ames Housing Dataset with Pandas'
+author: 'Rebecca Frost-Brewer'
+excerpt: 'A culmination of the Flatiron lessons on importing, cleaning up, analyzing (using descriptive statistics) and visualizing data using pandas'
 date: '2022-03-03'
 slug: []
 categories: []
 tags: []
 ---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
 
 This lab is a culmination of the lesson on importing, cleaning up, analyzing (using descriptive statistics) and visualizing data using pandas.
 

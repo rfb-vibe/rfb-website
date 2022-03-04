@@ -1,11 +1,16 @@
 ---
-title: NYC Rats
+title: 'NYC Rats'
 author: 'Rebecca Frost-Brewer'
+excerpt: 'Data visualizations and the effect of Hurricane Sandy on rat sightings in NYC'
 date: ''
 slug: []
 categories: []
 tags: []
 ---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
 
 This project was completed as an assignment for Dr. Andrew Heiss' Data Visualization course.
 
@@ -14,16 +19,6 @@ This project was completed as an assignment for Dr. Andrew Heiss' Data Visualiza
 To begin, I set up my R Markdown file, loaded all the libraries I will be using, and uploaded the rat sightings data. This rat sighting data is [made publicly available](https://www.kaggle.com/new-york-city/nyc-rat-sightings/data). This data is every rat sighting reported to the NYC Health Department from 2010-2017.
 
 <br>
-```{r setup, include=FALSE}
-
-knitr::opts_chunk$set(echo = TRUE, 
-                      message = FALSE, 
-                      warning = FALSE, 
-                      fig.width = 10, 
-                      fig.height = 8)
-
-
-```
 
 ```{r load-libraries, include=FALSE, warning=FALSE}
 
@@ -200,6 +195,8 @@ ggplot(rats_count) +
 ```
 <br>
 
+
+
 ### The Effect of Hurricane Sandy on Rat Sightings
 
 <br>
@@ -244,6 +241,10 @@ ggplot(sandy_rats, aes(x = sighting_weekday,
   
 
 ```
+
+![rats by year](rats_by_yr_plot.png)
+
+![hurricane sandy](sandy_plot.png)
 
 
 <br>

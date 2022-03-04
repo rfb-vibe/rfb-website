@@ -1,6 +1,7 @@
 ---
 title: "Refugees"
 author: 'Rebecca Frost-Brewer'
+excerpt: 'Visualizing Refugees to the United States'
 slug: []
 categories: []
 tags: []
@@ -11,6 +12,8 @@ This project was completed as an assignment for Dr. Andrew Heiss' Data Visualiza
 ### The Set Up
 **Load libraries and initial data**
 <br>
+
+
 
 
 
@@ -139,8 +142,6 @@ total_plot <- ggplot(total,
 total_plot
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/total-refugees-plots-1.png" width="960" />
-
 <br>
 
 
@@ -180,8 +181,6 @@ year_2006 <- ggplot(year_2006,
 
 year_2006
 ```
-
-<img src="{{< blogdown/postref >}}index_files/figure-html/2006-plot-1.png" width="960" />
 
 <br>
 
@@ -249,15 +248,8 @@ years2010_2015_plot <- ggplot(years2010_2015,
         panel.border = element_rect(color = "grey90", fill = NA))
 
 years2006_2009_plot
-```
-
-<img src="{{< blogdown/postref >}}index_files/figure-html/2010-2015-plot-1.png" width="960" />
-
-```r
 years2010_2015_plot
 ```
-
-<img src="{{< blogdown/postref >}}index_files/figure-html/2010-2015-plot-2.png" width="960" />
 
 <br>
 
@@ -327,14 +319,7 @@ rankings_plot <- ggplot(alltime_rank,
         legend.position = "none")
 
 rankings_plot
-```
-
-<img src="{{< blogdown/postref >}}index_files/figure-html/bump-chart-with-flags-1.png" width="960" />
-
-```r
 total_over_time_plot
 ```
-
-<img src="{{< blogdown/postref >}}index_files/figure-html/bump-chart-with-flags-2.png" width="960" />
 
 <br>
