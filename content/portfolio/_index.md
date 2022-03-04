@@ -8,7 +8,7 @@ cascade:
     show_sidebar_adunit: true
     text_link_label: View all projects
     text_link_url: /portfolio/
-description: Give your projects a place to live online.
+description: A collection of projects I've completed on my way to becoming a data scientist.
 layout: list-grid
 show_author_byline: true
 show_button_links: false
