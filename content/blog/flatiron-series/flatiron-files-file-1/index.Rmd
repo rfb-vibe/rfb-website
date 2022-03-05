@@ -1,6 +1,6 @@
 ---
 title: 'The Flatiron Files: File 1'
-excerpt: 'This first blogpost will be my notes for the first few lessons of the Flatiron Data Science bootcamp.'
+excerpt: 'Using `bash` and `git` to create and maintain Git repositories.'
 author: 'Rebecca Frost-Brewer'
 date: '2022-02-23'
 slug: []
@@ -9,7 +9,7 @@ tags: []
 output: html_document
 ---
 
-This first blogpost will be my notes for the first few lessons of the Flatiron Data Science bootcamp.
+The commands and process necessary to use `bash` and `git` to create and maintain Git repositories.
 
 ### Bash and Git
 

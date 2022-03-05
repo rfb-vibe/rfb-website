@@ -1,0 +1,535 @@
+---
+title: 'Running Tally of Commands'
+author: 'Rebecca Frost-Brewer'
+date: '2022-03-05'
+slug: []
+categories: []
+tags: []
+---
+
+
+
+<p>Each lesson and topic of Flatiron includes several new <code>git</code>, <code>python</code>, and SQL commands. Here, I will be compiling all those commands in one place for my reference, with a description of what the command does and a use example.</p>
+<div id="bash-and-git" class="section level2">
+<h2>Bash and Git</h2>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Bash Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>cd</code></td>
+<td>Navigate to the directory/folder where you want to work</td>
+</tr>
+<tr class="even">
+<td><code>cd ..</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>cd ~/Documents</code></td>
+<td>Move to user’s home directory</td>
+</tr>
+<tr class="even">
+<td><code>pwd</code></td>
+<td>Print working directory (see where you’re working in bash)</td>
+</tr>
+<tr class="odd">
+<td><code>mkdir</code></td>
+<td>Create a new folder within your repo directory</td>
+</tr>
+<tr class="even">
+<td><code>git init</code></td>
+<td>Turn current directory into a Git repository</td>
+</tr>
+<tr class="odd">
+<td><code>git clone URL</code></td>
+<td>Download a forked repo from your GitHub to your local computer</td>
+</tr>
+<tr class="even">
+<td><code>git add</code></td>
+<td>Stage changes you’ve made so they’re ready to be committed</td>
+</tr>
+<tr class="odd">
+<td><code>git status</code></td>
+<td>Check out what’s going on in your repo and its files</td>
+</tr>
+<tr class="even">
+<td><code>git remote add origin</code></td>
+<td>Add the link to the GitHub URL where your repository is stored online</td>
+</tr>
+<tr class="odd">
+<td><code>git commit -am "your commit message</code></td>
+<td>Commit added files to the repository with shortcut <code>am</code> to “add message”</td>
+</tr>
+<tr class="even">
+<td><code>git push origin master</code></td>
+<td>Push/Sync changes to online version of the repo (<code>master</code> is the default branch for all Git repos)</td>
+</tr>
+<tr class="odd">
+<td><code>git branch</code></td>
+<td>Start a new branch within your repo - good as a “sandbox” version for messing around without fear of changing the <code>master</code></td>
+</tr>
+<tr class="even">
+<td><code>git checkout</code></td>
+<td>Navigate to a different branch</td>
+</tr>
+<tr class="odd">
+<td><code>git log</code></td>
+<td>Displays the history of commits for the branch you’re on</td>
+</tr>
+<tr class="even">
+<td><code>git merge &lt;branch-to-merge&gt; -m "message"</code></td>
+<td>Merge a branch into the master</td>
+</tr>
+<tr class="odd">
+<td><code>ls</code></td>
+<td>List all the files in the current direcotry</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="base-python" class="section level2">
+<h2>Base Python</h2>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Python Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>! ls</code></td>
+<td>List the files in the current directory</td>
+</tr>
+<tr class="even">
+<td><code>import</code></td>
+<td>Load a necessary Python package/module</td>
+</tr>
+<tr class="odd">
+<td><code>! cat</code></td>
+<td>Inspect/list the files of a file that was opened</td>
+</tr>
+<tr class="even">
+<td><code>len()</code></td>
+<td>Show length (number of) items/records</td>
+</tr>
+<tr class="odd">
+<td><code>print(df)</code></td>
+<td>Look a dataframe’s elements</td>
+</tr>
+<tr class="even">
+<td><code>df.head()</code></td>
+<td>Show first five rows</td>
+</tr>
+<tr class="odd">
+<td><code>df.tail()</code></td>
+<td>Show last five rows</td>
+</tr>
+<tr class="even">
+<td><code>df.info()</code></td>
+<td>Show summary of dataframe (columns, values, value type)</td>
+</tr>
+<tr class="odd">
+<td><code>df.index</code></td>
+<td>Access index or row labels of dataframe</td>
+</tr>
+<tr class="even">
+<td><code>df.columns</code></td>
+<td>Access column labels</td>
+</tr>
+<tr class="odd">
+<td><code>df.dtypes</code></td>
+<td>Access data types of all columns</td>
+</tr>
+<tr class="even">
+<td><code>df.shape</code></td>
+<td>Returns a tuple representing dimensionality (rows, columns)</td>
+</tr>
+<tr class="odd">
+<td><code>df.iloc[#]</code></td>
+<td>Select row based on integer-location</td>
+</tr>
+<tr class="even">
+<td><code>df.loc[:,'column name']</code></td>
+<td>Select row based on row index and column name</td>
+</tr>
+<tr class="odd">
+<td><code>df.map()</code></td>
+<td>Transforms values</td>
+</tr>
+<tr class="even">
+<td><code>df['column'].value_counts()</code></td>
+<td>Get count of records of a particular column</td>
+</tr>
+<tr class="odd">
+<td><code>df.describe()</code></td>
+<td>Calculate basic summary statistics of each column</td>
+</tr>
+<tr class="even">
+<td><code>df['column'].mean()</code></td>
+<td>Calculate specific summary stat of a specific column</td>
+</tr>
+<tr class="odd">
+<td><code>.mode()</code></td>
+<td>the mode of the column</td>
+</tr>
+<tr class="even">
+<td><code>.count()</code></td>
+<td>the count of the total number of entries in a column</td>
+</tr>
+<tr class="odd">
+<td><code>.std()</code></td>
+<td>the standard deviation for the column</td>
+</tr>
+<tr class="even">
+<td><code>.var()</code></td>
+<td>the variance for the column</td>
+</tr>
+<tr class="odd">
+<td><code>.sum()</code></td>
+<td>the sum of all values in the column</td>
+</tr>
+<tr class="even">
+<td><code>.cumsum()</code></td>
+<td>the cumulative sum, where each cell index contains the sum of all indices lower than, and including, itself.</td>
+</tr>
+<tr class="odd">
+<td><code>df.isna()</code></td>
+<td>Return a matrix of boolean values (T/F) where all cells contain NaN</td>
+</tr>
+<tr class="even">
+<td><code>df.groupby()</code></td>
+<td>Aggregate function to group by a particular column</td>
+</tr>
+<tr class="odd">
+<td><code>pd.concat()</code></td>
+<td>Pandas function to concatenate two or more dataframes</td>
+</tr>
+<tr class="even">
+<td><code>df.join()</code></td>
+<td>Join all records from the left table and the right table that have a matching key</td>
+</tr>
+</tbody>
+</table>
+<p><strong>CSV</strong></p>
+<pre class="python"><code>import csv
+
+# This code prints the first line of the CSV file
+with open(csv_file_path) as csvfile:
+    print(csvfile.readline())
+
+
+# Print OrderedDict from first row of CSV file  - reads each row then converts to dictionary
+with open(csv_file_path) as csvfile:
+    reader = csv.DictReader(csvfile)
+    print(next(reader))</code></pre>
+<p><strong>JSON</strong></p>
+<pre class="python"><code>import json
+
+with open(&#39;nyc_2001_campaign_finance.json&#39;) as f:
+    data = json.load(f)
+print(type(data))</code></pre>
+<p><strong>Investigating the dataset structure</strong></p>
+<pre class="python"><code># Data type of dictionary keys`
+type(data[&#39;key&#39;])
+
+print(f&quot;The overall data type is {type(data)}&quot;)
+print(f&quot;The keys are {list(data.keys())}&quot;)
+print(&quot;The value associated with the &#39;meta&#39; key has metadata, including all of these attributes:&quot;)
+print(list(data[&#39;meta&#39;][&#39;view&#39;].keys()))
+print(f&quot;The value associated with the &#39;data&#39; key is a list of {len(data[&#39;data&#39;])} records&quot;)
+
+# Checking individual data types
+for key in data[&#39;json-object&#39;].keys():
+    print(key, type(data[&#39;json-object&#39;][key]))
+
+# Each dictionary has a &#39;name key&#39;
+# Use list comprehension for column_names
+column_names = [column[&#39;name&#39;] for column in data[&#39;meta&#39;][&#39;view&#39;][&#39;columns&#39;]]
+print(column_names)</code></pre>
+</div>
+<div id="intro-to-pandas-and-matplotlib" class="section level2">
+<h2>Intro to <code>pandas</code> and <code>matplotlib</code></h2>
+<pre class="python"><code># Import pandas using the standard alias
+import pandas as pd
+
+# Load &#39;datafile.csv&#39; as a DataFrame
+df = pd.read_csv(&#39;datafile.csv&#39;)
+
+# Group by the column business_id, then number of stars, and take the mean of stars by business id
+df.groupby(&#39;business_id&#39;)[&#39;stars&#39;].mean().head()
+
+# Drop duplicates from df
+df = df.drop_duplicates()
+
+# Concatenate three dataframes together
+combined_df = pd.concat([df1, df2, df3])
+
+# Pivot table
+pivoted = grouped.pivot(index = &#39;Pclass&#39;, columns = &#39;Sex&#39;, values = &#39;Age&#39;)
+
+# Plot
+pivoted.plot(kind = &#39;barh&#39;) # Horizontal bar chart</code></pre>
+<p><strong>World Cup file examples</strong></p>
+<pre class="python"><code># Select all rows of games played in Group 3 during the 1950 WC
+df[(df[&#39;Year&#39;] == 1950) &amp; (df[&#39;Stage&#39;] == &#39;Group 3&#39;)]
+# From the full df, &#39;year&#39; is 1950 AND &#39;stage&#39; is Group 3
+
+# Count number of home games played by the Netherlands
+neth_home = len(df[df[&#39;Home Team Name&#39;] == (&#39;Netherlands&#39;)])
+
+# How many countries played in 1986?
+wc1986 = df.loc[df[&#39;Year&#39;] == 1986]
+# Create object wc1986 where the location &#39;year&#39; is 1986
+print(&quot;The total number of games in 1986:&quot;, len(wc1986))
+
+# Diaplay all records containing the string &#39;Korea&#39;
+df.loc[df[&#39;Home Team Name&#39;].str.contains(&#39;Korea&#39;), &#39;Home Team Name&#39;]</code></pre>
+<p><strong>Subway file examples</strong></p>
+<pre class="python"><code># Type out abbreviations and store as dictionary object
+division_mapping = {
+    &quot;IRT&quot;: &quot;Interborough Rapid Transit Company&quot;,
+    &quot;IND&quot;: &quot;Independent Subway System&quot;,
+    &quot;BMT&quot;: &quot;Brooklyn–Manhattan Transit Corporation&quot;,
+    &quot;PTH&quot;: &quot;Port Authority Trans-Hudson (PATH)&quot;,
+    &quot;SRT&quot;: &quot;Staten Island Rapid Transit&quot;,
+    &quot;RIT&quot;: &quot;Roosevelt Island Tram&quot;
+}
+
+# For the column DIVISION, map the full names instead of the abbreviations
+df[&#39;DIVISION&#39;].map(division_mapping)
+
+# Rename a column, make change permanent
+df.rename(columns={&#39;C/A&#39; : &#39;CONTROL_AREA&#39;}, inplace = True)
+
+# Change type of entry of a column
+df[&#39;ENTRIES&#39;] = df[&#39;ENTRIES&#39;].astype(int)
+
+# Change date string to date format
+pd.to_datetime(df[&#39;DATE&#39;], format=&#39;%m/%d/%Y&#39;).head()</code></pre>
+<p><strong>Lego file example</strong></p>
+<pre class="python"><code># Print the unique values in the review_difficulty column
+df[&#39;review_difficulty&#39;].unique()</code></pre>
+<p><strong>Lambda functions</strong></p>
+<pre class="python"><code># For the text column, for each item, split each word, and list the length, but show only first five rows
+df[&#39;text&#39;].map(lambda review_text: len(review_text.split())).head()
+
+# Sorting by last name
+names = [&#39;Miriam Marks&#39;,&#39;Sidney Baird&#39;,&#39;Elaine Barrera&#39;,&#39;Eddie Reeves&#39;,&#39;Marley Beard&#39;,
+         &#39;Jaiden Liu&#39;,&#39;Bethany Martin&#39;,&#39;Stephen Rios&#39;,&#39;Audrey Mayer&#39;,&#39;Kameron Davidson&#39;,
+&#39;Teagan Bennett&#39;]
+
+# Split/identify the second word, sort by the second word
+sorted(names, key=lambda x: x.split()[1])
+
+# Find the average number of words for a review
+df[&#39;text&#39;].map(lambda x: len(x.split())).mean()</code></pre>
+<p><strong>Titanic file examples</strong></p>
+<pre class="python"><code># Print the percentage of null values in the column &#39;Cabin
+# Print the number of unique cabin values
+print(&#39;Percentage of Null Cabin Values:&#39;, len(df[df.Cabin.isna()])/ len(df))
+print(&#39;Number of Unique Cabin Values:&#39;, df.Cabin.nunique())
+
+# Replace missing values with a summary statistic
+df[&#39;Age&#39;] = df[&#39;Age&#39;].fillna(value=df[&#39;Age&#39;].median)
+
+# Drop rows that contain missing values
+df = df.dropna()
+
+# Find summary statistics of grouped columns
+df.groupby([&#39;Sex&#39;, &#39;Pclass&#39;]).mean()</code></pre>
+</div>
+<div id="sql" class="section level2">
+<h2>SQL</h2>
+<table>
+<thead>
+<tr class="header">
+<th>SQL Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>SELECT</code></td>
+<td>Select which columns</td>
+</tr>
+<tr class="even">
+<td><code>FROM</code></td>
+<td>Select from which table</td>
+</tr>
+<tr class="odd">
+<td><code>pd.read_sql("", conn)</code></td>
+<td>Executing a SQL query using pandas</td>
+</tr>
+<tr class="even">
+<td><code>WHERE</code></td>
+<td>Rows match a particular condition</td>
+</tr>
+<tr class="odd">
+<td><code>CAST</code></td>
+<td>Change record to a particular value type</td>
+</tr>
+<tr class="even">
+<td><code>AS</code></td>
+<td>Create an alias to rename a column</td>
+</tr>
+<tr class="odd">
+<td><code>ORDER BY</code></td>
+<td>Order query result</td>
+</tr>
+<tr class="even">
+<td><code>ASC</code></td>
+<td>Ascending</td>
+</tr>
+<tr class="odd">
+<td><code>DESC</code></td>
+<td>Descending</td>
+</tr>
+<tr class="even">
+<td><code>LIMIT</code></td>
+<td>Specify a certain number of results</td>
+</tr>
+<tr class="odd">
+<td><code>HAVING</code></td>
+<td>Filters conditions after <code>GROUP BY</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Conditional SQL Operators</strong>
+* <code>!=</code> (“not equal to”)
+* Similar to <code>not</code> combined with <code>==</code> in Python
+* <code>&gt;</code> (“greater than”)
+* Similar to <code>&gt;</code> in Python
+* <code>&gt;=</code> (“greater than or equal to”)
+* Similar to <code>&gt;=</code> in Python
+* <code>&lt;</code> (“less than”)
+* Similar to <code>&lt;</code> in Python
+* <code>&lt;=</code> (“less than or equal to”)
+* Similar to <code>&lt;=</code> in Python
+* <code>AND</code>
+* Similar to <code>and</code> in Python
+* <code>OR</code>
+* Similar to <code>or</code> in Python
+* <code>BETWEEN</code>
+* Similar to placing a value between two values with <code>&lt;=</code> and <code>and</code> in Python, e.g. <code>(2 &lt;= x) and (x &lt;= 5)</code>
+* <code>IN</code>
+* Similar to <code>in</code> in Python
+* <code>LIKE</code>
+* Uses wildcards to find similar strings. No direct equivalent in Python, but similar to some Bash terminal commands.</p>
+<p><strong>SQL</strong></p>
+<pre class="python"><code>import sqlite3 
+conn = sqlite3.connect(&#39;data.sqlite&#39;) # Create a connection the SQL database
+
+# Select all columns from the employees database
+pd.read_sql(&quot;&quot;&quot;
+SELECT *
+  FROM employees;
+&quot;&quot;&quot;, conn)
+
+# Select the lastName and firstName columns from the employee database, show first five rows
+pd.read_sql(&quot;&quot;&quot;
+SELECT lastName, firstName
+  FROM employees;
+&quot;&quot;&quot;, conn).head()
+
+# Select firstName, but make an alias (rename the column) &#39;name&#39;, from employees db
+pd.read_sql(&quot;&quot;&quot;
+SELECT firstName AS name
+  FROM employees;
+&quot;&quot;&quot;, conn).head()
+
+
+pd.read_sql(&quot;&quot;&quot;
+SELECT firstName, lastName, jobTitle,
+       CASE
+       WHEN jobTitle = &quot;Sales Rep&quot; THEN &quot;Sales Rep&quot;
+       ELSE &quot;Not Sales Rep&quot;
+       END AS role
+  FROM employees;
+&quot;&quot;&quot;, conn).head(10)
+
+# Return the length (number) of character in the string firstName
+pd.read_sql(&quot;&quot;&quot;
+SELECT length(firstName) AS name_length
+  FROM employees;
+&quot;&quot;&quot;, conn).head()
+
+# Use CAST to return integers instead of decimals
+pd.read_sql(&quot;&quot;&quot;
+SELECT CAST(round(priceEach) AS INTEGER) AS rounded_price_int
+  FROM orderDetails;
+&quot;&quot;&quot;, conn)
+
+# Perform math operations
+pd.read_sql(&quot;&quot;&quot;
+SELECT priceEach * quantityOrdered AS total_price
+  FROM orderDetails;
+&quot;&quot;&quot;, conn)
+
+# Split date strings into sub-parts
+pd.read_sql(&quot;&quot;&quot;
+SELECT orderDate,
+       strftime(&quot;%m&quot;, orderDate) AS month,
+       strftime(&quot;%Y&quot;, orderDate) AS year,
+       strftime(&quot;%d&quot;, orderDate) AS day
+  FROM orders;
+&quot;&quot;&quot;, conn)
+
+# Using WHERE
+pd.read_sql(&quot;&quot;&quot;
+SELECT *
+  FROM employees
+ WHERE lastName = &quot;Patterson&quot;;
+&quot;&quot;&quot;, conn)
+
+# Based on string conditions
+pd.read_sql(&quot;&quot;&quot;
+SELECT *, length(firstName) AS name_length
+  FROM employees
+ WHERE name_length = 5;
+&quot;&quot;&quot;, conn)
+
+# Based on value, rounded
+pd.read_sql(&quot;&quot;&quot;
+SELECT *, CAST(round(priceEach) AS INTEGER) AS rounded_price_int
+  FROM orderDetails
+ WHERE rounded_price_int = 30;
+&quot;&quot;&quot;, conn)
+
+# Select all columns for planets that have at least one moon and a mass less than 1.00
+pd.read_sql(&quot;&quot;&quot;
+SELECT *
+  FROM planets
+ WHERE num_of_moons &gt;= 1
+   AND mass &lt; 1.00;
+&quot;&quot;&quot;, conn)
+
+# Select the name and color of planets that have a color containing the string &quot;blue&quot;
+pd.read_sql(&quot;&quot;&quot;
+SELECT name, color
+  FROM planets
+ WHERE color LIKE &quot;%blue%&quot;;
+&quot;&quot;&quot;, conn)
+
+# Return 10 newest orders not been shipped, not been canceled
+pd.read_sql(&quot;&quot;&quot;
+SELECT *
+  FROM orders
+ WHERE shippedDate = &quot;&quot;
+   AND status != &quot;Cancelled&quot;
+ ORDER BY orderDate DESC
+ LIMIT 10;
+&quot;&quot;&quot;, conn)</code></pre>
+</div>

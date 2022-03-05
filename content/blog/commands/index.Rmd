@@ -1,0 +1,408 @@
+---
+title: 'Running Tally of Commands'
+author: 'Rebecca Frost-Brewer'
+date: '2022-03-05'
+slug: []
+categories: []
+tags: []
+---
+
+Each lesson and topic of Flatiron includes several new `git`, `python`, and SQL commands. Here, I will be compiling all those commands in one place for my reference, with a description of what the command does and a use example.
+
+## Bash and Git
+
+
+Bash Command | Description
+------------- | -------------
+`cd` | Navigate to the directory/folder where you want to work
+`cd ..` | 
+`cd ~/Documents` | Move to user's home directory
+`pwd` | Print working directory (see where you're working in bash)
+`mkdir` | Create a new folder within your repo directory
+`git init` | Turn current directory into a Git repository
+`git clone URL` | Download a forked repo from your GitHub to your local computer
+`git add` | Stage changes you've made so they're ready to be committed
+`git status` | Check out what's going on in your repo and its files
+`git remote add origin` | Add the link to the GitHub URL where your repository is stored online
+`git commit -am "your commit message` | Commit added files to the repository with shortcut `am` to "add message"
+`git push origin master` | Push/Sync changes to online version of the repo (`master` is the default branch for all Git repos)
+`git branch` | Start a new branch within your repo - good as a "sandbox" version for messing around without fear of changing the `master`
+`git checkout` | Navigate to a different branch
+`git log` | Displays the history of commits for the branch you're on
+`git merge <branch-to-merge> -m "message"` | Merge a branch into the master
+`ls` | List all the files in the current direcotry
+
+## Base Python
+
+
+Python Command | Description
+------------- | -------------
+`! ls` | List the files in the current directory
+`import` | Load a necessary Python package/module
+`! cat` | Inspect/list the files of a file that was opened
+`len()` | Show length (number of) items/records
+`print(df)` | Look a dataframe's elements
+`df.head()` | Show first five rows
+`df.tail()` | Show last five rows
+`df.info()` | Show summary of dataframe (columns, values, value type)
+`df.index` | Access index or row labels of dataframe
+`df.columns` | Access column labels
+`df.dtypes` | Access data types of all columns
+`df.shape` | Returns a tuple representing dimensionality (rows, columns)
+`df.iloc[#]` | Select row based on integer-location
+`df.loc[:,'column name']` | Select row based on row index and column name
+`df.map()` | Transforms values
+`df['column'].value_counts()` | Get count of records of a particular column
+`df.describe()` | Calculate basic summary statistics of each column
+`df['column'].mean()` | Calculate specific summary stat of a specific column 
+`.mode()` | the mode of the column
+`.count()` | the count of the total number of entries in a column
+`.std()` | the standard deviation for the column
+`.var()` | the variance for the column
+`.sum()` | the sum of all values in the column
+`.cumsum()` | the cumulative sum, where each cell index contains the sum of all indices lower than, and including, itself.
+`df.isna()` | Return a matrix of boolean values (T/F) where all cells contain NaN
+`df.groupby()` | Aggregate function to group by a particular column
+`pd.concat()` | Pandas function to concatenate two or more dataframes
+`df.join()` | Join all records from the left table and the right table that have a matching key
+
+
+
+
+**CSV**
+```{python, eval=FALSE}
+
+import csv
+
+# This code prints the first line of the CSV file
+with open(csv_file_path) as csvfile:
+    print(csvfile.readline())
+
+
+# Print OrderedDict from first row of CSV file  - reads each row then converts to dictionary
+with open(csv_file_path) as csvfile:
+    reader = csv.DictReader(csvfile)
+    print(next(reader))
+    
+    
+```
+
+**JSON**
+```{python, eval=FALSE}
+
+import json
+
+with open('nyc_2001_campaign_finance.json') as f:
+    data = json.load(f)
+print(type(data))
+
+```
+
+**Investigating the dataset structure**
+```{python, eval=FALSE}
+
+# Data type of dictionary keys`
+type(data['key'])
+
+print(f"The overall data type is {type(data)}")
+print(f"The keys are {list(data.keys())}")
+print("The value associated with the 'meta' key has metadata, including all of these attributes:")
+print(list(data['meta']['view'].keys()))
+print(f"The value associated with the 'data' key is a list of {len(data['data'])} records")
+
+# Checking individual data types
+for key in data['json-object'].keys():
+    print(key, type(data['json-object'][key]))
+
+# Each dictionary has a 'name key'
+# Use list comprehension for column_names
+column_names = [column['name'] for column in data['meta']['view']['columns']]
+print(column_names)
+
+```
+
+
+
+## Intro to `pandas` and `matplotlib`
+```{python, eval=FALSE}
+
+# Import pandas using the standard alias
+import pandas as pd
+
+# Load 'datafile.csv' as a DataFrame
+df = pd.read_csv('datafile.csv')
+
+# Group by the column business_id, then number of stars, and take the mean of stars by business id
+df.groupby('business_id')['stars'].mean().head()
+
+# Drop duplicates from df
+df = df.drop_duplicates()
+
+# Concatenate three dataframes together
+combined_df = pd.concat([df1, df2, df3])
+
+# Pivot table
+pivoted = grouped.pivot(index = 'Pclass', columns = 'Sex', values = 'Age')
+
+# Plot
+pivoted.plot(kind = 'barh') # Horizontal bar chart
+
+```
+
+**World Cup file examples**
+```{python, eval=FALSE}
+
+# Select all rows of games played in Group 3 during the 1950 WC
+df[(df['Year'] == 1950) & (df['Stage'] == 'Group 3')]
+# From the full df, 'year' is 1950 AND 'stage' is Group 3
+
+# Count number of home games played by the Netherlands
+neth_home = len(df[df['Home Team Name'] == ('Netherlands')])
+
+# How many countries played in 1986?
+wc1986 = df.loc[df['Year'] == 1986]
+# Create object wc1986 where the location 'year' is 1986
+print("The total number of games in 1986:", len(wc1986))
+
+# Diaplay all records containing the string 'Korea'
+df.loc[df['Home Team Name'].str.contains('Korea'), 'Home Team Name']
+
+```
+
+
+**Subway file examples**
+```{python, eval=FALSE}
+
+# Type out abbreviations and store as dictionary object
+division_mapping = {
+    "IRT": "Interborough Rapid Transit Company",
+    "IND": "Independent Subway System",
+    "BMT": "Brooklyn–Manhattan Transit Corporation",
+    "PTH": "Port Authority Trans-Hudson (PATH)",
+    "SRT": "Staten Island Rapid Transit",
+    "RIT": "Roosevelt Island Tram"
+}
+
+# For the column DIVISION, map the full names instead of the abbreviations
+df['DIVISION'].map(division_mapping)
+
+# Rename a column, make change permanent
+df.rename(columns={'C/A' : 'CONTROL_AREA'}, inplace = True)
+
+# Change type of entry of a column
+df['ENTRIES'] = df['ENTRIES'].astype(int)
+
+# Change date string to date format
+pd.to_datetime(df['DATE'], format='%m/%d/%Y').head()
+
+```
+
+**Lego file example**
+```{python, eval=FALSE}
+
+# Print the unique values in the review_difficulty column
+df['review_difficulty'].unique()
+
+```
+
+
+**Lambda functions**
+```{python, eval=FALSE}
+
+# For the text column, for each item, split each word, and list the length, but show only first five rows
+df['text'].map(lambda review_text: len(review_text.split())).head()
+
+# Sorting by last name
+names = ['Miriam Marks','Sidney Baird','Elaine Barrera','Eddie Reeves','Marley Beard',
+         'Jaiden Liu','Bethany Martin','Stephen Rios','Audrey Mayer','Kameron Davidson',
+'Teagan Bennett']
+
+# Split/identify the second word, sort by the second word
+sorted(names, key=lambda x: x.split()[1])
+
+# Find the average number of words for a review
+df['text'].map(lambda x: len(x.split())).mean()
+
+```
+
+
+**Titanic file examples**
+```{python, eval=FALSE}
+
+# Print the percentage of null values in the column 'Cabin
+# Print the number of unique cabin values
+print('Percentage of Null Cabin Values:', len(df[df.Cabin.isna()])/ len(df))
+print('Number of Unique Cabin Values:', df.Cabin.nunique())
+
+# Replace missing values with a summary statistic
+df['Age'] = df['Age'].fillna(value=df['Age'].median)
+
+# Drop rows that contain missing values
+df = df.dropna()
+
+# Find summary statistics of grouped columns
+df.groupby(['Sex', 'Pclass']).mean()
+
+```
+
+
+## SQL
+
+SQL Command | Description
+------------- | -------------
+`SELECT` | Select which columns
+`FROM` | Select from which table
+`pd.read_sql("", conn)` | Executing a SQL query using pandas
+`WHERE` | Rows match a particular condition
+`CAST` | Change record to a particular value type
+`AS` | Create an alias to rename a column
+`ORDER BY` | Order query result
+`ASC` | Ascending
+`DESC` | Descending
+`LIMIT` | Specify a certain number of results
+`HAVING` | Filters conditions after `GROUP BY`
+
+
+**Conditional SQL Operators**
+* `!=` ("not equal to")
+  * Similar to `not` combined with `==` in Python
+* `>` ("greater than")
+  * Similar to `>` in Python
+* `>=` ("greater than or equal to")
+  * Similar to `>=` in Python
+* `<` ("less than")
+  * Similar to `<` in Python
+* `<=` ("less than or equal to")
+  * Similar to `<=` in Python
+* `AND`
+  * Similar to `and` in Python
+* `OR`
+  * Similar to `or` in Python
+* `BETWEEN`
+  * Similar to placing a value between two values with `<=` and `and` in Python, e.g. `(2 <= x) and (x <= 5)`
+* `IN`
+  * Similar to `in` in Python
+* `LIKE`
+  * Uses wildcards to find similar strings. No direct equivalent in Python, but similar to some Bash terminal commands.
+
+
+**SQL**
+```{python, eval=FALSE}
+
+import sqlite3 
+conn = sqlite3.connect('data.sqlite') # Create a connection the SQL database
+
+# Select all columns from the employees database
+pd.read_sql("""
+SELECT *
+  FROM employees;
+""", conn)
+
+# Select the lastName and firstName columns from the employee database, show first five rows
+pd.read_sql("""
+SELECT lastName, firstName
+  FROM employees;
+""", conn).head()
+
+# Select firstName, but make an alias (rename the column) 'name', from employees db
+pd.read_sql("""
+SELECT firstName AS name
+  FROM employees;
+""", conn).head()
+
+
+pd.read_sql("""
+SELECT firstName, lastName, jobTitle,
+       CASE
+       WHEN jobTitle = "Sales Rep" THEN "Sales Rep"
+       ELSE "Not Sales Rep"
+       END AS role
+  FROM employees;
+""", conn).head(10)
+
+# Return the length (number) of character in the string firstName
+pd.read_sql("""
+SELECT length(firstName) AS name_length
+  FROM employees;
+""", conn).head()
+
+# Use CAST to return integers instead of decimals
+pd.read_sql("""
+SELECT CAST(round(priceEach) AS INTEGER) AS rounded_price_int
+  FROM orderDetails;
+""", conn)
+
+# Perform math operations
+pd.read_sql("""
+SELECT priceEach * quantityOrdered AS total_price
+  FROM orderDetails;
+""", conn)
+
+# Split date strings into sub-parts
+pd.read_sql("""
+SELECT orderDate,
+       strftime("%m", orderDate) AS month,
+       strftime("%Y", orderDate) AS year,
+       strftime("%d", orderDate) AS day
+  FROM orders;
+""", conn)
+
+# Using WHERE
+pd.read_sql("""
+SELECT *
+  FROM employees
+ WHERE lastName = "Patterson";
+""", conn)
+
+# Based on string conditions
+pd.read_sql("""
+SELECT *, length(firstName) AS name_length
+  FROM employees
+ WHERE name_length = 5;
+""", conn)
+
+# Based on value, rounded
+pd.read_sql("""
+SELECT *, CAST(round(priceEach) AS INTEGER) AS rounded_price_int
+  FROM orderDetails
+ WHERE rounded_price_int = 30;
+""", conn)
+
+# Select all columns for planets that have at least one moon and a mass less than 1.00
+pd.read_sql("""
+SELECT *
+  FROM planets
+ WHERE num_of_moons >= 1
+   AND mass < 1.00;
+""", conn)
+
+# Select the name and color of planets that have a color containing the string "blue"
+pd.read_sql("""
+SELECT name, color
+  FROM planets
+ WHERE color LIKE "%blue%";
+""", conn)
+
+# Return 10 newest orders not been shipped, not been canceled
+pd.read_sql("""
+SELECT *
+  FROM orders
+ WHERE shippedDate = ""
+   AND status != "Cancelled"
+ ORDER BY orderDate DESC
+ LIMIT 10;
+""", conn)
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
