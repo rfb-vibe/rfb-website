@@ -12,11 +12,15 @@ Each lesson and topic of Flatiron includes several new `git`, `python`, and SQL 
 ## Bash and Git
 
 
-Bash Command | Description
-------------- | -------------
++---------------+---------------+
+| Bash Command  | Description
++===============+===============+
 `cd` | Navigate to the directory/folder where you want to work
++---------------+---------------+
 `cd ..` | 
++---------------+---------------+
 `cd ~/Documents` | Move to user's home directory
++---------------+---------------+
 `pwd` | Print working directory (see where you're working in bash)
 `mkdir` | Create a new folder within your repo directory
 `git init` | Turn current directory into a Git repository
@@ -69,7 +73,7 @@ Python Command | Description
 
 
 
-**CSV**
+### CSV
 ```{python, eval=FALSE}
 
 import csv
@@ -87,7 +91,7 @@ with open(csv_file_path) as csvfile:
     
 ```
 
-**JSON**
+### JSON
 ```{python, eval=FALSE}
 
 import json
@@ -98,7 +102,7 @@ print(type(data))
 
 ```
 
-**Investigating the dataset structure**
+#### Investigating the dataset structure
 ```{python, eval=FALSE}
 
 # Data type of dictionary keys`
@@ -149,7 +153,7 @@ pivoted.plot(kind = 'barh') # Horizontal bar chart
 
 ```
 
-**World Cup file examples**
+### World Cup file examples
 ```{python, eval=FALSE}
 
 # Select all rows of games played in Group 3 during the 1950 WC
@@ -170,7 +174,7 @@ df.loc[df['Home Team Name'].str.contains('Korea'), 'Home Team Name']
 ```
 
 
-**Subway file examples**
+### Subway file examples
 ```{python, eval=FALSE}
 
 # Type out abbreviations and store as dictionary object
@@ -197,7 +201,7 @@ pd.to_datetime(df['DATE'], format='%m/%d/%Y').head()
 
 ```
 
-**Lego file example**
+### Lego file example
 ```{python, eval=FALSE}
 
 # Print the unique values in the review_difficulty column
@@ -206,7 +210,7 @@ df['review_difficulty'].unique()
 ```
 
 
-**Lambda functions**
+### Lambda functions
 ```{python, eval=FALSE}
 
 # For the text column, for each item, split each word, and list the length, but show only first five rows
@@ -226,7 +230,7 @@ df['text'].map(lambda x: len(x.split())).mean()
 ```
 
 
-**Titanic file examples**
+### Titanic file examples
 ```{python, eval=FALSE}
 
 # Print the percentage of null values in the column 'Cabin
@@ -263,7 +267,9 @@ SQL Command | Description
 `HAVING` | Filters conditions after `GROUP BY`
 
 
-**Conditional SQL Operators**
+### Conditional SQL Operators
+
+
 * `!=` ("not equal to")
   * Similar to `not` combined with `==` in Python
 * `>` ("greater than")
@@ -286,7 +292,9 @@ SQL Command | Description
   * Uses wildcards to find similar strings. No direct equivalent in Python, but similar to some Bash terminal commands.
 
 
-**SQL**
+
+
+### SQL Examples
 ```{python, eval=FALSE}
 
 import sqlite3 

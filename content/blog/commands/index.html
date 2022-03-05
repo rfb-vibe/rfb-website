@@ -223,7 +223,8 @@ tags: []
 </tr>
 </tbody>
 </table>
-<p><strong>CSV</strong></p>
+<div id="csv" class="section level3">
+<h3>CSV</h3>
 <pre class="python"><code>import csv
 
 # This code prints the first line of the CSV file
@@ -235,13 +236,16 @@ with open(csv_file_path) as csvfile:
 with open(csv_file_path) as csvfile:
     reader = csv.DictReader(csvfile)
     print(next(reader))</code></pre>
-<p><strong>JSON</strong></p>
+</div>
+<div id="json" class="section level3">
+<h3>JSON</h3>
 <pre class="python"><code>import json
 
 with open(&#39;nyc_2001_campaign_finance.json&#39;) as f:
     data = json.load(f)
 print(type(data))</code></pre>
-<p><strong>Investigating the dataset structure</strong></p>
+<div id="investigating-the-dataset-structure" class="section level4">
+<h4>Investigating the dataset structure</h4>
 <pre class="python"><code># Data type of dictionary keys`
 type(data[&#39;key&#39;])
 
@@ -259,6 +263,8 @@ for key in data[&#39;json-object&#39;].keys():
 # Use list comprehension for column_names
 column_names = [column[&#39;name&#39;] for column in data[&#39;meta&#39;][&#39;view&#39;][&#39;columns&#39;]]
 print(column_names)</code></pre>
+</div>
+</div>
 </div>
 <div id="intro-to-pandas-and-matplotlib" class="section level2">
 <h2>Intro to <code>pandas</code> and <code>matplotlib</code></h2>
@@ -282,7 +288,8 @@ pivoted = grouped.pivot(index = &#39;Pclass&#39;, columns = &#39;Sex&#39;, value
 
 # Plot
 pivoted.plot(kind = &#39;barh&#39;) # Horizontal bar chart</code></pre>
-<p><strong>World Cup file examples</strong></p>
+<div id="world-cup-file-examples" class="section level3">
+<h3>World Cup file examples</h3>
 <pre class="python"><code># Select all rows of games played in Group 3 during the 1950 WC
 df[(df[&#39;Year&#39;] == 1950) &amp; (df[&#39;Stage&#39;] == &#39;Group 3&#39;)]
 # From the full df, &#39;year&#39; is 1950 AND &#39;stage&#39; is Group 3
@@ -297,7 +304,9 @@ print(&quot;The total number of games in 1986:&quot;, len(wc1986))
 
 # Diaplay all records containing the string &#39;Korea&#39;
 df.loc[df[&#39;Home Team Name&#39;].str.contains(&#39;Korea&#39;), &#39;Home Team Name&#39;]</code></pre>
-<p><strong>Subway file examples</strong></p>
+</div>
+<div id="subway-file-examples" class="section level3">
+<h3>Subway file examples</h3>
 <pre class="python"><code># Type out abbreviations and store as dictionary object
 division_mapping = {
     &quot;IRT&quot;: &quot;Interborough Rapid Transit Company&quot;,
@@ -319,10 +328,14 @@ df[&#39;ENTRIES&#39;] = df[&#39;ENTRIES&#39;].astype(int)
 
 # Change date string to date format
 pd.to_datetime(df[&#39;DATE&#39;], format=&#39;%m/%d/%Y&#39;).head()</code></pre>
-<p><strong>Lego file example</strong></p>
+</div>
+<div id="lego-file-example" class="section level3">
+<h3>Lego file example</h3>
 <pre class="python"><code># Print the unique values in the review_difficulty column
 df[&#39;review_difficulty&#39;].unique()</code></pre>
-<p><strong>Lambda functions</strong></p>
+</div>
+<div id="lambda-functions" class="section level3">
+<h3>Lambda functions</h3>
 <pre class="python"><code># For the text column, for each item, split each word, and list the length, but show only first five rows
 df[&#39;text&#39;].map(lambda review_text: len(review_text.split())).head()
 
@@ -336,7 +349,9 @@ sorted(names, key=lambda x: x.split()[1])
 
 # Find the average number of words for a review
 df[&#39;text&#39;].map(lambda x: len(x.split())).mean()</code></pre>
-<p><strong>Titanic file examples</strong></p>
+</div>
+<div id="titanic-file-examples" class="section level3">
+<h3>Titanic file examples</h3>
 <pre class="python"><code># Print the percentage of null values in the column &#39;Cabin
 # Print the number of unique cabin values
 print(&#39;Percentage of Null Cabin Values:&#39;, len(df[df.Cabin.isna()])/ len(df))
@@ -350,6 +365,7 @@ df = df.dropna()
 
 # Find summary statistics of grouped columns
 df.groupby([&#39;Sex&#39;, &#39;Pclass&#39;]).mean()</code></pre>
+</div>
 </div>
 <div id="sql" class="section level2">
 <h2>SQL</h2>
@@ -407,28 +423,53 @@ df.groupby([&#39;Sex&#39;, &#39;Pclass&#39;]).mean()</code></pre>
 </tr>
 </tbody>
 </table>
-<p><strong>Conditional SQL Operators</strong>
-* <code>!=</code> (“not equal to”)
-* Similar to <code>not</code> combined with <code>==</code> in Python
-* <code>&gt;</code> (“greater than”)
-* Similar to <code>&gt;</code> in Python
-* <code>&gt;=</code> (“greater than or equal to”)
-* Similar to <code>&gt;=</code> in Python
-* <code>&lt;</code> (“less than”)
-* Similar to <code>&lt;</code> in Python
-* <code>&lt;=</code> (“less than or equal to”)
-* Similar to <code>&lt;=</code> in Python
-* <code>AND</code>
-* Similar to <code>and</code> in Python
-* <code>OR</code>
-* Similar to <code>or</code> in Python
-* <code>BETWEEN</code>
-* Similar to placing a value between two values with <code>&lt;=</code> and <code>and</code> in Python, e.g. <code>(2 &lt;= x) and (x &lt;= 5)</code>
-* <code>IN</code>
-* Similar to <code>in</code> in Python
-* <code>LIKE</code>
-* Uses wildcards to find similar strings. No direct equivalent in Python, but similar to some Bash terminal commands.</p>
-<p><strong>SQL</strong></p>
+<div id="conditional-sql-operators" class="section level3">
+<h3>Conditional SQL Operators</h3>
+<ul>
+<li><code>!=</code> (“not equal to”)
+<ul>
+<li>Similar to <code>not</code> combined with <code>==</code> in Python</li>
+</ul></li>
+<li><code>&gt;</code> (“greater than”)
+<ul>
+<li>Similar to <code>&gt;</code> in Python</li>
+</ul></li>
+<li><code>&gt;=</code> (“greater than or equal to”)
+<ul>
+<li>Similar to <code>&gt;=</code> in Python</li>
+</ul></li>
+<li><code>&lt;</code> (“less than”)
+<ul>
+<li>Similar to <code>&lt;</code> in Python</li>
+</ul></li>
+<li><code>&lt;=</code> (“less than or equal to”)
+<ul>
+<li>Similar to <code>&lt;=</code> in Python</li>
+</ul></li>
+<li><code>AND</code>
+<ul>
+<li>Similar to <code>and</code> in Python</li>
+</ul></li>
+<li><code>OR</code>
+<ul>
+<li>Similar to <code>or</code> in Python</li>
+</ul></li>
+<li><code>BETWEEN</code>
+<ul>
+<li>Similar to placing a value between two values with <code>&lt;=</code> and <code>and</code> in Python, e.g. <code>(2 &lt;= x) and (x &lt;= 5)</code></li>
+</ul></li>
+<li><code>IN</code>
+<ul>
+<li>Similar to <code>in</code> in Python</li>
+</ul></li>
+<li><code>LIKE</code>
+<ul>
+<li>Uses wildcards to find similar strings. No direct equivalent in Python, but similar to some Bash terminal commands.</li>
+</ul></li>
+</ul>
+</div>
+<div id="sql-examples" class="section level3">
+<h3>SQL Examples</h3>
 <pre class="python"><code>import sqlite3 
 conn = sqlite3.connect(&#39;data.sqlite&#39;) # Create a connection the SQL database
 
@@ -532,4 +573,5 @@ SELECT *
  ORDER BY orderDate DESC
  LIMIT 10;
 &quot;&quot;&quot;, conn)</code></pre>
+</div>
 </div>
