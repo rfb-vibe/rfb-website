@@ -12,10 +12,10 @@ Each lesson and topic of Flatiron includes several new `git`, `python`, and SQL 
 ## Bash and Git
 
 
-+---------------+---------------+
++---------------+---------------------------------------------------------+
 | Bash Command  | Description
 +===============+===============+
-`cd` | Navigate to the directory/folder where you want to work
+`cd`            | Navigate to the directory/folder where you want to work
 +---------------+---------------+
 `cd ..` | 
 +---------------+---------------+
