@@ -12,63 +12,106 @@ Each lesson and topic of Flatiron includes several new `git`, `python`, and SQL 
 ## Bash and Git
 
 
-+---------------+---------------------------------------------------------+
-| Bash Command  | Description
-+===============+===============+
-`cd`            | Navigate to the directory/folder where you want to work
-+---------------+---------------+
++-----------------------------------------+------------------------------------------------------+
+| Bash Command                            | Description
++=========================================+======================================================+
+`cd`                                      | Navigate to the directory/folder where you want to work
++-----------------------------------------+------------------------------------------------------+
 `cd ..` | 
-+---------------+---------------+
-`cd ~/Documents` | Move to user's home directory
-+---------------+---------------+
-`pwd` | Print working directory (see where you're working in bash)
-`mkdir` | Create a new folder within your repo directory
-`git init` | Turn current directory into a Git repository
-`git clone URL` | Download a forked repo from your GitHub to your local computer
-`git add` | Stage changes you've made so they're ready to be committed
-`git status` | Check out what's going on in your repo and its files
-`git remote add origin` | Add the link to the GitHub URL where your repository is stored online
-`git commit -am "your commit message` | Commit added files to the repository with shortcut `am` to "add message"
-`git push origin master` | Push/Sync changes to online version of the repo (`master` is the default branch for all Git repos)
-`git branch` | Start a new branch within your repo - good as a "sandbox" version for messing around without fear of changing the `master`
-`git checkout` | Navigate to a different branch
-`git log` | Displays the history of commits for the branch you're on
-`git merge <branch-to-merge> -m "message"` | Merge a branch into the master
-`ls` | List all the files in the current direcotry
++-----------------------------------------+------------------------------------------------------+
+`cd ~/Documents`                          | Move to user's home directory
++-----------------------------------------+------------------------------------------------------+
+`pwd`                                     | Print working directory (see where you're working in bash)
++-----------------------------------------+------------------------------------------------------+
+`mkdir`                                   | Create a new folder within your repo directory
++-----------------------------------------+------------------------------------------------------+
+`git init`                                | Turn current directory into a Git repository
++-----------------------------------------+------------------------------------------------------+
+`git clone URL`                           | Download a forked repo from your GitHub to your local computer
++-----------------------------------------+------------------------------------------------------+
+`git add`                                 | Stage changes you've made so they're ready to be committed
++-----------------------------------------+------------------------------------------------------+
+`git status`                              | Check out what's going on in your repo and its files
++-----------------------------------------+------------------------------------------------------+
+`git remote add origin`                   | Add the link to the GitHub URL where your repository is stored online
++-----------------------------------------+------------------------------------------------------+
+`git commit -am "your commit message`     | Commit added files to the repository with shortcut `am` to "add message"
++-----------------------------------------+------------------------------------------------------+
+`git push origin master`                  | Push/Sync changes to online version of the repo (`master` is the default branch for all Git repos)
++-----------------------------------------+------------------------------------------------------+
+`git branch`                              | Start a new branch within your repo - good as a "sandbox" version for messing around without fear of changing the `master`
++-----------------------------------------+------------------------------------------------------+
+`git checkout`                            | Navigate to a different branch
++-----------------------------------------+------------------------------------------------------+
+`git log`                                 | Displays the history of commits for the branch you're on
++-----------------------------------------+------------------------------------------------------+
+`git merge <branch-to-merge> -m "message"`| Merge a branch into the master
++-----------------------------------------+------------------------------------------------------+
+`ls`                                      | List all the files in the current direcotry
++-----------------------------------------+------------------------------------------------------+
 
 ## Base Python
 
 
-Python Command | Description
-------------- | -------------
-`! ls` | List the files in the current directory
-`import` | Load a necessary Python package/module
-`! cat` | Inspect/list the files of a file that was opened
-`len()` | Show length (number of) items/records
-`print(df)` | Look a dataframe's elements
-`df.head()` | Show first five rows
-`df.tail()` | Show last five rows
-`df.info()` | Show summary of dataframe (columns, values, value type)
-`df.index` | Access index or row labels of dataframe
-`df.columns` | Access column labels
-`df.dtypes` | Access data types of all columns
-`df.shape` | Returns a tuple representing dimensionality (rows, columns)
-`df.iloc[#]` | Select row based on integer-location
-`df.loc[:,'column name']` | Select row based on row index and column name
-`df.map()` | Transforms values
-`df['column'].value_counts()` | Get count of records of a particular column
-`df.describe()` | Calculate basic summary statistics of each column
-`df['column'].mean()` | Calculate specific summary stat of a specific column 
-`.mode()` | the mode of the column
-`.count()` | the count of the total number of entries in a column
-`.std()` | the standard deviation for the column
-`.var()` | the variance for the column
-`.sum()` | the sum of all values in the column
-`.cumsum()` | the cumulative sum, where each cell index contains the sum of all indices lower than, and including, itself.
-`df.isna()` | Return a matrix of boolean values (T/F) where all cells contain NaN
-`df.groupby()` | Aggregate function to group by a particular column
-`pd.concat()` | Pandas function to concatenate two or more dataframes
-`df.join()` | Join all records from the left table and the right table that have a matching key
++-------------------------------+----------------------------------------------------------------+
+| Python Command                | Description
++===============================+================================================================+
+`! ls`                          | List the files in the current directory
++-------------------------------+----------------------------------------------------------------+
+`import`                        | Load a necessary Python package/module
++-------------------------------+----------------------------------------------------------------+
+`! cat`                         | Inspect/list the files of a file that was opened
++-------------------------------+----------------------------------------------------------------+
+`len()`                         | Show length (number of) items/records
++-------------------------------+----------------------------------------------------------------+
+`print(df)`                     | Look a dataframe's elements
++-------------------------------+----------------------------------------------------------------+
+`df.head()`                     | Show first five rows
++-------------------------------+----------------------------------------------------------------+
+`df.tail()`                     | Show last five rows
++-------------------------------+----------------------------------------------------------------+
+`df.info()`                     | Show summary of dataframe (columns, values, value type)
++-------------------------------+----------------------------------------------------------------+
+`df.index`                      | Access index or row labels of dataframe
++-------------------------------+----------------------------------------------------------------+
+`df.columns`                    | Access column labels
++-------------------------------+----------------------------------------------------------------+
+`df.dtypes`                     | Access data types of all columns
++-------------------------------+----------------------------------------------------------------+
+`df.shape`                      | Returns a tuple representing dimensionality (rows, columns)
++-------------------------------+----------------------------------------------------------------+
+`df.iloc[#]`                    | Select row based on integer-location
++-------------------------------+----------------------------------------------------------------+
+`df.loc[:,'column name']`       | Select row based on row index and column name
++-------------------------------+----------------------------------------------------------------+
+`df.map()`                      | Transforms values
++-------------------------------+----------------------------------------------------------------+
+`df['column'].value_counts()`   | Get count of records of a particular column
++-------------------------------+----------------------------------------------------------------+
+`df.describe()`                 | Calculate basic summary statistics of each column
++-------------------------------+----------------------------------------------------------------+
+`df['column'].mean()`           | Calculate specific summary stat of a specific column 
++-------------------------------+----------------------------------------------------------------+
+`.mode()`                       | the mode of the column
++-------------------------------+----------------------------------------------------------------+
+`.count()`                      | the count of the total number of entries in a column
++-------------------------------+----------------------------------------------------------------+
+`.std()`                        | the standard deviation for the column
++-------------------------------+----------------------------------------------------------------+
+`.var()`                        | the variance for the column
++-------------------------------+----------------------------------------------------------------+
+`.sum()`                        | the sum of all values in the column
++-------------------------------+----------------------------------------------------------------+
+`.cumsum()`                     | the cumulative sum, where each cell index contains the sum of all indices lower than, and including, itself.
++-------------------------------+----------------------------------------------------------------+
+`df.isna()`                     | Return a matrix of boolean values (T/F) where all cells contain NaN
++-------------------------------+----------------------------------------------------------------+
+`df.groupby()`                  | Aggregate function to group by a particular column
++-------------------------------+----------------------------------------------------------------+
+`pd.concat()`                   | Pandas function to concatenate two or more dataframes
++-------------------------------+----------------------------------------------------------------+
+`df.join()`                     | Join all records from the left table and the right table that have a matching key
++-------------------------------+----------------------------------------------------------------+
 
 
 
