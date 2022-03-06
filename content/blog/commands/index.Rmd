@@ -1,6 +1,7 @@
 ---
 title: 'Running Tally of Commands'
 author: 'Rebecca Frost-Brewer'
+excerpt: 'A compilation of the commands learned in Flatiron lessons on `git`, `python`, and SQL'
 date: '2022-03-05'
 slug: []
 categories: []
@@ -14,57 +15,40 @@ Each lesson and topic of Flatiron includes several new `git`, `python`, and SQL 
 
 +-----------------------------------------+------------------------------------------------------+
 | Bash Command                            | Description
-
 +=========================================+======================================================+
 `cd`                                      | Navigate to the directory/folder where you want to work
-
 +-----------------------------------------+------------------------------------------------------+
 `cd ..` | 
 +-----------------------------------------+------------------------------------------------------+
 `cd ~/Documents`                          | Move to user's home directory
-
 +-----------------------------------------+------------------------------------------------------+
 `pwd`                                     | Print working directory (see where you're working in bash)
-
 +-----------------------------------------+------------------------------------------------------+
 `mkdir`                                   | Create a new folder within your repo directory
-
 +-----------------------------------------+------------------------------------------------------+
 `git init`                                | Turn current directory into a Git repository
-
 +-----------------------------------------+------------------------------------------------------+
 `git clone URL`                           | Download a forked repo from your GitHub to your local computer
-
 +-----------------------------------------+------------------------------------------------------+
 `git add`                                 | Stage changes you've made so they're ready to be committed
-
 +-----------------------------------------+------------------------------------------------------+
 `git status`                              | Check out what's going on in your repo and its files
-
 +-----------------------------------------+------------------------------------------------------+
 `git remote add origin`                   | Add the link to the GitHub URL where your repository is stored online
-
 +-----------------------------------------+------------------------------------------------------+
 `git commit -am "your commit message`     | Commit added files to the repository with shortcut `am` to "add message"
-
 +-----------------------------------------+------------------------------------------------------+
 `git push origin master`                  | Push/Sync changes to online version of the repo (`master` is the default branch for all Git repos)
-
 +-----------------------------------------+------------------------------------------------------+
 `git branch`                              | Start a new branch within your repo - good as a "sandbox" version for messing around without fear of changing the `master`
-
 +-----------------------------------------+------------------------------------------------------+
 `git checkout`                            | Navigate to a different branch
-
 +-----------------------------------------+------------------------------------------------------+
 `git log`                                 | Displays the history of commits for the branch you're on
-
 +-----------------------------------------+------------------------------------------------------+
 `git merge <branch-to-merge> -m "message"`| Merge a branch into the master
-
 +-----------------------------------------+------------------------------------------------------+
 `ls`                                      | List all the files in the current direcotry
-
 +-----------------------------------------+------------------------------------------------------+
 
 ## Base Python
