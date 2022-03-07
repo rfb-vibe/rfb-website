@@ -11,15 +11,13 @@ tags: []
 This project was completed as an assignment for Dr. Andrew Heiss' Data Visualization course.
 
 The full report can be viewed here:
-![refugee-code](refugee-code.pdf)
 
-```{r out.width="100%", out.height="500"}
+```{r echo=FALSE, out.height="500", out.width="100%"}
 knitr::include_graphics('refugee-code.pdf')
 ```
 
 The final visualization was created using Canva and the plot outputs from R
-![final-visualization](refugee-final-image.pdf)
 
-```{r out.width="100%", out.height="500"}
+```{r echo=FALSE, out.height="500", out.width="100%"}
 knitr::include_graphics('refugee-final-image.pdf')
 ```
