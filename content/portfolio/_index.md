@@ -4,7 +4,7 @@ author: Rebecca Frost-Brewer
 cascade:
   show_author_byline: true
   show_comments: false
-  show_post_date: true
+  show_post_date: false
   sidebar:
     show_sidebar_adunit: true
     text_link_label: View all projects

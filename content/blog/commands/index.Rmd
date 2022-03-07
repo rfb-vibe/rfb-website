@@ -6,6 +6,7 @@ date: '2022-03-05'
 slug: []
 categories: []
 tags: []
+output: html_document
 ---
 
 Each lesson and topic of Flatiron includes several new `git`, `python`, and SQL commands. Here, I will be compiling all those commands in one place for my reference, with a description of what the command does and a use example.
@@ -16,11 +17,9 @@ Each lesson and topic of Flatiron includes several new `git`, `python`, and SQL 
 +-----------------------------------------+------------------------------------------------------+
 | Bash Command                            | Description
 +=========================================+======================================================+
-`cd`                                      | Navigate to the directory/folder where you want to work
+| `cd`                                      | Navigate to the directory/folder where you want to work
 +-----------------------------------------+------------------------------------------------------+
-`cd ..` | 
-+-----------------------------------------+------------------------------------------------------+
-`cd ~/Documents`                          | Move to user's home directory
+| `cd ~/Documents`                          | Move to user's home directory
 +-----------------------------------------+------------------------------------------------------+
 `pwd`                                     | Print working directory (see where you're working in bash)
 +-----------------------------------------+------------------------------------------------------+
