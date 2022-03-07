@@ -19,7 +19,7 @@ knitr::opts_chunk$set(eval = FALSE)
 ```
 
 
-```{r clean-raw-data, message=FALSE, warning=FALSE}
+```{r clean-raw-data, message=FALSE, warning=FALSE, eval=FALSE}
 
 # Create vector of non-countries to filter out
 non_countries <- c("Africa", "Asia", "Europe", "North America", "Oceania", 
@@ -100,7 +100,7 @@ Offline, I added the number of refugees granted asylum each year as both a numbe
 I then imported that dataframe to work with for the visualizations.
 
 <br>
-```{r import-clean-data, warning=FALSE, message=FALSE}
+```{r import-clean-data, warning=FALSE, message=FALSE, eval=FALSE}
 
 complete_refugees <- read_csv("data/alltime_complete_refugees.csv")
 
@@ -113,7 +113,7 @@ complete_refugees <- read_csv("data/alltime_complete_refugees.csv")
 
 **Visualizations of refugee data**
 
-```{r total-refugees-plots, message=FALSE, warning=FALSE}
+```{r total-refugees-plots, message=FALSE, warning=FALSE, eval=FALSE}
 
 total <- refugees_countries_cumulative %>%
   group_by(year_date) %>%
@@ -145,10 +145,11 @@ total_plot <- ggplot(total,
 total_plot
 
 ```
+![total plot](img/total_plot.png)
 
 <br>
 
-```{r year-2006, message=FALSE, warning=FALSE}
+```{r year-2006, message=FALSE, warning=FALSE, eval=FALSE}
 
 year_2006 <-refugees_countries_cumulative %>%
   filter(year == 2006 & cumulative_total >= 1000)
@@ -163,7 +164,7 @@ year_2006$origin_country <- factor(
 
 <br>
 
-```{r 2006-plot, message=FALSE, warning=FALSE}
+```{r 2006-plot, message=FALSE, warning=FALSE, eval=FALSE}
 
 year_2006 <- ggplot(year_2006,
                     aes(x = origin_country, y = cumulative_total)) +
@@ -188,10 +189,11 @@ year_2006 <- ggplot(year_2006,
 year_2006
 
 ```
+![year-2006](img/year_2006.png)
 
 <br>
 
-```{r 2006-2009-plot, message=FALSE, warning=FALSE}
+```{r 2006-2009-plot, message=FALSE, warning=FALSE, eval=FALSE}
 
 years2006_2009 <- complete_refugees %>%
   filter(year %in% c(2006:2009))
@@ -225,7 +227,7 @@ years2006_2009_plot <- ggplot(years2006_2009,
 
 <br>
 
-```{r 2010-2015-plot, message=FALSE, warning=FALSE}
+```{r 2010-2015-plot, message=FALSE, warning=FALSE, eval=FALSE}
 
 years2010_2015 <- complete_refugees %>%
   filter(year %in% c(2010:2015))
@@ -259,10 +261,13 @@ years2006_2009_plot
 years2010_2015_plot
 
 ```
+![years-2006-2009](img/years_0609_plot.png)
+
+![years-2010-2015](img/years2010_2015_plot.png)
 
 <br>
 
-```{r total-over-time, message=FALSE, warning=FALSE}
+```{r total-over-time, message=FALSE, warning=FALSE, eval=FALSE}
 
 
 complete_refugees$origin_country <- factor(
@@ -284,10 +289,11 @@ total_over_time_plot <- ggplot(complete_refugees,
         legend.position = "none")
 
 ```
+![total-over-time](img/total_over_time_plot.png)
 
 <br>
 
-```{r set-countries-for-flags, message=FALSE, warning=FALSE}
+```{r set-countries-for-flags, message=FALSE, warning=FALSE, eval=FALSE}
 
 alltime_rank <- complete_refugees %>%
   group_by(year) %>% 
@@ -308,7 +314,7 @@ country_flags_end <- data.frame(
 
 <br>
 
-```{r bump-chart-with-flags, message=FALSE, warning=FALSE}
+```{r bump-chart-with-flags, message=FALSE, warning=FALSE, eval=FALSE}
 
 rankings_plot <- ggplot(alltime_rank,
                         aes(x = year, y = rank, color = origin_country)) +
@@ -332,8 +338,9 @@ rankings_plot <- ggplot(alltime_rank,
         legend.position = "none")
 
 rankings_plot
-total_over_time_plot
 
 ```
+![rankings-plot](img/rankings_plot.png)
+
 
 <br>

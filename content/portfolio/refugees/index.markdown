@@ -138,6 +138,7 @@ total_plot <- ggplot(total,
 
 total_plot
 ```
+![total plot](img/total_plot.png)
 
 <br>
 
@@ -178,6 +179,7 @@ year_2006 <- ggplot(year_2006,
 
 year_2006
 ```
+![year-2006](img/year_2006.png)
 
 <br>
 
@@ -247,6 +249,9 @@ years2010_2015_plot <- ggplot(years2010_2015,
 years2006_2009_plot
 years2010_2015_plot
 ```
+![years-2006-2009](img/years_0609_plot.png)
+
+![years-2010-2015](img/years2010_2015_plot.png)
 
 <br>
 
@@ -270,6 +275,7 @@ total_over_time_plot <- ggplot(complete_refugees,
         axis.text = element_text(size = rel(.5)),
         legend.position = "none")
 ```
+![total-over-time](img/total_over_time_plot.png)
 
 <br>
 
@@ -316,7 +322,8 @@ rankings_plot <- ggplot(alltime_rank,
         legend.position = "none")
 
 rankings_plot
-total_over_time_plot
 ```
+![rankings-plot](img/rankings_plot.png)
+
 
 <br>
