@@ -1,10 +1,11 @@
+theme: "starter-hugo-academic"
 # Configuration of Hugo
 # Guide: https://wowchemy.com/docs/getting-started/
 # Hugo Documentation: https://gohugo.io/getting-started/configuration/#all-configuration-settings
 # This file is formatted using YAML syntax - learn more at https://learnxinyminutes.com/docs/yaml/
 
-title: Rebecca Frost-Brewer # Website name
-baseurl: 'https://www.frostbrewer.com/' # Website URL
+title: Academic # Website name
+baseurl: 'https://academic-demo.netlify.app/' # Website URL
 copyright: '' # Footer text, e.g. '© {year} Me'
 
 ############################
@@ -38,6 +39,7 @@ footnotereturnlinkcontents: <sup>^</sup>
 ignoreFiles: [\.ipynb$, .ipynb_checkpoints$, \.Rmd$, \.Rmarkdown$, _cache$]
 permalinks:
   event: '/talk/:slug/'
+  authors: '/author/:slug/'
   tags: '/tag/:slug/'
   categories: '/category/:slug/'
   publication_types: '/publication-type/:slug/'
@@ -57,9 +59,6 @@ taxonomies:
   author: authors
 markup:
   _merge: deep
-  goldmark:
-    renderer:
-      unsafe: true
 related:
   threshold: 80
   includeNewer: true
@@ -69,3 +68,5 @@ related:
       weight: 100
     - name: categories
       weight: 70
+security:
+  _merge: deep
