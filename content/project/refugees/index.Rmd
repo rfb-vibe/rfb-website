@@ -1,0 +1,23 @@
+---
+title: Visualizing Refugees to the United States
+excerpt: Code and outputs of a project visualizing the number of refugees to the US
+author: Rebecca Frost-Brewer
+date: '2021-07-14'
+slug: []
+categories: []
+tags: []
+---
+
+This project was completed as an assignment for Dr. Andrew Heiss' Data Visualization course.
+
+The full report can be viewed here:
+
+```{r echo=FALSE, out.height="500", out.width="100%"}
+knitr::include_graphics('refugee-code.pdf')
+```
+
+The final visualization was created using Canva and the plot outputs from R
+
+```{r echo=FALSE, out.height="500", out.width="100%"}
+knitr::include_graphics('refugee-final-image.pdf')
+```

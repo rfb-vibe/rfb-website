@@ -1,0 +1,43 @@
+---
+title: 'The Flatiron Files: File 1'
+excerpt: 'Using `bash` and `git` to create and maintain Git repositories.'
+author: 'Rebecca Frost-Brewer'
+date: '2022-02-23'
+slug: []
+categories: []
+tags: []
+output: html_document
+---
+
+The commands and process necessary to use `bash` and `git` to create and maintain Git repositories.
+
+### Bash and Git
+
+**Big Picture Process**
+
+1. Fork a repo from someone else's GitHub to my GitHub
+1. Clone from my GitHub to my local machine
+1. Do stuff in the repo
+1. Push changes to GitHub
+
+
+**Detailed Process to Fork a Repo**
+
++ Create a folder on your local machine for where you want the repo to go
++ Navigate to the GitHub repo you want to download
++ Click the **fork** button
++ Copy the URL from your GitHub repo 
++ Return to your bash shell (Terminal on mac)
++ `git clone` + the URL
++ View the files in the current directory with `ls`
+
+
+**As You Continue Working**
+
++ Use `git status` to keep track of changes
++ Stage changes to add with `git add`
++ To commit changes to your repo, `git commit -am "Your commit message"` with your commit message indicating what changes are being committed
++ `git push` to sync local code with GitHub
+
+
+
