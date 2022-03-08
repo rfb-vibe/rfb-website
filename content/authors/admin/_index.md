@@ -6,12 +6,12 @@ title: Rebecca Frost-Brewer
 superuser: true
 
 # Role/position/tagline
-role: Aspiring data scientist
+role: Aspiring Data Scientist
 
 # Organizations/Affiliations to show in About widget
-organizations:
-- name: Flatiron School
-  url: https://www.stanford.edu/
+#organizations:
+#- name: Flatiron School
+# url: https://www.stanford.edu/
 
 # Short bio (displayed in user profile at end of posts)
 bio: My research interests include distributed robotics, mobile computing and programmable matter.
@@ -25,14 +25,17 @@ interests:
 # Education to show in About widget
 education:
   courses:
-  - course: PhD in Artificial Intelligence
-    institution: Stanford University
-    year: 2012
-  - course: MEng in Artificial Intelligence
-    institution: Massachusetts Institute of Technology
-    year: 2009
-  - course: BSc in Artificial Intelligence
-    institution: Massachusetts Institute of Technology
+  - course: Data Science
+    institution: Flatiron School
+    year: 2022
+  - course: MA in Political Science
+    institution: Georgia State University
+    year: 2021
+  - course: MS in Higher Education Administration
+    institution: Miami University
+    year: 2015
+  - course: BA in History
+    institution: Elon University
     year: 2008
 
 # Social/Academic Networking
@@ -67,7 +70,7 @@ email: ""
 highlight_name: false
 ---
 
-Rebecca Frost-Brewer is a professor of artificial intelligence at the Stanford AI Lab. His research interests include distributed robotics, mobile computing and programmable matter. He leads the Robotic Neurobiology group, which develops self-reconfiguring robots, systems of self-organizing robots, and mobile sensor networks.
+Rebecca Frost-Brewer is
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique placerat feugiat ac, facilisis vitae arcu. Proin eget egestas augue. Praesent ut sem nec arcu pellentesque aliquet. Duis dapibus diam vel metus tempus vulputate.
 

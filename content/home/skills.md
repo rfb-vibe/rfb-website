@@ -22,12 +22,12 @@ feature:
   name: R
 - description: 30%
   icon: python
-  icon_pack: fas
+  icon_pack: fab
   name: Python
-- description: 10%
-  icon: camera-retro
+- description: 30%
+  icon: database
   icon_pack: fas
-  name: Photography
+  name: SQL
 
 # Uncomment to use emoji icons.
 #- icon: ':smile:'
@@ -39,8 +39,8 @@ feature:
 # Place your custom SVG icon in `assets/media/icons/`.
 # Reference the SVG icon name (without `.svg` extension) in the `icon` field.
 # For example, reference `assets/media/icons/xyz.svg` as `icon: 'xyz'`
-- icon: sql-logo
-  icon_pack: custom
-  name: SQL
-  description: 40%
+#- icon: sql-logo
+#  icon_pack: custom
+#  name: SQL
+#  description: 40%
 ---
