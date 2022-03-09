@@ -14,13 +14,13 @@ role: Aspiring Data Scientist
 # url: https://www.stanford.edu/
 
 # Short bio (displayed in user profile at end of posts)
-bio: My research interests include distributed robotics, mobile computing and programmable matter.
+#bio: My research interests include distributed robotics, mobile computing and programmable matter.
 
 # Interests to show in About widget
 interests:
-- Artificial Intelligence
-- Computational Linguistics
-- Information Retrieval
+- Research and data analytics
+- Data-informed problem-solving and decision-making
+- Utilizing data to improve access
 
 # Education to show in About widget
 education:
