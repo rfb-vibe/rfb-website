@@ -34,7 +34,9 @@ experience:
         Responsibilities included:
         
         * Data collection and exploratory data analysis to find trends in client needs,              satisfaction, and outcomes
+        
         * Assess effectiveness of services and resources across multiple divisions and               business units
+        
         * Build and maintain summary statistics for reporting and tracking purposes
         
   - title: Assistant Director, Disability Services
@@ -49,7 +51,9 @@ experience:
         Responsibilities included:
         
         * Track and manage client data for completion and accuracy
+        
         * Write reports and presenting educational information and recommendations related           to service implementation
+        
         * Communicate with staff and stakeholders to understand service implementation
         
   - title: Director, Academic Support Services
