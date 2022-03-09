@@ -70,8 +70,7 @@ email: ""
 highlight_name: false
 ---
 
-Rebecca Frost-Brewer is
+I'm glad you're here. After six years working in higher education administration, I am embarking on a career change into data science and analytics. As I continue developing my skills and proficiency, this website will host examples of my work along with various blog posts to document my learning and development as a data scientist.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique placerat feugiat ac, facilisis vitae arcu. Proin eget egestas augue. Praesent ut sem nec arcu pellentesque aliquet. Duis dapibus diam vel metus tempus vulputate.
 
 {{< icon name="download" pack="fas" >}} Download my {{< staticref "uploads/demo_resume.pdf" "newtab" >}}resumé{{< /staticref >}}.
