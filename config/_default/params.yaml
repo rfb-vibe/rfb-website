@@ -5,7 +5,6 @@
 
 # Appearance
 
-theme: minimal
 theme_day: ocean
 theme_night: ocean
 day_night: true
