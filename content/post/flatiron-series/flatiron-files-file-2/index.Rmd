@@ -69,3 +69,10 @@ I enrolled with Flatiron School to kickstart this journey to become a data scien
 This online space is where I will continue to show my learning and progress as I continue on this journey to becoming a data scientist.
 
 ***
+
+
+**Further Reading**
+
+* [The Origins and Consequences of Affective Polarization in the United States](https://www.annualreviews.org/doi/abs/10.1146/annurev-polisci-051117-073034)
+* [The Moral Roots of Partisan Division: How Moral Conviction Heightens Affective Polarization](https://www.cambridge.org/core/journals/british-journal-of-political-science/article/abs/moral-roots-of-partisan-division-how-moral-conviction-heightens-affective-polarization/78B6152EF1CBD7D8890DC0D48B6D65B4)
+* [Ideologues without Issues: The Polarizing Consequences of Ideological Identities](https://academic.oup.com/poq/article/82/S1/866/4951269?login=true)
