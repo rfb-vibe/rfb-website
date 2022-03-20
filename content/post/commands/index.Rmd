@@ -9,7 +9,7 @@ tags: []
 output: html_document
 ---
 
-Each lesson and topic of Flatiron includes several new `git`, `python`, and SQL commands. Here, I will be compiling all those commands in one place for my reference, with a description of what the command does and a use example.
+Each lesson and topic of Flatiron includes several new `git`, `python`, and SQL commands. Here, I will be compiling many of those commands in one place for my reference, with a description of what the command does and a use example.
 
 ## Bash and Git
 
