@@ -8,6 +8,11 @@ categories: []
 tags: []
 ---
 
+This project shows the code and visualizations of streaming data from Spotify.
+
+<!--more-->
+
+
 
 
 

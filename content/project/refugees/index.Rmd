@@ -1,14 +1,15 @@
 ---
-title: Visualizing Refugees to the United States
-excerpt: Code and outputs of a project visualizing the number of refugees to the US
-author: Rebecca Frost-Brewer
+title: "Visualizing Refugees to the United States"
+author: "Rebecca Frost-Brewer"
 date: '2021-07-14'
 slug: []
 categories: []
 tags: []
 ---
 
-This project was completed as an assignment for Dr. Andrew Heiss' Data Visualization course.
+This project highlights the code and outputs of a project visualizing the number of refugees to the US that was completed as an assignment for Dr. Andrew Heiss' Data Visualization course.
+
+<!--more-->
 
 The full report can be viewed here:
 

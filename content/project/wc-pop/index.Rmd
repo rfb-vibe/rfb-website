@@ -1,7 +1,6 @@
 ---
-title: 'The Flatiron Files: File 2'
-excerpt: 'This blogpost is going to summarize the lessons on data analysis in base python and pandas.'
-author: Rebecca Frost-Brewer
+title: "The Relationship between Population and Men's World Cup Success"
+author: "Rebecca Frost-Brewer"
 date: '2022-02-27'
 slug: []
 categories: []
@@ -16,7 +15,9 @@ use_condaenv("learn-env")
 ```
 
 
-This blogpost is going to summarize the lessons on data analysis in base python and pandas. These lessons and content are from the Flatiron School.
+Using data from the 2018 Men's World Cup, we are going to ascertain if any relationship exists between participating countries' population and success (as measured by cumulative wins).
+
+<!--more-->
 
 ## Introduction to Data Analysis - Cumulative Lab
 The objectives of this lab are to:

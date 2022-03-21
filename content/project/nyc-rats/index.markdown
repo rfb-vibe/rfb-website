@@ -10,7 +10,9 @@ tags: []
 
 
 
-This project was completed as an assignment for Dr. Andrew Heiss' Data Visualization course.
+This project presents data visualizations using R to explore the resident rat population of New York City, and the effect of Hurricane Sandy on rat sitings.
+
+<!--more--> 
 
 ### Set Up
 

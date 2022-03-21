@@ -9,6 +9,10 @@ tags: []
 output: html_document
 ---
 
+I completed this lab assignment from Flatiron School as a demonstration of my knowledge of SQL queries.
+
+<!--more--> 
+
 ## The Task
 Your employer makes miniature models of products such as classic cars, motorcycles, and planes. They want you to pull several reports on different segments of their past customers, in order to better understand past sales as well as determine which customers will receive promotional material.
 

@@ -8,6 +8,11 @@ categories: []
 tags: []
 ---
 
+This project shows the code and visualizations of streaming data from Spotify.
+
+<!--more-->
+
+
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(eval = FALSE)
 ```
