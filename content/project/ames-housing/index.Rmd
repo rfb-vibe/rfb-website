@@ -11,73 +11,11 @@ tags: []
 knitr::opts_chunk$set(eval = FALSE)
 ```
 
-This lab from Flatiron School is a culmination of the lessons on importing, cleaning up, analyzing (using descriptive statistics) and visualizing data using pandas to explore housing data from Ames, IA.
+Using the [Ames, IA Housing dataset](https://www.kaggle.com/c/house-prices-advanced-regression-techniques), this lab practices using `pandas` to calculate central tendency, create subsets of data, use data visualizations to explore data, and gain insight into the dataset.
 
 <!--more--> 
 
-### Objectives of this Lab
-
-Be able to:
-
-* Practice loading data with pandas
-* Practice calculating measures of centrality and dispersion with pandas
-* Practice creating subsets of data with pandas
-* Practice using data visualizations to explore data, and interpreting those visualizations
-* Perform a full exploratory data analysis process to gain insight about a dataset 
-
-### Data Understanding
-
-Each record (row) in this dataset represents a home that was sold in Ames, IA.
-
-Each feature (column) in this dataset is some attribute of that home sale. You can view the file `data/data_description.txt` in this repository for a full explanation of all variables in this dataset — 80 columns in total.
-
-We are going to focus on the following features:
-
-**SalePrice**: `Sale price of the house in dollars`
-
-**TotRmsAbvGrd**: `Total rooms above grade (does not include bathrooms)`
-
-**OverallCond**: `Rates the overall condition of the house`
-```
-       10	Very Excellent
-       9	 Excellent
-       8	 Very Good
-       7	 Good
-       6	 Above Average	
-       5	 Average
-       4	 Below Average	
-       3	 Fair
-       2	 Poor
-       1	 Very Poor
-```
-
-**YrSold**: `Year Sold (YYYY)`
-
-**YearBuilt**: `Original construction date`
-
-**LandSlope**: `Slope of property`
-```
-       Gtl	Gentle slope
-       Mod	Moderate Slope	
-       Sev	Severe Slope
-```
-
-### The Tasks
-#### 1. Load the Dataset with Pandas
-
-Import pandas with the standard alias `pd` and load the data into a dataframe with the standard name `df`.
-
-```{python, eval=FALSE}
-
-import pandas as pd
-import matplotlib.pyplot as plt
-%matplotlib inline
-
-df = pd.read_csv('data/ames.csv', index_col = 0)
-# index_col set to 0 to avoid creating an extra Id column
-
-```
-
+Attribution: [The Flatiron School repo](https://github.com/learn-co-curriculum/dsc-pandas-eda-lab)
 
 #### 2. Explore Data Distributions
 

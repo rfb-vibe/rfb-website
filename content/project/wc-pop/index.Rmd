@@ -8,25 +8,12 @@ tags: []
 output: html_document
 ---
 
-```{r include=FALSE, warning=FALSE}
-library(reticulate)
-library(jsonlite)
-use_condaenv("learn-env")
-```
 
-
-Using data from the 2018 Men's World Cup, we are going to ascertain if any relationship exists between participating countries' population and success (as measured by cumulative wins).
+Using data from the 2018 Men's World Cup, this lab practices reading serialized JSON and CSV files into Python objects; extracting information from nested data structures; cleaning and merging data from multiple sources; and interpreting descriptive statistics and visualizations.
 
 <!--more-->
 
-## Introduction to Data Analysis - Cumulative Lab
-The objectives of this lab are to:
-
-- Practice reading serialized JSON and CSV data from files into Python objects
-- Practice extracting information from nested data structures
-- Practice cleaning data (filtering, normalizing locations, converting types)
-- Combine data from multiple sources into a single data structure
-- Interpret descriptive statistics and data visualizations to present my findings
+Attribution: [The Flatiron School repo](https://github.com/learn-co-curriculum/dsc-data-serialization-lab)
 
 ### The Task: To Analyze the Relationship between Population and Men's World Cup Success
 Using data from the 2018 Men's World Cup, we are going to ascertain if any relationship exists between participating countries' population and success (as measured by cumulative wins).
@@ -38,32 +25,12 @@ The data sources for this analysis will be pulled from two separate files.
 `world_cup_2018.json`
 
 - Source: This dataset comes from [football.db](http://openfootball.github.io/), a "free and open public domain football database & schema for use in any (programming) language"
-- Contents: Data about all games in the 2018 World Cup, including date, location (city and stadium), teams, goals scored (and by whom), and tournament group
-- Format: Nested JSON data (dictionary containing a list of rounds, each of which contains a list of matches, each of which contains information about the teams involved and the points scored)
-
 
 `country_populations.csv`
 
 - Source: This dataset comes from a curated collection by [DataHub.io](https://datahub.io/core/population), originally sourced from the World Bank
-- Contents: Data about populations by country for all available years from 1960 to 2018
-- Format: CSV data, where each row contains a country name, a year, and a population
 
-#### Getting the Data
-```{python, eval=FALSE}
-
-# Import necessary packages
-import json # Loads the json package, which allows us to read a .json file
-import csv # Loads the csv package, which allows us to read a csv file
-
-```
-
-Open the relevant files
-```{python, eval=FALSE}
-
-world_cup_file = open("data/world_cup_2018.json", encoding='utf8')
-population_file = open("data/country_populations.csv")
-
-```
+***
 
 Here, we use the `json` package to load the data from the `world_cup_file` into a dictionary (which we'll use for analysis) called `world_cup_data` and we'll use the `csv` package to to load the data from `population_file` into a list of dictionaries called `population_data`
 

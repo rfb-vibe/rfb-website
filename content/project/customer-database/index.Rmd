@@ -9,7 +9,7 @@ tags: []
 output: html_document
 ---
 
-I completed this lab assignment from Flatiron School as a demonstration of my knowledge of SQL queries.
+Using a customer database provided to me, this lab practices using SQL to pull several reports on different segments of the database and analyze trends based on those queries.
 
 <!--more--> 
 
@@ -34,12 +34,6 @@ import pandas
 conn = sqlite3.Connection("data.sqlite")
 
 ```
-
-
-The basic structure of a query in this lab is:
-
-* Write the SQL query inside of the Python string
-* Use `pd.read_sql` to display the results of the query in a formatted table
 
 
 #### Query: Customers with Credit Over 25,000 in California
@@ -73,8 +67,6 @@ Output
 #### Query: Customers Outside of the USA with "Collect" in Their Name
 
 Write a query that gets the customer name, state, and country, for all customers outside of the USA with `"Collect"` as part of their customer name.
-
-We are looking for customers with names like `"Australian Collectors, Co."` or `"BG&E Collectables"`, where `country` is not `"USA"`.
 
 
 ```{python, eval=FALSE}
