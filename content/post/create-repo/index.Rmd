@@ -1,5 +1,5 @@
 ---
-title: 'The Flatiron Files: File 1'
+title: 'Introduction to Bash and Git'
 excerpt: 'Using `bash` and `git` to create and maintain Git repositories.'
 author: 'Rebecca Frost-Brewer'
 date: '2022-02-23'

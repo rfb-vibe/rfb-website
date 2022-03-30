@@ -1,0 +1,302 @@
+---
+title: "Central Limit Theorem"
+author: "Rebecca Frost-Brewer"
+date: '2022-03-29'
+slug: []
+categories: []
+tags: []
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+Importing the required libraries
+```{python}
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+import seaborn as sns
+import scipy.stats as st
+
+```
+
+
+## Sampling
+
+Write a function that would include the code for generating combinations as above and also for identifying the mean for each sample.
+```{python}
+
+def sample_means(sample_size, data):
+
+    """
+    This function takes in population data as a dictionary along with a chosen sample size 
+    to generate all possible combinations of given sample size. 
+    The function calculates the mean of each sample and returns:
+    a) a list of all combinations ( as tuples ) 
+    b) a list of means for all sample
+    """
+
+    n = sample_size
+
+    # Calculate the mean of population
+    mu = calculate_mu(data)
+    #print ("Mean of population is:", mu)
+
+    # Generate all possible combinations using given sample size
+
+    combs = list(itertools.combinations(data, n))
+    print ("Using", n, "samples with a population of size, we can see", len(combs), "possible combinations ")
+    
+    # Calculate the mean weight (x_bar) for all the combinations (samples) using the given data
+    x_bar_list = []
+
+    # Calculate sample mean for all combinations
+    for i in range(len(combs)):
+        sum = 0
+
+        for j in range(n):
+            key = combs[i][j]
+            val =data[str(combs[i][j])]
+            sum += val
+
+        x_bar = sum/n
+        x_bar_list.append(x_bar)
+    print ("The mean of all sample means mu_x_hat is:", np.mean(x_bar_list))
+
+    return combs, x_bar_list
+
+n = 2 #Sample size
+
+combs, means = sample_means(n, pumpkin_dict)
+
+# Print the sample combinations with their means
+for c in range(len(combs)):
+    print (c+1, combs[c], means[c])
+    
+```
+
+
+Write a function to print a frequency table to identify the probability of seeing a different mean value.
+```{python}
+
+def calculate_probability(means):
+    '''
+    Input: a list of means (x_hats)
+    Output: a list of probablitity of each mean value
+    '''
+    #Calculate the frequency of each mean value
+    freq = Counter(means)
+
+    prob = []
+    # Calculate and append fequency of each mean value in the prob list. 
+    for element in means:
+        for key in freq.keys():
+            if element == key:
+                prob.append(str(freq[key])+"/"+str(len(means)))
+    return prob
+    
+probs = calculate_probability(means)
+
+# Print combinations with sample means and probability of each mean value
+for c in range(len(combs)):
+    print (c+1, combs[c], means[c], probs[c])
+
+```
+
+Calculate standard error
+```{python}
+
+# Create empty lists for storing sample means, combinations and standard error for each iteration
+means_list = []
+combs_list = []
+err_list = []
+for n in (1, 2,3,4,5):
+    # Calculate combinations, means and probabilities as earlier
+    
+    combs, means = sample_means(n, pumpkin_dict)
+
+    combs_list.append(combs)
+    means_list.append(means)
+
+    # Calculate the standard error by dividing sample means with square root of sample size
+    err = round(np.std(means)/np.sqrt(n), 2)
+    err_list.append(err)
+    
+```
+
+
+## Confidence Intervals
+A confidence interval is a range of values above and below the point estimate that captures the true population parameter at some predetermined confidence level.
+
+**If we want our confidence level — i.e., how confident we are that the true value of the parameter lies within the confidence interval — to be:**
+- **90%**: The z-score multiplier should be **z = 1.645**, because 90% of the area under the $Z \text{~} N(0, 1)$ normal distribution lies between -1.645 and 1.645.
+- **95%**: The z-score multiplier should be **z = 1.96**, because 95% of the area under the $Z \text{~} N(0, 1)$ normal distribution lies between -1.96 and 1.96.
+- **99%**: The z-score multiplier should be **z = 2.575**, because 99% of the area under the $Z \text{~} N(0, 1)$ normal distribution lies between -2.575 and 2.575.
+
+It is more suitable to get z-critical values with `stats.norm.ppf()` as the results are more accurate.
+> **`stats.norm.ppf(q, loc=0, scale=1)`**	is a percent point function (inverse of cdf — percentiles).
+
+A function to input population and sample data to calculate the confidence intervals.
+```{python}
+
+def conf_interval(pop, sample):
+    '''
+    Function input: population , sample 
+    Function output: z-critical, Margin of error, Confidence interval
+    '''
+    sample_size = 500
+    n = len(sample)
+    x_hat = sample.mean()
+
+    # Calculate the z-critical value using stats.norm.ppf()
+    # Note that we use stats.norm.ppf(q = 0.975) to get the desired z-critical value 
+    # instead of q = 0.95 because the distribution has two tails.
+    z = stats.norm.ppf(q = .975)  #  z-critical value for 95% confidence
+
+    #Calculate the population std from data
+    pop_stdev = pop.std()
+
+    # Calculate the margin of error using formula given above
+    moe = z * (pop_stdev/math.sqrt(sample_size))
+
+    # Calculate the confidence interval by applying margin of error to sample mean 
+    # (mean - margin of error, mean+ margin of error)
+    conf = (x_hat - moe, x_hat + moe)
+    
+    return z, moe, conf
+
+# Call above function with sample and population 
+z_critical, margin_of_error, confidence_interval = conf_interval(population_ages, sample)    
+    
+    
+
+print("z-critical value:")              
+print(z_critical)         
+print ('Margin of error')
+print(margin_of_error)
+print("Confidence interval:")
+print(confidence_interval)
+
+```
+
+
+Confidence Intervals with T-Distribution Example Lab
+```{python}
+
+# Import libraries
+import numpy as np
+import pandas as pd
+import scipy.stats as stats
+import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
+import random
+import math
+
+```
+
+```{python}
+
+# Generate populations of random age data collected at two different locations then
+# drawing a sample
+
+np.random.seed(20)
+population_ages1 = np.random.normal(20, 4, 10000) 
+population_ages2 = np.random.normal(22, 3, 10000) 
+population_ages = np.concatenate((population_ages1, population_ages2))
+
+pop_ages = pd.DataFrame(population_ages, columns=["Age"])
+pop_ages.hist(bins=100, figsize=(9,9))
+pop_ages.describe()
+
+```
+
+```{python}
+
+# Create a sample
+
+np.random.seed(23)
+
+sample_size = 25
+# Take a random sample of size 25 from above population
+sample = np.random.choice(a=population_ages, size=sample_size)
+# Calculate sample mean
+sample_mean = sample.mean()
+# Calculate population mean
+population_mean = population_ages.mean()
+
+# Print sample mean and difference of sample and population mean 
+print ("Sample Mean:", sample_mean)
+print ("Mean Difference:", population_mean - sample_mean)
+
+# Sample Mean: 19.87
+# Mean Difference: 1.14
+
+```
+
+```{python}
+
+# Find the critical value
+t_critical = stats.t.ppf(q=0.975, df=sample_size-1)
+
+# Check the t-critical value
+print("t-critical value:")
+print(t_critical)
+
+# t-critical value: 2.06
+
+```
+
+```{python}
+
+# Find the standard error of the mean
+
+# Get the sample standard deviation
+sample_stdev = sample.std(ddof=1)
+
+# Calculate the standard error using the formula described above
+se = sample_stdev/math.sqrt(sample_size)
+
+# Check the SE
+print("Sample Standard Error of the Mean:")
+print(se)
+
+# Sample Standard Error of the Mean: 0.70
+
+```
+
+```{python}
+
+# Find the margin of error and confidence interval
+
+# Calculate margin of error using t_critical and se
+margin_of_error = t_critical * se
+
+# Calculate the confidence interval using margin_of_error
+confidence_interval = (sample_mean - margin_of_error,
+                       sample_mean + margin_of_error)
+
+# Check the confidence interval
+print("Confidence Interval:")
+print(confidence_interval)
+
+# Confidence Interval: (18.43, 21.31)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+

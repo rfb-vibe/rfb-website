@@ -1,0 +1,105 @@
+---
+title: "Hypothesis Testing"
+author: "Rebecca Frost-Brewer"
+date: '2022-03-29'
+slug: []
+categories: []
+tags: []
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+
+The one-sample z-test is used for tests only related to the sample mean. You test whether the average of the sample suggests that the sample values come from a certain population with a known mean or whether it may come from a different population.
+
+The z-table contains the cumulative probabilities of a standard normal deviation up until a given z-score value. The z-table tells us what percentage is under the curve up to a certain point.
+
+z-scores in `scipy`
+```{python}
+
+# Z-table in Python 
+import scipy.stats as stats
+
+# Probabilities up to z-score of 1.5
+print(stats.norm.cdf(1.5))
+# 0.933
+
+# Probabilities greater than z-score of 1.34
+print (1-stats.norm.cdf(1.34))
+# 0.09
+
+```
+
+
+p-value: The chance of probability. A statistical summary of the compatibility between the observed data and what you would expect to see in a population assuming the statistical model is correct.
+
+If the p-value is lower your determined alpha (for example, \alpha = 0.05), then you reject your null hypothesis; the null hypothesis is not true.
+
+If the p-value is higher than your set alpha, then you fail to reject your null hypothesis; the null hypothesis is true.
+
+Null Hypothesis: There is no relationship between A and B
+Alternative Hypothesis: There is a relationship between A and B - this is the claim you are trying to prove with an experiment.
+
+One-Tail Test: When you want to know if a parameter from the treatment group is greater than (or less than) a corresponding parameter in the control group.
+
+Two-Tail Test: When you want to test if a parameter falls between (or outside of) a range of two given values.
+
+One-Sample $z$-test: Best suited for situations where you want to investigate whether a given sample comes from a particular population
+
+Calculate the $z$-statistic and related probability
+```{python}
+
+import scipy.stats as stats
+from math import sqrt
+x_bar = 103 # sample mean 
+n = 40 # number of students
+sigma = 16 # sd of population
+mu = 100 # Population mean 
+
+z = (x_bar - mu)/(sigma/sqrt(n))
+z
+# z-statistic = 1.19
+
+stats.norm.cdf(z)
+# 0.88 - thus the area under the curve of a z-score of 1.19 is 88%
+
+```
+
+One-Sample z-test example:
+
+A fast-food chain claims that the mean time to order food at their restaurants is 60 seconds, with a standard deviation of 30 seconds. You decide to put this claim to the test and go to one of the restaurants to observe actual waiting times. You take a sample of 36 customers and find that the mean order time was 75 seconds. Does this finding provide enough evidence to contradict the fast food chain's claim of fast service?
+```{python}
+
+# State your null and alternative hypotheses
+
+
+# H0 : the time to order food is less than or equal to 60 sec
+# HA : the time to order food is bigger than 60 seconds
+
+
+import math
+import scipy.stats as stats
+mu = 60
+sigma = 30
+n=36
+x_bar = 75
+z = (x_bar - mu)/(sigma/math.sqrt(n))
+p = 1 - stats.norm.cdf(z)
+
+p,z
+# p = 0.0013
+# z = 3.0
+
+# Interpretation: with p-value less than 0.05, you can reject the null hypothesis and say that the time to order food is significantly higher than what the fast food chain claims. 
+
+```
+
+
+
+
+
+
+

@@ -1,0 +1,269 @@
+---
+title: 'Sets, Combinatorics, and Probability'
+author: 'Rebecca Frost-Brewer'
+date: '2022-03-27'
+slug: []
+categories: []
+tags: []
+output: html_document
+---
+
+
+# Sets
+## Creating Sets in Python
+```{python, eval=FALSE}
+
+# Set A
+A = {2,4,6,8,10}
+'Type A: {}, A: {}'.format(type(A), A)
+
+# Returns
+# "Type A: <class 'set'>, A: {2, 4, 6, 8, 10}"
+
+# Universal Set
+# create a set using the range 1-13 (integers 1-12)
+U = set(range(1,13))
+'Type U: {}, U: {}'.format(type(U), U)
+
+# Returns
+# "Type U: <class 'set'>, U: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}"
+
+```
+
+## Code examples to explore sets
+$A \cap B$
+Intersection of A and B
+New set with elements common to both A and B - only the elements in both Set A and Set B
+`A.intersection(B)`
+`A & B`
+
+$A \cup B$
+Union of A and B
+New set with all elements from both A and B
+`A.union(B)`
+`A | B`
+
+A^{c}
+Absolute complement of Set A - all elements in the universe not in Set A
+`U.difference(A)`
+`U - A`
+
+($A \cup B$)^{c}
+The complement of the union of A and B
+`U.difference(A.union(B))`
+`U - (A/B)`
+
+A \setminus B
+Relative complement of B - the elements of A that are not in B
+The difference A - B
+`A.difference(B)`
+`A - B`
+
+C \setminus(B \setminus A)
+The elements in C not in (the elements of B not in A)
+The difference between C and (the difference between B and A)
+`C.difference(B.difference(A))`
+`C - (B - A)`
+
+
+## Set Operations
+*Sample space, event space, and law of relative frequency*
+```{python, eval=FALSE}
+
+# Create a sample space of rolling a 6-sided dice once
+roll_dice = set([1,2,3,4,5,6])
+
+# Create event space of successful outcomes, rolling higher than a 4
+event = set([5,6])
+
+# What is the probability of rolling higher than a 4?
+prob_5_6 = len(event) / len(roll_dice)
+# prob = number of possible successful outcomes in the event space divided by total number of possibilities in the sample space
+
+```
+
+Using `NumPy` to generate random integers
+`np.random.randint(1,7)`
+numpy - random - random integer between 1 and 6
+
+
+**Factorials, Permutations, Combinations**
+```{python, eval=FALSE}
+
+# Write a factorial function
+def factorial (n):
+    prod = 1
+    while n >= 1:
+        prod = prod * n
+        n = n - 1
+    return prod
+    
+
+# Write a permutation function
+def permutation(n,k):
+    permut = factorial(n)/factorial(n-k)
+    return permut
+
+# Write a combination function
+def combination(n,k):
+    combin = factorial(n)/(factorial(n-k) * factorial(k))
+    return combin
+
+```
+
+
+Examples:
+Nine students available to win three awards in order gold, silver, bronze. How many ways are there to create the top three?
+`permutation(9,3)`
+n = 9
+k = 3
+
+Nine students available, the first three contestants can win a fruit basket. How many ways are there of selection three people?
+`combination(9,3)`
+
+
+## Events and Sample Space
+Event: the outcome of an experiment
+Sample space: the collection of every single possible outcome
+
+**Independent events:** The occurrence of Event A has not effect on whether or not Event B will occur. Events A and B are independent if:
+The probability of the intersection of A and B is equal to the probability of A times the probability of B
+P($A \cap B$) = $P(A)*P(B)$
+
+The probability of A or B occurring P($A \cup B$) = $P(A)$ + $P(B)$ - P($A \cap B$)
+
+**Disjoint events:** Event A occurring means that Event B cannot occur
+
+**Dependent events:** The occurrence of Event A has an effect on whether or not Event B will occur
+
+Conditional Probability - when the outcome of a trial may influence the result of upcoming trials - the probability of A given B
+
+$P(A \mid B)$ = \frac{P($A \cap B$)}{P(B)}
+
+The probability of A given B is equal to the probability of the intersection of A and B divided by the probability of B.
+
+Example:
+After conducting a survey, one of the outcomes was that 8 out of 10 of the survey subjects liked chocolate chip cookies. If three survey subjects are chosen at random with replacement, what is the probability that all three like chocolate chip cookies?
+
+Probabilities: p_sub1 = p_sub2 = p_sub3
+Trials are independent
+P(sub1, sub2, sub3 all like chocolate chip cookies) = p_sub1 * p_sub2 * p_sub3
+
+Example:
+70% of your friends like chocolate flavored ice cream, and 35% like chocolate AND like strawberry flavors. What percent of those who like chocolate also like strawberry?
+
+P(Strawberry|Chocolate) = P(Chocolate and Strawberry) / P(Chocolate)
+p_strberry_given_choc = 0.35 / 0.7
+
+
+##nPartitioning and the Law of Total Probability
+In general, we can say that for any two events A and B:
+$P(A)$ = P($A \cup B$) + P($A \cup B'$)
+
+Thus
+
+$P(A)$ = $P(A \mid B)$$P(B)$ + $P(A \mid B')$$P(B')$)
+
+
+Example:
+In games where at least one goal is made, a soccer team wins 60% of its games when it scores the first goal, and 10% of its games when the opposing team scores first.
+
+If the team scores the first goal about 30% of the time, what fraction of the games does it win?
+```{python, eval=FALSE}
+# Let W be the event that the team wins, 
+
+# SF be the event that it scores first. 
+# Then according to law of total probs.
+
+# wins given scoring first = P(W/SF) = 60%
+# wins given opponent scoring first = P(SFc) = 10%
+# team scores first goal = P(SF) = 30%
+
+# P(W) = P(W|SF) · P(SF) + P(W|SFc) · P(SFc)
+
+p_w = (6/10 * 3/10) + (1/10 * 7/10)
+
+```
+
+Example:
+In Europe, except for regular gas, cars often run on diesel as well. At a gas station in Paris; 
+
+
+* 40% of the customers fill up with diesel (event G1) 
+* 35% with gas "Super 95" (event G2)
+* 25% with gas "Super 98" (event G3). 
+
+
+* 30% of the customers who buy diesel fill their tank completely (event F). 
+* For "Super 95" and "Super 98", these numbers are  60% and 50%, respectively.
+
+
+- Compute the probability that the next customer completely fills their tank and buys Super 95. 
+- Compute the probability that the next customer completely fills their tank
+- Given that the next customer fills their tank completely, compute the probability that they bought diesel. 
+```{python, eval=FALSE}
+
+# G1 - diesel = .4
+# G2 - super 95 = .35
+# G3 - super 98 = .25
+# F1 - diesel_full = .3
+# F2 - 95_full = .6
+# F3 - 98_full = .5
+
+```
+
+```{python, eval=FALSE}
+
+# full tank and super 95
+# super 95 = .35
+# full super 95 = .6
+
+full_super_95 = 0.35 * 0.6
+full_super_95 # correct answer: 0.21
+
+```
+
+```{python, eval=FALSE}
+
+# fills their tank (not knowing what type of fuel) - probability of all options
+# full diesel + full 95 + full 98
+
+full_diesel = 0.4 * 0.3
+full_super_98 = 0.25 * 0.5
+
+p_full = full_super_95 + full_diesel + full_super_98
+p_full # correct answer: 0.455
+
+```
+
+```{python, eval=FALSE}
+
+# full tank, did they buy diesel?
+# prob it's diesel = .4
+# prob it's full and diesel = .3
+
+p_diesel_given_full = (0.4 * 0.3)/p_full
+p_diesel_given_full # correct answer: 0.263736
+
+```
+
+
+## Key Takeaways:
+
+* Probability is "how likely" it is that an event will happen
+* Sets in Python are unordered collections of unique elements
+* A sample space is a collection of every single possible outcome in a trial
+* The inclusion exclusion principle is a counting technique used to calculate the number of elements in a collection of sets with overlapping elements.
+* Factorials provide the basis for calculating permutations
+* The difference between permutations and combinations is that with combinations, order is not important
+* The "sum rule" of probability states that P($A \cup B$) = $P(A)$ + $P(B)$ - P($A \cap B$)
+* Independent events don't affect each other - e.g. consecutive coin tosses
+* Dependent events do affect each other - e.g. picking consecutive colored marbles from a bag
+* The product rule is useful when the conditional probability is easy to compute, but the probability of intersections of events is not
+* The chain rule (also called the general product rule) permits the calculation of any member of the joint distribution of a set of random variables using only conditional probabilities.
+* Bayes theorem describes the probability of an event based on prior knowledge of conditions that might be related to the event
+* The law of total probability states that the probability for a sample space is the sum of the probabilities for partitions of that sample space
+
+
+
+
