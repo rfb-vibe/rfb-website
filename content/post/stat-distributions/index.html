@@ -1,0 +1,255 @@
+---
+title: 'Statistical Distributions'
+author: 'Rebecca Frost-Brewer'
+date: '2022-03-28'
+slug: []
+categories: []
+tags: []
+output: html_document
+---
+
+
+
+<p>Code example for finding <span class="math inline">\(\overline{x}\)</span> of five samples:</p>
+<pre class="python"><code>five_sample_means = []
+for i in range(5):
+    sample = df.sample(n = 50, random_state = i + 100)
+    five_sample_means.append(sample.Age.mean)
+
+# for a value in the range 1-5, add to the list &#39;five_sample_means&#39; the average age</code></pre>
+<p>Code example for a bar plot with a dotted line showing the mean:</p>
+<pre class="python"><code>x_labels = [f&quot;Sample {x}&quot; for x in range(1, 6)]
+
+fig, ax = plt.subplots(figsize=(7,6))
+
+ax.bar(x_labels, five_sample_means)
+ax.set_ylabel(&quot;Mean Age&quot;)
+ax.axhline(y=population_mean, color=&quot;red&quot;, linewidth=5, linestyle=&quot;--&quot;)
+ax.legend(
+    handles=[Line2D([0],[0], color=&quot;red&quot;, linestyle=&quot;--&quot;)],
+    labels=[&quot;True Population Mean&quot;],
+    fontsize=&quot;large&quot;
+);</code></pre>
+<div id="the-probability-mass-function" class="section level2">
+<h2>The Probability Mass Function</h2>
+<p>A function that associates probability with discrete random variables.</p>
+<p>Measures of central tendency and spread for discrete distributions</p>
+<ul>
+<li>Expected value</li>
+<li>Variance</li>
+</ul>
+<p>Example:
+The expected student-to-teacher ratio is 32.5 : 1. But randomly interviewed students often feel that their average class size is bigger than 32.5. There are two main reasons for this:</p>
+<ol style="list-style-type: decimal">
+<li>Students typically take 4 - 5 classes at any given time, but teachers usually only teach 1 or 2 classes.</li>
+<li>The number of students in a small class is small, and the number of students in a large class is large.</li>
+</ol>
+<pre class="python"><code>import pandas as pd
+import numpy as np
+
+# Determine total number of classes (integer value)
+sum_class = sum(size_and_count.values())
+
+# Create a pandas Series of all possible outcomes (class sizes)
+# Sizes = the list of each class size range
+sizes = pd.Series(size_and_count.keys())
+
+# Divide each class size value by the total number of classes
+# to create a pandas Series of PMF values
+actual_pmf = pd.Series([value/sum_class for value in size_and_count.values()])
+
+# Display probabilities in a dataframe
+pmf_df = pd.concat([sizes, actual_pmf], axis=1)
+pmf_df.columns = [&quot;Class Size&quot;, &quot;Overall Probability&quot;]
+pmf_df.style.hide_index()</code></pre>
+<p>Plot PMF</p>
+<pre class="python"><code>import matplotlib.pyplot as plt
+%matplotlib inline
+
+plt.style.use(&#39;ggplot&#39;)
+pmf_df.plot.bar(x=&quot;Class Size&quot;, y=&quot;Overall Probability&quot;);</code></pre>
+<p>Write a function to calculate the probability of any input’s outcome</p>
+<pre class="python"><code># p_actual - probability of any input&#39;s outcome
+def p_actual(x_i):
+
+# for any class size value, divided by total number of classes
+return size_and_count[x_i] / sum_class
+
+# Return the probability of that outcome
+p_actual(17) # 0.13513513513513514</code></pre>
+<p>Calculate expected value or mean <span class="math inline">\(E(X)\)</span></p>
+<pre class="python"><code># Calculate the expected value (mu) using formula above
+
+# Sizes list is the list of different class sizes
+
+# Multiply each element in the sizes list by their probability of occurrence
+
+# Then sum the resulting values
+mu = (sizes.apply(p_actual) * sizes).sum()
+mu
+# 32.472972972972975</code></pre>
+</div>
+<div id="the-probability-density-function" class="section level2">
+<h2>The Probability Density Function</h2>
+<p>Helps identify the regions in the distribution of a continuous variable where observations are more likely to occur, where the observation occurrence is more dense.</p>
+<p>The probability associated with a certain value is expressed as an interval of ranges.</p>
+<p>The probability of observing a value within a specific range is calculating the area under the curve of that range.</p>
+<p>Code to create a PDF histogram, non-parametric Kernel Density Estimation plot, and parametric distribution fit plot</p>
+<pre class="python"><code>import scipy.stats as stats
+
+# Create two vertical subplots sharing 15% and 85% of plot space
+# sharex allows sharing of axes i.e. building multiple plots on same axes
+fig, (ax, ax2) = plt.subplots(2, sharex=True,
+                                gridspec_kw={&quot;height_ratios&quot;: (.15, .85)},
+                                figsize = (10,8) )
+
+sns.distplot(data.Height,
+                hist=True, hist_kws={
+                                    &quot;linewidth&quot;: 2,
+                                    &quot;edgecolor&quot; :&#39;red&#39;,
+                                    &quot;alpha&quot;: 0.4,
+                                    &quot;color&quot;: &quot;w&quot;,
+                                    &quot;label&quot;: &quot;Histogram&quot;,
+                                    },
+                kde=True, kde_kws = {&#39;linewidth&#39;: 3,
+                                        &#39;color&#39;: &quot;blue&quot;,
+                                        &quot;alpha&quot;: 0.7,
+                                        &#39;label&#39;:&#39;Kernel Density Estimation                                             Plot&#39;
+                                        },
+                fit= stats.norm, fit_kws = {&#39;color&#39; : &#39;green&#39;,
+                                            &#39;label&#39; : &#39;parametric fit&#39;,
+                                            &quot;alpha&quot;: 0.7,
+                                            &#39;linewidth&#39;:3},
+                ax=ax2)
+
+ax2.set_title(&#39;Density Estimations&#39;)
+
+sns.boxplot(x=data.Height, ax = ax,color = &#39;red&#39;)
+ax.set_title(&#39;Box and Whiskers Plot&#39;)
+ax2.set(ylim=(0, .08))
+plt.ylim(0,0.11)
+plt.legend();</code></pre>
+<p>Plot histograms with overlapping variables</p>
+<pre class="python"><code>binsize = 10
+
+male_df.Height.plot.hist(bins = binsize, density = True, alpha = 0.7, label =&quot;Male Height&quot;);
+
+female_df.Height.plot.hist(bins = binsize, density = True, alpha = 0.7, label = &#39;Female Height&#39;);
+
+plt.legend()
+plt.show()</code></pre>
+<p>Write a density function</p>
+<pre class="python"><code>def density(x):
+
+    n, bins = np.histogram(x, 10, density=1)
+
+    # Initialize numpy arrays with zeros to store interpolated values
+    pdfx = np.zeros(n.size)
+    pdfy = np.zeros(n.size)
+
+    # Interpolate through histogram bins
+    # identify middle point between two neighbouring bins, in terms of x        and y coords
+    for k in range(n.size):
+        pdfx[k] = 0.5*(bins[k]+bins[k+1])
+        pdfy[k] = n[k]
+
+    # plot the calculated curve
+    return pdfx, pdfy
+
+# Generate test data and test the function
+np.random.seed(5)
+mu, sigma = 0, 0.1 # mean and standard deviation
+s = np.random.normal(mu, sigma, 100)
+x,y = density(s)
+plt.plot(x,y, label = &#39;test&#39;)
+plt.legend();</code></pre>
+<p>Overlapping histograms in <code>seaborn</code></p>
+<pre class="python"><code>import seaborn as sns
+
+sns.distplot(male_df.Weight)
+sns.distplot(female_df.Weight)
+plt.title(&#39;Comparing Weights&#39;)
+plt.show()</code></pre>
+</div>
+<div id="cumulative-distribution-function" class="section level2">
+<h2>Cumulative Distribution Function</h2>
+<p>A function where <span class="math inline">\(x\)</span> is an value that can possibly appear in a given distribution. To calculate the Cumulative Density Function of <span class="math inline">\(x\)</span>, compute the proportion of values in the distribution less than or equal to <span class="math inline">\(x\)</span></p>
+<p>Write a function to calculate the cumulative density function</p>
+<pre class="python"><code># &#39;lst&#39; = list of all possible values
+# &#39;X&#39; = value we want to calculate
+
+def calculate_cdf(lst, X):
+    count = 0
+    # for all values in the list &#39;lst&#39;, if the value is less than or equal         to X,
+    # add one to count
+    for value in lst:
+    if value &lt;= X:
+    count += 1
+
+    # calculate cumulative probability of X by dividing the count by the      total number of
+    # possible values in the list
+    cum_prob = count / len(lst) # normalizing cumulative probabilities (as     with pmfs)
+    return round(cum_prob, 3)
+
+# test data
+test_lst = [1,2,3]
+test_X = 2
+
+calculate_cdf(test_lst, test_X)
+# 0.667</code></pre>
+<p>CDFs are implemented with two sorted lists: one which contains the potential outcome values of the discrete distribution and another with the cumulative probabilities.</p>
+</div>
+<div id="bernoulli-and-binomial-distribution" class="section level2">
+<h2>Bernoulli and Binomial Distribution</h2>
+<p>The Bernoulli experiment is an experiment with a binary outcome: 0-1, success-failure, heads-tails, etc.</p>
+<p>The binomial distribution describes the process of performing <span class="math inline">\(n\)</span> independent Bernoulli trials</p>
+<p>Example:
+When playing a game of bowling, what is the probability of throwing exactly 3 strikes in a game with 10 rounds? Assume that the probability of throwing a strike is 25% for each round.</p>
+<p>Write a function for factorial</p>
+<pre class="python"><code>def factorial(n):
+    prod = 1
+    while n &gt;= 1:
+        prod = prod * n
+        n = n - 1
+    return prod</code></pre>
+<pre class="python"><code># n = number of trials (10)
+# k = number of success/outcomes we want (3)
+# p = probability of outcome (.25)
+
+p_3_strikes = (factorial(10)/(factorial(7)*factorial(3)))*(0.25)**3*(0.75)**7
+
+p_3_strikes
+#answer = 0.2502822</code></pre>
+<p>Create a binomial distribution function</p>
+<pre class="python"><code># n = number of trials
+# k = number of success/outcomes we want
+# p = probability of outcome
+
+def binom_distr(n,p,k):
+    p_k = (factorial(n)/(factorial(k)*factorial(n-k)))*(p**k*(1-p)**(n-k))
+    return p_k</code></pre>
+</div>
+<div id="the-normal-distribution" class="section level2">
+<h2>The Normal Distribution</h2>
+<p>The bell curve, the Gaussian curve - a continuous distribution that is symmetrical and its mean, median, and mode are equal. The area under the curve is 1.0</p>
+<p>68% of values are within 1 standard deviation of the mean
+95% of values are within 2 standard deviations of the mean
+99.7% of values are within 3 standard deviations of the mean</p>
+<p><strong>The Central Limit Theorem:</strong> When you add a large number of independent random variables, irrespective of the original distribution of these variables, their sum tends towards a normal distribution.</p>
+<p>Normal distributions in python</p>
+<pre class="python"><code>import numpy as np
+import seaborn as sns
+
+mu, sigma = 0.5, 0.1
+n = 1000
+s = np.random.normal(mu, sigma, n)
+sns.distplot(s);</code></pre>
+<p>Formula to calculate the density function</p>
+<pre class="python"><code># Calculate the normal Density function
+density = 1/(sigma * np.sqrt(2 * np.pi)) * np.exp( - (bins - mu)**2 / (2 * sigma**2))</code></pre>
+<p>The Standard Normal Distribution
+A special case of the normal distribution with a mean of 0 and standard deviation of 1</p>
+<p>Any normal distribution can be converted to a standard normal distribution and vice versa using the equation:</p>
+<p><span class="math inline">\(z\)</span> = <span class="math inline">\(x\)</span> - divided by </p>
+<p>A z-score can help identify how many standard deviations above or below the mean a certain observation is - “above” or “below” the mean</p>
+</div>

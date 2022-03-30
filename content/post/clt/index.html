@@ -1,0 +1,228 @@
+---
+title: "Central Limit Theorem"
+author: "Rebecca Frost-Brewer"
+date: '2022-03-29'
+slug: []
+categories: []
+tags: []
+output: html_document
+---
+
+
+
+<p>Importing the required libraries</p>
+<pre class="python"><code>import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+import seaborn as sns
+import scipy.stats as st</code></pre>
+<div id="sampling" class="section level2">
+<h2>Sampling</h2>
+<p>Write a function that would include the code for generating combinations as above and also for identifying the mean for each sample.</p>
+<pre class="python"><code>def sample_means(sample_size, data):
+
+    &quot;&quot;&quot;
+    This function takes in population data as a dictionary along with a chosen sample size 
+    to generate all possible combinations of given sample size. 
+    The function calculates the mean of each sample and returns:
+    a) a list of all combinations ( as tuples ) 
+    b) a list of means for all sample
+    &quot;&quot;&quot;
+
+    n = sample_size
+
+    # Calculate the mean of population
+    mu = calculate_mu(data)
+    #print (&quot;Mean of population is:&quot;, mu)
+
+    # Generate all possible combinations using given sample size
+
+    combs = list(itertools.combinations(data, n))
+    print (&quot;Using&quot;, n, &quot;samples with a population of size, we can see&quot;, len(combs), &quot;possible combinations &quot;)
+    
+    # Calculate the mean weight (x_bar) for all the combinations (samples) using the given data
+    x_bar_list = []
+
+    # Calculate sample mean for all combinations
+    for i in range(len(combs)):
+        sum = 0
+
+        for j in range(n):
+            key = combs[i][j]
+            val =data[str(combs[i][j])]
+            sum += val
+
+        x_bar = sum/n
+        x_bar_list.append(x_bar)
+    print (&quot;The mean of all sample means mu_x_hat is:&quot;, np.mean(x_bar_list))
+
+    return combs, x_bar_list
+
+n = 2 #Sample size
+
+combs, means = sample_means(n, pumpkin_dict)
+
+# Print the sample combinations with their means
+for c in range(len(combs)):
+    print (c+1, combs[c], means[c])</code></pre>
+<p>Write a function to print a frequency table to identify the probability of seeing a different mean value.</p>
+<pre class="python"><code>def calculate_probability(means):
+    &#39;&#39;&#39;
+    Input: a list of means (x_hats)
+    Output: a list of probablitity of each mean value
+    &#39;&#39;&#39;
+    #Calculate the frequency of each mean value
+    freq = Counter(means)
+
+    prob = []
+    # Calculate and append fequency of each mean value in the prob list. 
+    for element in means:
+        for key in freq.keys():
+            if element == key:
+                prob.append(str(freq[key])+&quot;/&quot;+str(len(means)))
+    return prob
+    
+probs = calculate_probability(means)
+
+# Print combinations with sample means and probability of each mean value
+for c in range(len(combs)):
+    print (c+1, combs[c], means[c], probs[c])</code></pre>
+<p>Calculate standard error</p>
+<pre class="python"><code># Create empty lists for storing sample means, combinations and standard error for each iteration
+means_list = []
+combs_list = []
+err_list = []
+for n in (1, 2,3,4,5):
+    # Calculate combinations, means and probabilities as earlier
+    
+    combs, means = sample_means(n, pumpkin_dict)
+
+    combs_list.append(combs)
+    means_list.append(means)
+
+    # Calculate the standard error by dividing sample means with square root of sample size
+    err = round(np.std(means)/np.sqrt(n), 2)
+    err_list.append(err)</code></pre>
+</div>
+<div id="confidence-intervals" class="section level2">
+<h2>Confidence Intervals</h2>
+<p>A confidence interval is a range of values above and below the point estimate that captures the true population parameter at some predetermined confidence level.</p>
+<p><strong>If we want our confidence level — i.e., how confident we are that the true value of the parameter lies within the confidence interval — to be:</strong>
+- <strong>90%</strong>: The z-score multiplier should be <strong>z = 1.645</strong>, because 90% of the area under the <span class="math inline">\(Z \text{~} N(0, 1)\)</span> normal distribution lies between -1.645 and 1.645.
+- <strong>95%</strong>: The z-score multiplier should be <strong>z = 1.96</strong>, because 95% of the area under the <span class="math inline">\(Z \text{~} N(0, 1)\)</span> normal distribution lies between -1.96 and 1.96.
+- <strong>99%</strong>: The z-score multiplier should be <strong>z = 2.575</strong>, because 99% of the area under the <span class="math inline">\(Z \text{~} N(0, 1)\)</span> normal distribution lies between -2.575 and 2.575.</p>
+<p>It is more suitable to get z-critical values with <code>stats.norm.ppf()</code> as the results are more accurate.
+&gt; <strong><code>stats.norm.ppf(q, loc=0, scale=1)</code></strong> is a percent point function (inverse of cdf — percentiles).</p>
+<p>A function to input population and sample data to calculate the confidence intervals.</p>
+<pre class="python"><code>def conf_interval(pop, sample):
+    &#39;&#39;&#39;
+    Function input: population , sample 
+    Function output: z-critical, Margin of error, Confidence interval
+    &#39;&#39;&#39;
+    sample_size = 500
+    n = len(sample)
+    x_hat = sample.mean()
+
+    # Calculate the z-critical value using stats.norm.ppf()
+    # Note that we use stats.norm.ppf(q = 0.975) to get the desired z-critical value 
+    # instead of q = 0.95 because the distribution has two tails.
+    z = stats.norm.ppf(q = .975)  #  z-critical value for 95% confidence
+
+    #Calculate the population std from data
+    pop_stdev = pop.std()
+
+    # Calculate the margin of error using formula given above
+    moe = z * (pop_stdev/math.sqrt(sample_size))
+
+    # Calculate the confidence interval by applying margin of error to sample mean 
+    # (mean - margin of error, mean+ margin of error)
+    conf = (x_hat - moe, x_hat + moe)
+    
+    return z, moe, conf
+
+# Call above function with sample and population 
+z_critical, margin_of_error, confidence_interval = conf_interval(population_ages, sample)    
+    
+    
+
+print(&quot;z-critical value:&quot;)              
+print(z_critical)         
+print (&#39;Margin of error&#39;)
+print(margin_of_error)
+print(&quot;Confidence interval:&quot;)
+print(confidence_interval)</code></pre>
+<p>Confidence Intervals with T-Distribution Example Lab</p>
+<pre class="python"><code># Import libraries
+import numpy as np
+import pandas as pd
+import scipy.stats as stats
+import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
+import random
+import math</code></pre>
+<pre class="python"><code># Generate populations of random age data collected at two different locations then
+# drawing a sample
+
+np.random.seed(20)
+population_ages1 = np.random.normal(20, 4, 10000) 
+population_ages2 = np.random.normal(22, 3, 10000) 
+population_ages = np.concatenate((population_ages1, population_ages2))
+
+pop_ages = pd.DataFrame(population_ages, columns=[&quot;Age&quot;])
+pop_ages.hist(bins=100, figsize=(9,9))
+pop_ages.describe()</code></pre>
+<pre class="python"><code># Create a sample
+
+np.random.seed(23)
+
+sample_size = 25
+# Take a random sample of size 25 from above population
+sample = np.random.choice(a=population_ages, size=sample_size)
+# Calculate sample mean
+sample_mean = sample.mean()
+# Calculate population mean
+population_mean = population_ages.mean()
+
+# Print sample mean and difference of sample and population mean 
+print (&quot;Sample Mean:&quot;, sample_mean)
+print (&quot;Mean Difference:&quot;, population_mean - sample_mean)
+
+# Sample Mean: 19.87
+# Mean Difference: 1.14</code></pre>
+<pre class="python"><code># Find the critical value
+t_critical = stats.t.ppf(q=0.975, df=sample_size-1)
+
+# Check the t-critical value
+print(&quot;t-critical value:&quot;)
+print(t_critical)
+
+# t-critical value: 2.06</code></pre>
+<pre class="python"><code># Find the standard error of the mean
+
+# Get the sample standard deviation
+sample_stdev = sample.std(ddof=1)
+
+# Calculate the standard error using the formula described above
+se = sample_stdev/math.sqrt(sample_size)
+
+# Check the SE
+print(&quot;Sample Standard Error of the Mean:&quot;)
+print(se)
+
+# Sample Standard Error of the Mean: 0.70</code></pre>
+<pre class="python"><code># Find the margin of error and confidence interval
+
+# Calculate margin of error using t_critical and se
+margin_of_error = t_critical * se
+
+# Calculate the confidence interval using margin_of_error
+confidence_interval = (sample_mean - margin_of_error,
+                       sample_mean + margin_of_error)
+
+# Check the confidence interval
+print(&quot;Confidence Interval:&quot;)
+print(confidence_interval)
+
+# Confidence Interval: (18.43, 21.31)</code></pre>
+</div>
