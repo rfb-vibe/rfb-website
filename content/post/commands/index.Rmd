@@ -1,119 +1,89 @@
 ---
-title: 'Running Tally of Commands'
+title: 'Running Tally of Code and Functions for Data Science'
 author: 'Rebecca Frost-Brewer'
-excerpt: 'A compilation of the commands learned in Flatiron lessons on `git`, `python`, and SQL'
 date: '2022-03-05'
 slug: []
 categories: []
 tags: []
-output: html_document
+output:
+  html_document:
+    code_folding: "hide"
 ---
 
-Each lesson and topic of Flatiron includes several new `git`, `python`, and SQL commands. Here, I will be compiling many of those commands in one place for my reference, with a description of what the command does and a use example.
+This post serves as a reference tool for the code and functions used in Python for data science.
 
-## Bash and Git
+<!--more--> 
 
-
-+-----------------------------------------+------------------------------------------------------+
-| Bash Command                            | Description
-+=========================================+======================================================+
-| `cd`                                      | Navigate to the directory/folder where you want to work
-+-----------------------------------------+------------------------------------------------------+
-| `cd ~/Documents`                          | Move to user's home directory
-+-----------------------------------------+------------------------------------------------------+
-`pwd`                                     | Print working directory (see where you're working in bash)
-+-----------------------------------------+------------------------------------------------------+
-`mkdir`                                   | Create a new folder within your repo directory
-+-----------------------------------------+------------------------------------------------------+
-`git init`                                | Turn current directory into a Git repository
-+-----------------------------------------+------------------------------------------------------+
-`git clone URL`                           | Download a forked repo from your GitHub to your local computer
-+-----------------------------------------+------------------------------------------------------+
-`git add`                                 | Stage changes you've made so they're ready to be committed
-+-----------------------------------------+------------------------------------------------------+
-`git status`                              | Check out what's going on in your repo and its files
-+-----------------------------------------+------------------------------------------------------+
-`git remote add origin`                   | Add the link to the GitHub URL where your repository is stored online
-+-----------------------------------------+------------------------------------------------------+
-`git commit -am "your commit message`     | Commit added files to the repository with shortcut `am` to "add message"
-+-----------------------------------------+------------------------------------------------------+
-`git push origin master`                  | Push/Sync changes to online version of the repo (`master` is the default branch for all Git repos)
-+-----------------------------------------+------------------------------------------------------+
-`git branch`                              | Start a new branch within your repo - good as a "sandbox" version for messing around without fear of changing the `master`
-+-----------------------------------------+------------------------------------------------------+
-`git checkout`                            | Navigate to a different branch
-+-----------------------------------------+------------------------------------------------------+
-`git log`                                 | Displays the history of commits for the branch you're on
-+-----------------------------------------+------------------------------------------------------+
-`git merge <branch-to-merge> -m "message"`| Merge a branch into the master
-+-----------------------------------------+------------------------------------------------------+
-`ls`                                      | List all the files in the current direcotry
-+-----------------------------------------+------------------------------------------------------+
-
-## Base Python
+[Bash and Git](#bash-and-git)<br>
+[Base Python](#base-python)<br>
+[Intro to `pandas` and `matplotlib`](#intro-to-pandas)<br>
+[SQL](#sql)<br>
+[Conducting an API Call and Analyzing Results](#api-call-example)<br>
+[Sets](#sets)<br>
+[The Probability Mass Function](#prob-mass-function)<br>
+[The Probability Density Function](#prob-density-function)<br>
+[Central Limit Theorem](#clt)<br>
+[Effect Size and Statistical Power](#effect-size-stat-power)
+[A/B Hypothesis Testing](#ab-testing)
 
 
-+-------------------------------+----------------------------------------------------------------+
-| Python Command                | Description
-+===============================+================================================================+
-`! ls`                          | List the files in the current directory
-+-------------------------------+----------------------------------------------------------------+
-`import`                        | Load a necessary Python package/module
-+-------------------------------+----------------------------------------------------------------+
-`! cat`                         | Inspect/list the files of a file that was opened
-+-------------------------------+----------------------------------------------------------------+
-`len()`                         | Show length (number of) items/records
-+-------------------------------+----------------------------------------------------------------+
-`print(df)`                     | Look a dataframe's elements
-+-------------------------------+----------------------------------------------------------------+
-`df.head()`                     | Show first five rows
-+-------------------------------+----------------------------------------------------------------+
-`df.tail()`                     | Show last five rows
-+-------------------------------+----------------------------------------------------------------+
-`df.info()`                     | Show summary of dataframe (columns, values, value type)
-+-------------------------------+----------------------------------------------------------------+
-`df.index`                      | Access index or row labels of dataframe
-+-------------------------------+----------------------------------------------------------------+
-`df.columns`                    | Access column labels
-+-------------------------------+----------------------------------------------------------------+
-`df.dtypes`                     | Access data types of all columns
-+-------------------------------+----------------------------------------------------------------+
-`df.shape`                      | Returns a tuple representing dimensionality (rows, columns)
-+-------------------------------+----------------------------------------------------------------+
-`df.iloc[#]`                    | Select row based on integer-location
-+-------------------------------+----------------------------------------------------------------+
-`df.loc[:,'column name']`       | Select row based on row index and column name
-+-------------------------------+----------------------------------------------------------------+
-`df.map()`                      | Transforms values
-+-------------------------------+----------------------------------------------------------------+
-`df['column'].value_counts()`   | Get count of records of a particular column
-+-------------------------------+----------------------------------------------------------------+
-`df.describe()`                 | Calculate basic summary statistics of each column
-+-------------------------------+----------------------------------------------------------------+
-`df['column'].mean()`           | Calculate specific summary stat of a specific column 
-+-------------------------------+----------------------------------------------------------------+
-`.mode()`                       | the mode of the column
-+-------------------------------+----------------------------------------------------------------+
-`.count()`                      | the count of the total number of entries in a column
-+-------------------------------+----------------------------------------------------------------+
-`.std()`                        | the standard deviation for the column
-+-------------------------------+----------------------------------------------------------------+
-`.var()`                        | the variance for the column
-+-------------------------------+----------------------------------------------------------------+
-`.sum()`                        | the sum of all values in the column
-+-------------------------------+----------------------------------------------------------------+
-`.cumsum()`                     | the cumulative sum, where each cell index contains the sum of all indices lower than, and including, itself.
-+-------------------------------+----------------------------------------------------------------+
-`df.isna()`                     | Return a matrix of boolean values (T/F) where all cells contain NaN
-+-------------------------------+----------------------------------------------------------------+
-`df.groupby()`                  | Aggregate function to group by a particular column
-+-------------------------------+----------------------------------------------------------------+
-`pd.concat()`                   | Pandas function to concatenate two or more dataframes
-+-------------------------------+----------------------------------------------------------------+
-`df.join()`                     | Join all records from the left table and the right table that have a matching key
-+-------------------------------+----------------------------------------------------------------+
+***
 
+## Bash and Git {#bash-and-git}
 
+Bash Command | Description
+------------- | -------------
+| `cd` | Navigate to the directory/folder where you want to work
+| `cd ~/Documents` | Move to user's home directory
+`pwd` | Print working directory (see where you're working in bash)
+`mkdir` | Create a new folder within your repo directory
+`git init` | Turn current directory into a Git repository
+`git clone URL` | Download a forked repo from your GitHub to your local computer
+`git add` | Stage changes you've made so they're ready to be committed
+`git status` | Check out what's going on in your repo and its files
+`git remote add origin` | Add the link to the GitHub URL where your repository is stored online
+`git commit -am "your commit message` | Commit added files to the repository with shortcut `am` to "add message"
+`git push origin master` | Push/Sync changes to online version of the repo (`master` is the default branch for all Git repos)
+`git branch` | Start a new branch within your repo - good as a "sandbox" version for messing around without fear of changing the `master`
+`git checkout` | Navigate to a different branch
+`git log` | Displays the history of commits for the branch you're on
+`git merge <branch-to-merge> -m "message"` |Merge a branch into the master
+`ls` | List all the files in the current directory
+
+***
+
+## Base Python {#base-python}
+
+Python Command | Description
+------------- | -------------
+`! ls` | List the files in the current directory
+`import` | Load a necessary Python package/module
+`! cat` | Inspect/list the files of a file that was opened
+`len()` | Show length (number of) items/records
+`print(df)` | Look a dataframe's elements
+`df.head()` | Show first five rows
+`df.tail()` | Show last five rows
+`df.info()` | Show summary of dataframe (columns, values, value type)
+`df.index` | Access index or row labels of dataframe
+`df.columns` | Access column labels
+`df.dtypes` | Access data types of all columns
+`df.shape` | Returns a tuple representing dimensionality (rows, columns)
+`df.iloc[#]` | Select row based on integer-location
+`df.loc[:,'column name']` | Select row based on row index and column name
+`df.map()` | Transforms values
+`df['column'].value_counts()` | Get count of records of a particular column
+`df.describe()` | Calculate basic summary statistics of each column
+`df['column'].mean()` | Calculate specific summary stat of a specific column 
+`.mode()` | the mode of the column
+`.count()` | the count of the total number of entries in a column
+`.std()` | the standard deviation for the column
+`.var()` | the variance for the column
+`.sum()` | the sum of all values in the column
+`.cumsum()` | the cumulative sum, where each cell index contains the sum of all indices lower than, and including, itself.
+`df.isna()` | Return a matrix of boolean values (T/F) where all cells contain NaN
+`df.groupby()` | Aggregate function to group by a particular column
+`pd.concat()` | Pandas function to concatenate two or more dataframes
+`df.join()` | Join all records from the left table and the right table that have a matching key
 
 
 ### CSV
@@ -141,7 +111,6 @@ import json
 
 with open('nyc_2001_campaign_finance.json') as f:
     data = json.load(f)
-print(type(data))
 
 ```
 
@@ -168,12 +137,12 @@ print(column_names)
 
 ```
 
+***
 
-
-## Intro to `pandas` and `matplotlib`
+## Common code examples using `pandas` {#intro-to-pandas}
 ```{python, eval=FALSE}
 
-# Import pandas using the standard alias
+# Import libraries using the standard alias
 import pandas as pd
 
 # Load 'datafile.csv' as a DataFrame
@@ -191,34 +160,17 @@ combined_df = pd.concat([df1, df2, df3])
 # Pivot table
 pivoted = grouped.pivot(index = 'Pclass', columns = 'Sex', values = 'Age')
 
-# Plot
-pivoted.plot(kind = 'barh') # Horizontal bar chart
-
-```
-
-### World Cup file examples
-```{python, eval=FALSE}
-
 # Select all rows of games played in Group 3 during the 1950 WC
 df[(df['Year'] == 1950) & (df['Stage'] == 'Group 3')]
-# From the full df, 'year' is 1950 AND 'stage' is Group 3
 
 # Count number of home games played by the Netherlands
 neth_home = len(df[df['Home Team Name'] == ('Netherlands')])
 
 # How many countries played in 1986?
 wc1986 = df.loc[df['Year'] == 1986]
-# Create object wc1986 where the location 'year' is 1986
-print("The total number of games in 1986:", len(wc1986))
 
-# Diaplay all records containing the string 'Korea'
+# Display all records containing the string 'Korea'
 df.loc[df['Home Team Name'].str.contains('Korea'), 'Home Team Name']
-
-```
-
-
-### Subway file examples
-```{python, eval=FALSE}
 
 # Type out abbreviations and store as dictionary object
 division_mapping = {
@@ -242,27 +194,13 @@ df['ENTRIES'] = df['ENTRIES'].astype(int)
 # Change date string to date format
 pd.to_datetime(df['DATE'], format='%m/%d/%Y').head()
 
-```
-
-### Lego file example
-```{python, eval=FALSE}
-
-# Print the unique values in the review_difficulty column
-df['review_difficulty'].unique()
-
-```
-
-
-### Lambda functions
-```{python, eval=FALSE}
-
 # For the text column, for each item, split each word, and list the length, but show only first five rows
 df['text'].map(lambda review_text: len(review_text.split())).head()
 
 # Sorting by last name
 names = ['Miriam Marks','Sidney Baird','Elaine Barrera','Eddie Reeves','Marley Beard',
          'Jaiden Liu','Bethany Martin','Stephen Rios','Audrey Mayer','Kameron Davidson',
-'Teagan Bennett']
+         'Teagan Bennett']
 
 # Split/identify the second word, sort by the second word
 sorted(names, key=lambda x: x.split()[1])
@@ -270,15 +208,10 @@ sorted(names, key=lambda x: x.split()[1])
 # Find the average number of words for a review
 df['text'].map(lambda x: len(x.split())).mean()
 
-```
-
-
-### Titanic file examples
-```{python, eval=FALSE}
-
 # Print the percentage of null values in the column 'Cabin
-# Print the number of unique cabin values
 print('Percentage of Null Cabin Values:', len(df[df.Cabin.isna()])/ len(df))
+
+# Print the number of unique cabin values
 print('Number of Unique Cabin Values:', df.Cabin.nunique())
 
 # Replace missing values with a summary statistic
@@ -293,7 +226,9 @@ df.groupby(['Sex', 'Pclass']).mean()
 ```
 
 
-## SQL
+***
+
+## SQL {#sql}
 
 SQL Command | Description
 ------------- | -------------
@@ -311,7 +246,6 @@ SQL Command | Description
 
 
 ### Conditional SQL Operators
-
 
 * `!=` ("not equal to")
   * Similar to `not` combined with `==` in Python
@@ -333,8 +267,6 @@ SQL Command | Description
   * Similar to `in` in Python
 * `LIKE`
   * Uses wildcards to find similar strings. No direct equivalent in Python, but similar to some Bash terminal commands.
-
-
 
 
 ### SQL Examples
@@ -447,13 +379,645 @@ SELECT *
 
 ```
 
+***
+
+## Conducting an API Call and Analyzing Results {#api-call-example}
+### Querying the initial request
+```{python, eval=FALSE}
+
+# Import the requests library
+import requests
+
+# Get this from the "Manage App" page. Make sure you set them
+# back to None before pushing this to GitHub, since otherwise
+# your credentials will be compromised
+api_key = None
+
+# These can be whatever you want! But the solution uses "pizza"
+# and "New York NY" if you want to compare your work directly
+term = "pizza"
+location = "New York NY"
+
+# Set up params for request
+url = "https://api.yelp.com/v3/businesses/search"
+headers = {
+    "Authorization": "Bearer {}".format(api_key)
+}
+url_params = {
+    "term": term.replace(" ", "+"),
+    "location": location.replace(" ", "+")
+}
+
+# Make the request using requests.get, passing in
+# url, headers=headers, and params=url_params
+response = requests.get(url, headers=headers, params=url_params)
+
+# Confirm we got a 200 response
+response
+
+# Get the response body in JSON format
+response_json = response.json()
+
+# View the keys
+response_json.keys()
+
+```
+
+### Extracting Data
+```{python, eval=FALSE}
+
+# Retrieve the value from response_json
+businesses = response_json["businesses"]
+
+# View the first 2 records
+businesses[:2]
+
+```
+
+### Preparing Data
+```{python, eval=FALSE}
+
+def prepare_data(data_list):
+    """
+    This function takes in a list of dictionaries and prepares it
+    for analysis
+    """
+    
+    # Make a new list to hold results
+    results = []
+    
+    for business_data in data_list:
+    
+        # Make a new dictionary to hold prepared data for this business
+        prepared_data = {}
+        
+        # Extract name, review_count, rating, and price key-value pairs
+        # from business_data and add to prepared_data
+        # If a key is not present in business_data, add it to prepared_data
+        # with an associated value of None
+        for key in ("name", "review_count", "rating", "price"):
+            prepared_data[key] = business_data.get(key, None)
+    
+        # Parse and add latitude and longitude columns
+        coordinates = business_data["coordinates"]
+        prepared_data["latitude"] = coordinates["latitude"]
+        prepared_data["longitude"] = coordinates["longitude"]
+        
+        # Add to list if all values are present
+        if all(prepared_data.values()):
+            results.append(prepared_data)
+    
+    return results
+    
+# Test out function
+prepared_businesses = prepare_data(businesses)
+prepared_businesses[:5]
+
+```
+
+### Exploratory Analysis
+```{python}
+
+from collections import Counter
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+fig, (ax1, ax2, ax3) = plt.subplots(ncols=3, figsize=(16, 5))
+
+# Plot distribution of number of reviews
+all_review_counts = [x["review_count"] for x in full_dataset]
+ax1.hist(all_review_counts)
+ax1.set_title("Review Count Distribution")
+ax1.set_xlabel("Number of Reviews")
+ax1.set_ylabel("Number of Businesses")
+
+# Plot rating distribution
+all_ratings = [x["rating"] for x in full_dataset]
+rating_counter = Counter(all_ratings)
+rating_keys = sorted(rating_counter.keys())
+ax2.bar(rating_keys, [rating_counter[key] for key in rating_keys])
+ax2.set_title("Rating Distribution")
+ax2.set_xlabel("Rating")
+ax2.set_ylabel("Number of Businesses")
+
+# Plot price distribution
+all_prices = [x["price"].replace("$", r"\$") for x in full_dataset]
+price_counter = Counter(all_prices)
+price_keys = sorted(price_counter.keys())
+ax3.bar(price_keys, [price_counter[key] for key in price_keys])
+ax3.set_title("Price Distribution")
+ax3.set_xlabel("Price Category")
+ax3.set_ylabel("Number of Businesses");
+
+# Plot rating distribution by price
+higher_price = []
+lower_price = []
+for row in full_dataset:
+    if row["price"] == "$":
+        lower_price.append(row["rating"])
+    else:
+        higher_price.append(row["rating"])
+        
+fig, ax = plt.subplots()
+
+ax.hist([higher_price, lower_price], label=["higher price", "lower price"], density=True)
+
+ax.legend();
+
+```
+
+***
+
+## Sets {#sets}
+
+```{python, eval=FALSE}
+
+# Create Set A
+A = {2,4,6,8,10}
+'Type A: {}, A: {}'.format(type(A), A)
+# Returns
+# "Type A: <class 'set'>, A: {2, 4, 6, 8, 10}"
+
+# Creat a Universal Set
+U = set(range(1,13))
+'Type U: {}, U: {}'.format(type(U), U)
+# Returns
+# "Type U: <class 'set'>, U: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}"
+
+```
+
+### Code examples to explore sets
+$A \cap B$
+Intersection of A and B
+New set with elements common to both A and B - only the elements in both Set A and Set B
+`A.intersection(B)`
+`A & B`
+
+$A \cup B$
+Union of A and B
+New set with all elements from both A and B
+`A.union(B)`
+`A | B`
+
+A^{c}
+Absolute complement of Set A - all elements in the universe not in Set A
+`U.difference(A)`
+`U - A`
+
+($A \cup B$)^{c}
+The complement of the union of A and B
+`U.difference(A.union(B))`
+`U - (A/B)`
+
+A \setminus B
+Relative complement of B - the elements of A that are not in B
+The difference A - B
+`A.difference(B)`
+`A - B`
+
+C \setminus(B \setminus A)
+The elements in C not in (the elements of B not in A)
+The difference between C and (the difference between B and A)
+`C.difference(B.difference(A))`
+`C - (B - A)`
+
+***
+
+## The Probability Mass Function {#prob-mass-function}
+
+```{python, eval=FALSE}
+
+# Divide each class size value by the total number of classes
+# to create a pandas Series of probability mass function values
+actual_pmf = pd.Series([value/sum_class for value in size_and_count.values()])
+
+# Display probabilities in a dataframe
+pmf_df = pd.concat([sizes, actual_pmf], axis=1)
+pmf_df.columns = ["Class Size", "Overall Probability"]
+pmf_df.style.hide_index()
+
+# Plot PMF
+pmf_df.plot.bar(x="Class Size", y="Overall Probability");
+
+# Function to calculate an input value in PMF
+# p_actual - probability of any input's outcome
+def p_actual(x_i):
+
+# for any class size value, divided by total number of classes
+return size_and_count[x_i] / sum_class
+
+# Return the probability of that outcome
+p_actual(17) # 0.13513513513513514
+
+# Calculate expected value or mean $E(X)$
+mu = (sizes.apply(p_actual) * sizes).sum()
+mu
+# 32.472972972972975
+
+```
+
+***
+
+## The Probability Density Function {#prob-density-function}
+
+```{python, eval=FALSE}
+
+#Code to create a PDF histogram, non-parametric Kernel Density Estimation plot,
+# and parametric distribution fit plot
+
+import scipy.stats as stats
+
+# Create two vertical subplots sharing 15% and 85% of plot space
+# sharex allows sharing of axes i.e. building multiple plots on same axes
+fig, (ax, ax2) = plt.subplots(2, sharex=True,
+                                gridspec_kw={"height_ratios": (.15, .85)},
+                                figsize = (10,8) )
+
+sns.distplot(data.Height,
+                hist=True, hist_kws={
+                                    "linewidth": 2,
+                                    "edgecolor" :'red',
+                                    "alpha": 0.4,
+                                    "color": "w",
+                                    "label": "Histogram",
+                                    },
+                kde=True, kde_kws = {'linewidth': 3,
+                                        'color': "blue",
+                                        "alpha": 0.7,
+                                        'label':'Kernel Density Estimation Plot'
+                                        },
+                fit= stats.norm, fit_kws = {'color' : 'green',
+                                            'label' : 'parametric fit',
+                                            "alpha": 0.7,
+                                            'linewidth':3},
+                ax=ax2)
 
 
+ax2.set_title('Density Estimations')
+sns.boxplot(x=data.Height, ax = ax,color = 'red')
+ax.set_title('Box and Whiskers Plot')
+ax2.set(ylim=(0, .08))
+plt.ylim(0,0.11)
+plt.legend();
+
+# Plot histograms with overlapping variables
+binsize = 10
+
+male_df.Height.plot.hist(bins = binsize, density = True, alpha = 0.7, label ="Male Height");
+
+female_df.Height.plot.hist(bins = binsize, density = True, alpha = 0.7, label = 'Female Height');
+
+plt.legend()
+plt.show()
+
+# Write a density function
+def density(x):
+
+    n, bins = np.histogram(x, 10, density=1)
+
+    # Initialize numpy arrays with zeros to store interpolated values
+    pdfx = np.zeros(n.size)
+    pdfy = np.zeros(n.size)
+
+    # Interpolate through histogram bins
+    # identify middle point between two neighbouring bins, in terms of x        and y coords
+    for k in range(n.size):
+        pdfx[k] = 0.5*(bins[k]+bins[k+1])
+        pdfy[k] = n[k]
+
+    # plot the calculated curve
+    return pdfx, pdfy
+
+# Generate test data and test the function
+np.random.seed(5)
+mu, sigma = 0, 0.1 # mean and standard deviation
+s = np.random.normal(mu, sigma, 100)
+x,y = density(s)
+
+# Plot the density function
+plt.plot(x,y, label = 'test')
+plt.legend();
+
+# Plot overlapping histograms using `seaborn`
+sns.distplot(male_df.Weight)
+sns.distplot(female_df.Weight)
+plt.title('Comparing Weights')
+plt.show()
+
+```
+
+***
+
+## Other Distributions {distributions}
+
+```{python, eval=FALSE}
+
+# Write a function to calculate the **cumulative density function**
+
+# 'lst' = list of all possible values
+# 'X' = value we want to calculate
+
+def calculate_cdf(lst, X):
+    count = 0
+    # for all values in the list 'lst', if the value is less than or equal to X,
+    # add one to count
+    for value in lst:
+    if value <= X:
+    count += 1
+
+    # calculate cumulative probability of X by dividing the count by the total number of
+    # possible values in the list
+    cum_prob = count / len(lst) # normalizing cumulative probabilities (as with pmfs)
+    return round(cum_prob, 3)
+
+# test data
+test_lst = [1,2,3]
+test_X = 2
+
+calculate_cdf(test_lst, test_X)
+# 0.667
+
+# Create a **binomial distribution function**
+# n = number of trials
+# k = number of success/outcomes we want
+# p = probability of outcome
+
+def binom_distr(n,p,k):
+    p_k = (factorial(n)/(factorial(k)*factorial(n-k)))*(p**k*(1-p)**(n-k))
+    return p_k
+    
+
+# The **normal distribution**
+mu, sigma = 0.5, 0.1
+n = 1000
+s = np.random.normal(mu, sigma, n)
+sns.distplot(s);
+
+# Calculate the normal Density function
+density = 1/(sigma * np.sqrt(2 * np.pi)) * np.exp( - (bins - mu)**2 / (2 * sigma**2))
+
+```
+
+***
+
+## Central Limit Theorem {#clt}
+
+```{python, eval=FALSE}
+
+# Write a function that would include the code for generating combinations as above and
+# also for identifying the mean for each sample.
+
+def sample_means(sample_size, data):
+
+    """
+    This function takes in population data as a dictionary along with a chosen sample size 
+    to generate all possible combinations of given sample size. 
+    The function calculates the mean of each sample and returns:
+    a) a list of all combinations ( as tuples ) 
+    b) a list of means for all sample
+    """
+
+    n = sample_size
+
+    # Calculate the mean of population
+    mu = calculate_mu(data)
+    #print ("Mean of population is:", mu)
+
+    # Generate all possible combinations using given sample size
+
+    combs = list(itertools.combinations(data, n))
+    print ("Using", n, "samples with a population of size, we can see", len(combs), "possible combinations ")
+    
+    # Calculate the mean weight (x_bar) for all the combinations (samples) using the given data
+    x_bar_list = []
+
+    # Calculate sample mean for all combinations
+    for i in range(len(combs)):
+        sum = 0
+
+        for j in range(n):
+            key = combs[i][j]
+            val =data[str(combs[i][j])]
+            sum += val
+
+        x_bar = sum/n
+        x_bar_list.append(x_bar)
+    print ("The mean of all sample means mu_x_hat is:", np.mean(x_bar_list))
+
+    return combs, x_bar_list
+
+n = 2 #Sample size
+
+combs, means = sample_means(n, pumpkin_dict)
+
+# Print the sample combinations with their means
+for c in range(len(combs)):
+    print (c+1, combs[c], means[c])
+
+```
+
+```{python, eval=FALSE}
+
+# Write a function to print a frequency table to identify the probability of seeing a different mean value.
+
+def calculate_probability(means):
+    '''
+    Input: a list of means (x_hats)
+    Output: a list of probablitity of each mean value
+    '''
+    #Calculate the frequency of each mean value
+    freq = Counter(means)
+
+    prob = []
+    # Calculate and append fequency of each mean value in the prob list. 
+    for element in means:
+        for key in freq.keys():
+            if element == key:
+                prob.append(str(freq[key])+"/"+str(len(means)))
+    return prob
+    
+probs = calculate_probability(means)
+
+# Print combinations with sample means and probability of each mean value
+for c in range(len(combs)):
+    print (c+1, combs[c], means[c], probs[c])
+    
+```
+
+```{python, eval=FALSE}
+
+# Calculate standard error
+# Create empty lists for storing sample means, combinations and standard error for each iteration
+means_list = []
+combs_list = []
+err_list = []
+for n in (1, 2,3,4,5):
+    # Calculate combinations, means and probabilities as earlier
+    
+    combs, means = sample_means(n, pumpkin_dict)
+
+    combs_list.append(combs)
+    means_list.append(means)
+
+    # Calculate the standard error by dividing sample means with square root of sample size
+    err = round(np.std(means)/np.sqrt(n), 2)
+    err_list.append(err)
+    
+```
+
+```{python, eval=FALSE}
+
+# Write a function to input population and sample data to calculate the confidence intervals.
+
+def conf_interval(pop, sample):
+    '''
+    Function input: population , sample 
+    Function output: z-critical, Margin of error, Confidence interval
+    '''
+    sample_size = 500
+    n = len(sample)
+    x_hat = sample.mean()
+
+    # Calculate the z-critical value using stats.norm.ppf()
+    # Note that we use stats.norm.ppf(q = 0.975) to get the desired z-critical value 
+    # instead of q = 0.95 because the distribution has two tails.
+    z = stats.norm.ppf(q = .975)  #  z-critical value for 95% confidence
+
+    #Calculate the population std from data
+    pop_stdev = pop.std()
+
+    # Calculate the margin of error using formula given above
+    moe = z * (pop_stdev/math.sqrt(sample_size))
+
+    # Calculate the confidence interval by applying margin of error to sample mean 
+    # (mean - margin of error, mean+ margin of error)
+    conf = (x_hat - moe, x_hat + moe)
+    
+    return z, moe, conf
+
+# Call above function with sample and population 
+z_critical, margin_of_error, confidence_interval = conf_interval(population_ages, sample)    
+
+```
+
+```{python, eval=FALSE}
+
+# Calculate margin of error using t_critical and se
+margin_of_error = t_critical * se
+
+# Calculate the confidence interval using margin_of_error
+confidence_interval = (sample_mean - margin_of_error,
+                       sample_mean + margin_of_error)
+
+```
+
+***
+
+## Effect Size and Statistical Power {#effect-size-stat-power}
+
+```{python, eval=FALSE}
+
+# Generate a normal distribution for male heights 
+male_height = scipy.stats.norm(male_mean, male_sd)
+
+# Generate a normal distribution for female heights 
+female_height = scipy.stats.norm(female_mean, female_sd)
+
+# Write a function to compute Coden's d
+def Cohen_d(group1, group2):
+
+    # Compute Cohen's d.
+
+    # group1: Series or NumPy array
+    # group2: Series or NumPy array
+
+    # returns a floating point number 
+
+    diff = group1.mean() - group2.mean()
+
+    n1, n2 = len(group1), len(group2)
+    var1 = group1.var()
+    var2 = group2.var()
+
+    # Calculate the pooled threshold as shown earlier
+    pooled_var = (n1 * var1 + n2 * var2) / (n1 + n2)
+    
+    # Calculate Cohen's d statistic
+    d = diff / np.sqrt(pooled_var)
+    
+    return d
+  
+# Run simulations to run independent t-tests
+# Initialize array to store results
+p = (np.empty(n_sim))
+p.fill(np.nan)
+
+#  Run a for loop for range of values in n_sim
+for s in range(n_sim):
+
+    control = np.random.normal(loc= control_mean, scale=control_sd, size=sample_size)
+    experimental = np.random.normal(loc= experimental_mean, scale=experimental_sd, size=sample_size)
+    t_test = stats.ttest_ind(control, experimental)
+    p[s] = t_test[1]
+
+# number of null hypothesis rejections
+num_null_rejects = np.sum(p < 0.05)
+power = num_null_rejects/float(n_sim)
+
+```
+
+***
+
+## A/B Hypothesis Testing {#ab-testing}
+
+```{python, eval=FALSE}
+
+# Calculate the required sample size for alpha = 0.05
+
+from statsmodels.stats.power import TTestIndPower, TTestPower
+power_analysis = TTestIndPower()
+mean_difference = 0.01 # -> 1% difference in response rate
+sd = 0.0475 # -> from set up
+effect_size = mean_difference / sd
+power_analysis.solve_power(alpha=.05, effect_size=effect_size, power=.80, alternative='larger')
+# 279.67
+
+# Convert value into a binary variable for analysis
+control = df[df.group=='control'].pivot(index='id', columns='action', values='count')
+control = control.fillna(value=0)
+
+experiment = df[df.group=='experiment'].pivot(index='id', columns='action', values='count')
+experiment = experiment.fillna(value=0)
+
+# Calculate expected values
+control_rate = control.click.mean()
+expected_experiment_clicks_under_null = control_rate * len(experiment)
+print(expected_experiment_clicks_under_null)
+
+# Calculate the number of standard deviations that the actual number of clicks was from this estimate
+# and the z-score.
+
+n = len(experiment)
+p = control_rate
+var = n * p * (1-p)
+std = np.sqrt(var)
+print(std)
+
+actual_experiment_clicks = experiment.click.sum()
+z_score = (actual_experiment_clicks - expected_experiment_clicks_under_null)/std
+print(z_score)
+
+# Calculate a p-value using the normal distribution based on this z-score.
+
+import scipy.stats as stats
+p_val = stats.norm.sf(z_score) #or 1 - stats.norm.cdf(z_score)
+print(p_val)
+
+```
 
 
+***
 
-
-
-
-
+Course notes from [The Flatiron School](https://flatironschool.com/courses/data-science-bootcamp/)
+Code examples from [Learn.co Curriculum](https://github.com/learn-co-curriculum)
 

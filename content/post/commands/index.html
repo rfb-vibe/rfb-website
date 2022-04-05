@@ -6,111 +6,227 @@ date: '2022-03-05'
 slug: []
 categories: []
 tags: []
-output: html_document
+output:
+  html_document:
+    code_folding: "hide"
 ---
 
 
 
 <p>Each lesson and topic of Flatiron includes several new <code>git</code>, <code>python</code>, and SQL commands. Here, I will be compiling many of those commands in one place for my reference, with a description of what the command does and a use example.</p>
+<p><a href="#bash-and-git">Bash and Git</a><br>
+<a href="#base-python">Base Python</a><br>
+<a href="#intro-to-pandas">Intro to <code>pandas</code> and <code>matplotlib</code></a><br>
+<a href="#sql">SQL</a><br></p>
 <div id="bash-and-git" class="section level2">
 <h2>Bash and Git</h2>
-<p>+—————————————–+——————————————————+
-| Bash Command | Description
-+=========================================+======================================================+
-| <code>cd</code> | Navigate to the directory/folder where you want to work
-+—————————————–+——————————————————+
-| <code>cd ~/Documents</code> | Move to user’s home directory
-+—————————————–+——————————————————+
-<code>pwd</code> | Print working directory (see where you’re working in bash)
-+—————————————–+——————————————————+
-<code>mkdir</code> | Create a new folder within your repo directory
-+—————————————–+——————————————————+
-<code>git init</code> | Turn current directory into a Git repository
-+—————————————–+——————————————————+
-<code>git clone URL</code> | Download a forked repo from your GitHub to your local computer
-+—————————————–+——————————————————+
-<code>git add</code> | Stage changes you’ve made so they’re ready to be committed
-+—————————————–+——————————————————+
-<code>git status</code> | Check out what’s going on in your repo and its files
-+—————————————–+——————————————————+
-<code>git remote add origin</code> | Add the link to the GitHub URL where your repository is stored online
-+—————————————–+——————————————————+
-<code>git commit -am "your commit message</code> | Commit added files to the repository with shortcut <code>am</code> to “add message”
-+—————————————–+——————————————————+
-<code>git push origin master</code> | Push/Sync changes to online version of the repo (<code>master</code> is the default branch for all Git repos)
-+—————————————–+——————————————————+
-<code>git branch</code> | Start a new branch within your repo - good as a “sandbox” version for messing around without fear of changing the <code>master</code>
-+—————————————–+——————————————————+
-<code>git checkout</code> | Navigate to a different branch
-+—————————————–+——————————————————+
-<code>git log</code> | Displays the history of commits for the branch you’re on
-+—————————————–+——————————————————+
-<code>git merge &lt;branch-to-merge&gt; -m "message"</code>| Merge a branch into the master
-+—————————————–+——————————————————+
-<code>ls</code> | List all the files in the current direcotry
-+—————————————–+——————————————————+</p>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Bash Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>cd</code></td>
+<td>Navigate to the directory/folder where you want to work</td>
+</tr>
+<tr class="even">
+<td><code>cd ~/Documents</code></td>
+<td>Move to user’s home directory</td>
+</tr>
+<tr class="odd">
+<td><code>pwd</code></td>
+<td>Print working directory (see where you’re working in bash)</td>
+</tr>
+<tr class="even">
+<td><code>mkdir</code></td>
+<td>Create a new folder within your repo directory</td>
+</tr>
+<tr class="odd">
+<td><code>git init</code></td>
+<td>Turn current directory into a Git repository</td>
+</tr>
+<tr class="even">
+<td><code>git clone URL</code></td>
+<td>Download a forked repo from your GitHub to your local computer</td>
+</tr>
+<tr class="odd">
+<td><code>git add</code></td>
+<td>Stage changes you’ve made so they’re ready to be committed</td>
+</tr>
+<tr class="even">
+<td><code>git status</code></td>
+<td>Check out what’s going on in your repo and its files</td>
+</tr>
+<tr class="odd">
+<td><code>git remote add origin</code></td>
+<td>Add the link to the GitHub URL where your repository is stored online</td>
+</tr>
+<tr class="even">
+<td><code>git commit -am "your commit message</code></td>
+<td>Commit added files to the repository with shortcut <code>am</code> to “add message”</td>
+</tr>
+<tr class="odd">
+<td><code>git push origin master</code></td>
+<td>Push/Sync changes to online version of the repo (<code>master</code> is the default branch for all Git repos)</td>
+</tr>
+<tr class="even">
+<td><code>git branch</code></td>
+<td>Start a new branch within your repo - good as a “sandbox” version for messing around without fear of changing the <code>master</code></td>
+</tr>
+<tr class="odd">
+<td><code>git checkout</code></td>
+<td>Navigate to a different branch</td>
+</tr>
+<tr class="even">
+<td><code>git log</code></td>
+<td>Displays the history of commits for the branch you’re on</td>
+</tr>
+<tr class="odd">
+<td><code>git merge &lt;branch-to-merge&gt; -m "message"</code></td>
+<td>Merge a branch into the master</td>
+</tr>
+<tr class="even">
+<td><code>ls</code></td>
+<td>List all the files in the current directory</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="base-python" class="section level2">
 <h2>Base Python</h2>
-<p>+——————————-+—————————————————————-+
-| Python Command | Description
-+===============================+================================================================+
-<code>! ls</code> | List the files in the current directory
-+——————————-+—————————————————————-+
-<code>import</code> | Load a necessary Python package/module
-+——————————-+—————————————————————-+
-<code>! cat</code> | Inspect/list the files of a file that was opened
-+——————————-+—————————————————————-+
-<code>len()</code> | Show length (number of) items/records
-+——————————-+—————————————————————-+
-<code>print(df)</code> | Look a dataframe’s elements
-+——————————-+—————————————————————-+
-<code>df.head()</code> | Show first five rows
-+——————————-+—————————————————————-+
-<code>df.tail()</code> | Show last five rows
-+——————————-+—————————————————————-+
-<code>df.info()</code> | Show summary of dataframe (columns, values, value type)
-+——————————-+—————————————————————-+
-<code>df.index</code> | Access index or row labels of dataframe
-+——————————-+—————————————————————-+
-<code>df.columns</code> | Access column labels
-+——————————-+—————————————————————-+
-<code>df.dtypes</code> | Access data types of all columns
-+——————————-+—————————————————————-+
-<code>df.shape</code> | Returns a tuple representing dimensionality (rows, columns)
-+——————————-+—————————————————————-+
-<code>df.iloc[#]</code> | Select row based on integer-location
-+——————————-+—————————————————————-+
-<code>df.loc[:,'column name']</code> | Select row based on row index and column name
-+——————————-+—————————————————————-+
-<code>df.map()</code> | Transforms values
-+——————————-+—————————————————————-+
-<code>df['column'].value_counts()</code> | Get count of records of a particular column
-+——————————-+—————————————————————-+
-<code>df.describe()</code> | Calculate basic summary statistics of each column
-+——————————-+—————————————————————-+
-<code>df['column'].mean()</code> | Calculate specific summary stat of a specific column
-+——————————-+—————————————————————-+
-<code>.mode()</code> | the mode of the column
-+——————————-+—————————————————————-+
-<code>.count()</code> | the count of the total number of entries in a column
-+——————————-+—————————————————————-+
-<code>.std()</code> | the standard deviation for the column
-+——————————-+—————————————————————-+
-<code>.var()</code> | the variance for the column
-+——————————-+—————————————————————-+
-<code>.sum()</code> | the sum of all values in the column
-+——————————-+—————————————————————-+
-<code>.cumsum()</code> | the cumulative sum, where each cell index contains the sum of all indices lower than, and including, itself.
-+——————————-+—————————————————————-+
-<code>df.isna()</code> | Return a matrix of boolean values (T/F) where all cells contain NaN
-+——————————-+—————————————————————-+
-<code>df.groupby()</code> | Aggregate function to group by a particular column
-+——————————-+—————————————————————-+
-<code>pd.concat()</code> | Pandas function to concatenate two or more dataframes
-+——————————-+—————————————————————-+
-<code>df.join()</code> | Join all records from the left table and the right table that have a matching key
-+——————————-+—————————————————————-+</p>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Python Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>! ls</code></td>
+<td>List the files in the current directory</td>
+</tr>
+<tr class="even">
+<td><code>import</code></td>
+<td>Load a necessary Python package/module</td>
+</tr>
+<tr class="odd">
+<td><code>! cat</code></td>
+<td>Inspect/list the files of a file that was opened</td>
+</tr>
+<tr class="even">
+<td><code>len()</code></td>
+<td>Show length (number of) items/records</td>
+</tr>
+<tr class="odd">
+<td><code>print(df)</code></td>
+<td>Look a dataframe’s elements</td>
+</tr>
+<tr class="even">
+<td><code>df.head()</code></td>
+<td>Show first five rows</td>
+</tr>
+<tr class="odd">
+<td><code>df.tail()</code></td>
+<td>Show last five rows</td>
+</tr>
+<tr class="even">
+<td><code>df.info()</code></td>
+<td>Show summary of dataframe (columns, values, value type)</td>
+</tr>
+<tr class="odd">
+<td><code>df.index</code></td>
+<td>Access index or row labels of dataframe</td>
+</tr>
+<tr class="even">
+<td><code>df.columns</code></td>
+<td>Access column labels</td>
+</tr>
+<tr class="odd">
+<td><code>df.dtypes</code></td>
+<td>Access data types of all columns</td>
+</tr>
+<tr class="even">
+<td><code>df.shape</code></td>
+<td>Returns a tuple representing dimensionality (rows, columns)</td>
+</tr>
+<tr class="odd">
+<td><code>df.iloc[#]</code></td>
+<td>Select row based on integer-location</td>
+</tr>
+<tr class="even">
+<td><code>df.loc[:,'column name']</code></td>
+<td>Select row based on row index and column name</td>
+</tr>
+<tr class="odd">
+<td><code>df.map()</code></td>
+<td>Transforms values</td>
+</tr>
+<tr class="even">
+<td><code>df['column'].value_counts()</code></td>
+<td>Get count of records of a particular column</td>
+</tr>
+<tr class="odd">
+<td><code>df.describe()</code></td>
+<td>Calculate basic summary statistics of each column</td>
+</tr>
+<tr class="even">
+<td><code>df['column'].mean()</code></td>
+<td>Calculate specific summary stat of a specific column</td>
+</tr>
+<tr class="odd">
+<td><code>.mode()</code></td>
+<td>the mode of the column</td>
+</tr>
+<tr class="even">
+<td><code>.count()</code></td>
+<td>the count of the total number of entries in a column</td>
+</tr>
+<tr class="odd">
+<td><code>.std()</code></td>
+<td>the standard deviation for the column</td>
+</tr>
+<tr class="even">
+<td><code>.var()</code></td>
+<td>the variance for the column</td>
+</tr>
+<tr class="odd">
+<td><code>.sum()</code></td>
+<td>the sum of all values in the column</td>
+</tr>
+<tr class="even">
+<td><code>.cumsum()</code></td>
+<td>the cumulative sum, where each cell index contains the sum of all indices lower than, and including, itself.</td>
+</tr>
+<tr class="odd">
+<td><code>df.isna()</code></td>
+<td>Return a matrix of boolean values (T/F) where all cells contain NaN</td>
+</tr>
+<tr class="even">
+<td><code>df.groupby()</code></td>
+<td>Aggregate function to group by a particular column</td>
+</tr>
+<tr class="odd">
+<td><code>pd.concat()</code></td>
+<td>Pandas function to concatenate two or more dataframes</td>
+</tr>
+<tr class="even">
+<td><code>df.join()</code></td>
+<td>Join all records from the left table and the right table that have a matching key</td>
+</tr>
+</tbody>
+</table>
 <div id="csv" class="section level3">
 <h3>CSV</h3>
 <pre class="python"><code>import csv
@@ -130,8 +246,7 @@ with open(csv_file_path) as csvfile:
 <pre class="python"><code>import json
 
 with open(&#39;nyc_2001_campaign_finance.json&#39;) as f:
-    data = json.load(f)
-print(type(data))</code></pre>
+    data = json.load(f)</code></pre>
 <div id="investigating-the-dataset-structure" class="section level4">
 <h4>Investigating the dataset structure</h4>
 <pre class="python"><code># Data type of dictionary keys`
@@ -154,7 +269,7 @@ print(column_names)</code></pre>
 </div>
 </div>
 </div>
-<div id="intro-to-pandas-and-matplotlib" class="section level2">
+<div id="intro-to-pandas" class="section level2">
 <h2>Intro to <code>pandas</code> and <code>matplotlib</code></h2>
 <pre class="python"><code># Import pandas using the standard alias
 import pandas as pd
@@ -180,17 +295,14 @@ pivoted.plot(kind = &#39;barh&#39;) # Horizontal bar chart</code></pre>
 <h3>World Cup file examples</h3>
 <pre class="python"><code># Select all rows of games played in Group 3 during the 1950 WC
 df[(df[&#39;Year&#39;] == 1950) &amp; (df[&#39;Stage&#39;] == &#39;Group 3&#39;)]
-# From the full df, &#39;year&#39; is 1950 AND &#39;stage&#39; is Group 3
 
 # Count number of home games played by the Netherlands
 neth_home = len(df[df[&#39;Home Team Name&#39;] == (&#39;Netherlands&#39;)])
 
 # How many countries played in 1986?
 wc1986 = df.loc[df[&#39;Year&#39;] == 1986]
-# Create object wc1986 where the location &#39;year&#39; is 1986
-print(&quot;The total number of games in 1986:&quot;, len(wc1986))
 
-# Diaplay all records containing the string &#39;Korea&#39;
+# Display all records containing the string &#39;Korea&#39;
 df.loc[df[&#39;Home Team Name&#39;].str.contains(&#39;Korea&#39;), &#39;Home Team Name&#39;]</code></pre>
 </div>
 <div id="subway-file-examples" class="section level3">
@@ -230,7 +342,7 @@ df[&#39;text&#39;].map(lambda review_text: len(review_text.split())).head()
 # Sorting by last name
 names = [&#39;Miriam Marks&#39;,&#39;Sidney Baird&#39;,&#39;Elaine Barrera&#39;,&#39;Eddie Reeves&#39;,&#39;Marley Beard&#39;,
          &#39;Jaiden Liu&#39;,&#39;Bethany Martin&#39;,&#39;Stephen Rios&#39;,&#39;Audrey Mayer&#39;,&#39;Kameron Davidson&#39;,
-&#39;Teagan Bennett&#39;]
+         &#39;Teagan Bennett&#39;]
 
 # Split/identify the second word, sort by the second word
 sorted(names, key=lambda x: x.split()[1])
