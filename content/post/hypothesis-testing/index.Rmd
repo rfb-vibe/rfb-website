@@ -42,7 +42,7 @@ Alternative Hypothesis: There is a relationship between A and B - this is the cl
 
 **One-Sample z-test example:**
 A fast-food chain claims that the mean time to order food at their restaurants is 60 seconds, with a standard deviation of 30 seconds. You decide to put this claim to the test and go to one of the restaurants to observe actual waiting times. You take a sample of 36 customers and find that the mean order time was 75 seconds. Does this finding provide enough evidence to contradict the fast food chain's claim of fast service?
-```{python}
+```{python, eval=FALSE}
 
 # State your null and alternative hypotheses
 

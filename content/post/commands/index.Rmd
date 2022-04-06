@@ -476,7 +476,7 @@ prepared_businesses[:5]
 ```
 
 ### Exploratory Analysis
-```{python}
+```{python, eval=FALSE}
 
 from collections import Counter
 import matplotlib.pyplot as plt
