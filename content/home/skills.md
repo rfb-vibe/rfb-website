@@ -16,15 +16,15 @@ subtitle:
 # - Add/remove as many `feature` blocks below as you like.
 # - For available icons, see: https://wowchemy.com/docs/page-builder/#icons
 feature:
-- description: 40%
+- description: `tidyverse`, `ggplot2`
   icon: r-project
   icon_pack: fab
   name: R
-- description: 30%
+- description: `pandas`, `matplotlib`, `NumPy`, `SciPy`, `scikit-learn`
   icon: python
   icon_pack: fab
   name: Python
-- description: 30%
+- description: 
   icon: database
   icon_pack: fas
   name: SQL
