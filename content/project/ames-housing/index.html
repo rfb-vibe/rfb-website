@@ -9,56 +9,9 @@ tags: []
 
 
 
-<p>This lab from Flatiron School is a culmination of the lessons on importing, cleaning up, analyzing (using descriptive statistics) and visualizing data using pandas to explore housing data from Ames, IA.</p>
+<p>Using the <a href="https://www.kaggle.com/c/house-prices-advanced-regression-techniques">Ames, IA Housing dataset</a>, this lab practices using <code>pandas</code> to calculate central tendency, create subsets of data, use data visualizations to explore data, and gain insight into the dataset.</p>
 <!--more-->
-<div id="objectives-of-this-lab" class="section level3">
-<h3>Objectives of this Lab</h3>
-<p>Be able to:</p>
-<ul>
-<li>Practice loading data with pandas</li>
-<li>Practice calculating measures of centrality and dispersion with pandas</li>
-<li>Practice creating subsets of data with pandas</li>
-<li>Practice using data visualizations to explore data, and interpreting those visualizations</li>
-<li>Perform a full exploratory data analysis process to gain insight about a dataset</li>
-</ul>
-</div>
-<div id="data-understanding" class="section level3">
-<h3>Data Understanding</h3>
-<p>Each record (row) in this dataset represents a home that was sold in Ames, IA.</p>
-<p>Each feature (column) in this dataset is some attribute of that home sale. You can view the file <code>data/data_description.txt</code> in this repository for a full explanation of all variables in this dataset — 80 columns in total.</p>
-<p>We are going to focus on the following features:</p>
-<p><strong>SalePrice</strong>: <code>Sale price of the house in dollars</code></p>
-<p><strong>TotRmsAbvGrd</strong>: <code>Total rooms above grade (does not include bathrooms)</code></p>
-<p><strong>OverallCond</strong>: <code>Rates the overall condition of the house</code></p>
-<pre><code>       10   Very Excellent
-       9     Excellent
-       8     Very Good
-       7     Good
-       6     Above Average  
-       5     Average
-       4     Below Average  
-       3     Fair
-       2     Poor
-       1     Very Poor</code></pre>
-<p><strong>YrSold</strong>: <code>Year Sold (YYYY)</code></p>
-<p><strong>YearBuilt</strong>: <code>Original construction date</code></p>
-<p><strong>LandSlope</strong>: <code>Slope of property</code></p>
-<pre><code>       Gtl  Gentle slope
-       Mod  Moderate Slope  
-       Sev  Severe Slope</code></pre>
-</div>
-<div id="the-tasks" class="section level3">
-<h3>The Tasks</h3>
-<div id="load-the-dataset-with-pandas" class="section level4">
-<h4>1. Load the Dataset with Pandas</h4>
-<p>Import pandas with the standard alias <code>pd</code> and load the data into a dataframe with the standard name <code>df</code>.</p>
-<pre class="python"><code>import pandas as pd
-import matplotlib.pyplot as plt
-%matplotlib inline
-
-df = pd.read_csv(&#39;data/ames.csv&#39;, index_col = 0)
-# index_col set to 0 to avoid creating an extra Id column</code></pre>
-</div>
+<p>Attribution: <a href="https://github.com/learn-co-curriculum/dsc-pandas-eda-lab">The Flatiron School repo</a></p>
 <div id="explore-data-distributions" class="section level4">
 <h4>2. Explore Data Distributions</h4>
 <p>Produce summary statistics, visualizations, and interpretive text describing the distributions of <code>SalePrice</code>, <code>TotRmsAbvGrd</code>, and <code>OverallCond</code>.</p>
@@ -228,5 +181,4 @@ ax.set_title(&quot;Home Age vs. Sale Price&quot;)
 ax.set_xlabel(&quot;Age of Home at Time of Sale&quot;)
 ax.set_ylabel(&quot;Sale Price&quot;);</code></pre>
 <p>Generally speaking, the newer the home, the more expensive the sale price. This could be associated with the overall condition of the home, so that would be an interesting factor to include in analysis.</p>
-</div>
 </div>

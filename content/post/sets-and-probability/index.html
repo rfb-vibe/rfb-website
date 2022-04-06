@@ -1,5 +1,5 @@
 ---
-title: 'Sets, Combinatorics, and Probability'
+title: 'Notes on Sets and Probability with Examples'
 author: 'Rebecca Frost-Brewer'
 date: '2022-03-27'
 slug: []
@@ -10,100 +10,10 @@ output: html_document
 
 
 
-<div id="sets" class="section level1">
-<h1>Sets</h1>
-<div id="creating-sets-in-python" class="section level2">
-<h2>Creating Sets in Python</h2>
-<pre class="python"><code># Set A
-A = {2,4,6,8,10}
-&#39;Type A: {}, A: {}&#39;.format(type(A), A)
-
-# Returns
-# &quot;Type A: &lt;class &#39;set&#39;&gt;, A: {2, 4, 6, 8, 10}&quot;
-
-# Universal Set
-# create a set using the range 1-13 (integers 1-12)
-U = set(range(1,13))
-&#39;Type U: {}, U: {}&#39;.format(type(U), U)
-
-# Returns
-# &quot;Type U: &lt;class &#39;set&#39;&gt;, U: {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}&quot;</code></pre>
-</div>
-<div id="code-examples-to-explore-sets" class="section level2">
-<h2>Code examples to explore sets</h2>
-<p><span class="math inline">\(A \cap B\)</span>
-Intersection of A and B
-New set with elements common to both A and B - only the elements in both Set A and Set B
-<code>A.intersection(B)</code>
-<code>A &amp; B</code></p>
-<p><span class="math inline">\(A \cup B\)</span>
-Union of A and B
-New set with all elements from both A and B
-<code>A.union(B)</code>
-<code>A | B</code></p>
-<p>A^{c}
-Absolute complement of Set A - all elements in the universe not in Set A
-<code>U.difference(A)</code>
-<code>U - A</code></p>
-<p>(<span class="math inline">\(A \cup B\)</span>)^{c}
-The complement of the union of A and B
-<code>U.difference(A.union(B))</code>
-<code>U - (A/B)</code></p>
-<p>A B
-Relative complement of B - the elements of A that are not in B
-The difference A - B
-<code>A.difference(B)</code>
-<code>A - B</code></p>
-<p>C (B A)
-The elements in C not in (the elements of B not in A)
-The difference between C and (the difference between B and A)
-<code>C.difference(B.difference(A))</code>
-<code>C - (B - A)</code></p>
-</div>
-<div id="set-operations" class="section level2">
-<h2>Set Operations</h2>
-<p><em>Sample space, event space, and law of relative frequency</em></p>
-<pre class="python"><code># Create a sample space of rolling a 6-sided dice once
-roll_dice = set([1,2,3,4,5,6])
-
-# Create event space of successful outcomes, rolling higher than a 4
-event = set([5,6])
-
-# What is the probability of rolling higher than a 4?
-prob_5_6 = len(event) / len(roll_dice)
-# prob = number of possible successful outcomes in the event space divided by total number of possibilities in the sample space</code></pre>
-<p>Using <code>NumPy</code> to generate random integers
-<code>np.random.randint(1,7)</code>
-numpy - random - random integer between 1 and 6</p>
-<p><strong>Factorials, Permutations, Combinations</strong></p>
-<pre class="python"><code># Write a factorial function
-def factorial (n):
-    prod = 1
-    while n &gt;= 1:
-        prod = prod * n
-        n = n - 1
-    return prod
-    
-
-# Write a permutation function
-def permutation(n,k):
-    permut = factorial(n)/factorial(n-k)
-    return permut
-
-# Write a combination function
-def combination(n,k):
-    combin = factorial(n)/(factorial(n-k) * factorial(k))
-    return combin</code></pre>
-<p>Examples:
-Nine students available to win three awards in order gold, silver, bronze. How many ways are there to create the top three?
-<code>permutation(9,3)</code>
-n = 9
-k = 3</p>
-<p>Nine students available, the first three contestants can win a fruit basket. How many ways are there of selection three people?
-<code>combination(9,3)</code></p>
-</div>
-<div id="events-and-sample-space" class="section level2">
-<h2>Events and Sample Space</h2>
+<p>This post is a compilation of Python code related to sets and probability, including code examples to explore sets, set operations, and partitioning and the law of total probability</p>
+<!--more-->
+<div id="events-sample-space-and-partitioning" class="section level2">
+<h2>Events Sample Space, and Partitioning</h2>
 <p>Event: the outcome of an experiment
 Sample space: the collection of every single possible outcome</p>
 <p><strong>Independent events:</strong> The occurrence of Event A has not effect on whether or not Event B will occur. Events A and B are independent if:
@@ -115,21 +25,24 @@ P(<span class="math inline">\(A \cap B\)</span>) = <span class="math inline">\(P
 <p>Conditional Probability - when the outcome of a trial may influence the result of upcoming trials - the probability of A given B</p>
 <p><span class="math inline">\(P(A \mid B)\)</span> = </p>
 <p>The probability of A given B is equal to the probability of the intersection of A and B divided by the probability of B.</p>
-<p>Example:
+<p><strong>Partitioning and the Law of Total Probability</strong>
+In general, we can say that for any two events A and B:
+<span class="math inline">\(P(A)\)</span> = P(<span class="math inline">\(A \cup B\)</span>) + P(<span class="math inline">\(A \cup B&#39;\)</span>)</p>
+<p>Thus
+<span class="math inline">\(P(A)\)</span> = <span class="math inline">\(P(A \mid B)\)</span><span class="math inline">\(P(B)\)</span> + <span class="math inline">\(P(A \mid B&#39;)\)</span><span class="math inline">\(P(B&#39;)\)</span>)</p>
+<hr />
+<div id="examples" class="section level3">
+<h3>Examples:</h3>
+<p><strong>Example 1:</strong>
 After conducting a survey, one of the outcomes was that 8 out of 10 of the survey subjects liked chocolate chip cookies. If three survey subjects are chosen at random with replacement, what is the probability that all three like chocolate chip cookies?</p>
 <p>Probabilities: p_sub1 = p_sub2 = p_sub3
 Trials are independent
 P(sub1, sub2, sub3 all like chocolate chip cookies) = p_sub1 * p_sub2 * p_sub3</p>
-<p>Example:
+<p><strong>Example 2:</strong>
 70% of your friends like chocolate flavored ice cream, and 35% like chocolate AND like strawberry flavors. What percent of those who like chocolate also like strawberry?</p>
 <p>P(Strawberry|Chocolate) = P(Chocolate and Strawberry) / P(Chocolate)
 p_strberry_given_choc = 0.35 / 0.7</p>
-<p>##nPartitioning and the Law of Total Probability
-In general, we can say that for any two events A and B:
-<span class="math inline">\(P(A)\)</span> = P(<span class="math inline">\(A \cup B\)</span>) + P(<span class="math inline">\(A \cup B&#39;\)</span>)</p>
-<p>Thus</p>
-<p><span class="math inline">\(P(A)\)</span> = <span class="math inline">\(P(A \mid B)\)</span><span class="math inline">\(P(B)\)</span> + <span class="math inline">\(P(A \mid B&#39;)\)</span><span class="math inline">\(P(B&#39;)\)</span>)</p>
-<p>Example:
+<p><strong>Example 3:</strong>
 In games where at least one goal is made, a soccer team wins 60% of its games when it scores the first goal, and 10% of its games when the opposing team scores first.</p>
 <p>If the team scores the first goal about 30% of the time, what fraction of the games does it win?</p>
 <pre class="python"><code># Let W be the event that the team wins, 
@@ -144,7 +57,7 @@ In games where at least one goal is made, a soccer team wins 60% of its games wh
 # P(W) = P(W|SF) · P(SF) + P(W|SFc) · P(SFc)
 
 p_w = (6/10 * 3/10) + (1/10 * 7/10)</code></pre>
-<p>Example:
+<p><strong>Example 4:</strong>
 In Europe, except for regular gas, cars often run on diesel as well. At a gas station in Paris;</p>
 <ul>
 <li><p>40% of the customers fill up with diesel (event G1)</p></li>
@@ -182,23 +95,7 @@ p_full # correct answer: 0.455</code></pre>
 
 p_diesel_given_full = (0.4 * 0.3)/p_full
 p_diesel_given_full # correct answer: 0.263736</code></pre>
-</div>
-<div id="key-takeaways" class="section level2">
-<h2>Key Takeaways:</h2>
-<ul>
-<li>Probability is “how likely” it is that an event will happen</li>
-<li>Sets in Python are unordered collections of unique elements</li>
-<li>A sample space is a collection of every single possible outcome in a trial</li>
-<li>The inclusion exclusion principle is a counting technique used to calculate the number of elements in a collection of sets with overlapping elements.</li>
-<li>Factorials provide the basis for calculating permutations</li>
-<li>The difference between permutations and combinations is that with combinations, order is not important</li>
-<li>The “sum rule” of probability states that P(<span class="math inline">\(A \cup B\)</span>) = <span class="math inline">\(P(A)\)</span> + <span class="math inline">\(P(B)\)</span> - P(<span class="math inline">\(A \cap B\)</span>)</li>
-<li>Independent events don’t affect each other - e.g. consecutive coin tosses</li>
-<li>Dependent events do affect each other - e.g. picking consecutive colored marbles from a bag</li>
-<li>The product rule is useful when the conditional probability is easy to compute, but the probability of intersections of events is not</li>
-<li>The chain rule (also called the general product rule) permits the calculation of any member of the joint distribution of a set of random variables using only conditional probabilities.</li>
-<li>Bayes theorem describes the probability of an event based on prior knowledge of conditions that might be related to the event</li>
-<li>The law of total probability states that the probability for a sample space is the sum of the probabilities for partitions of that sample space</li>
-</ul>
+<hr />
+<p>Course notes from <a href="https://flatironschool.com/courses/data-science-bootcamp/">The Flatiron School</a></p>
 </div>
 </div>

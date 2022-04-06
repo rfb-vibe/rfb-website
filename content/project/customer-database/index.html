@@ -11,7 +11,7 @@ output: html_document
 
 
 
-<p>I completed this lab assignment from Flatiron School as a demonstration of my knowledge of SQL queries.</p>
+<p>Using a customer database provided to me, this lab practices using SQL to pull several reports on different segments of the database and analyze trends based on those queries.</p>
 <!--more-->
 <div id="the-task" class="section level2">
 <h2>The Task</h2>
@@ -29,11 +29,6 @@ import pandas
 
 # conn establishes a connection between pandas and the sql database
 conn = sqlite3.Connection(&quot;data.sqlite&quot;)</code></pre>
-<p>The basic structure of a query in this lab is:</p>
-<ul>
-<li>Write the SQL query inside of the Python string</li>
-<li>Use <code>pd.read_sql</code> to display the results of the query in a formatted table</li>
-</ul>
 <div id="query-customers-with-credit-over-25000-in-california" class="section level4">
 <h4>Query: Customers with Credit Over 25,000 in California</h4>
 <p>Write a query that gets the contact first name, contact last name, phone number, address line 1, and credit limit for all customers in California with a credit limit greater than 25000.00.</p>
@@ -60,7 +55,6 @@ q1_result</code></pre>
 <div id="query-customers-outside-of-the-usa-with-collect-in-their-name" class="section level4">
 <h4>Query: Customers Outside of the USA with “Collect” in Their Name</h4>
 <p>Write a query that gets the customer name, state, and country, for all customers outside of the USA with <code>"Collect"</code> as part of their customer name.</p>
-<p>We are looking for customers with names like <code>"Australian Collectors, Co."</code> or <code>"BG&amp;E Collectables"</code>, where <code>country</code> is not <code>"USA"</code>.</p>
 <pre class="python"><code>q2 = &quot;&quot;&quot;
 SELECT
     customerName,

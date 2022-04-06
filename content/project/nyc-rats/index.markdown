@@ -10,7 +10,9 @@ tags: []
 
 
 
-This project presents data visualizations using R to explore the resident rat population of New York City, and the effect of Hurricane Sandy on rat sitings.
+This project presents data visualizations using R to explore the resident rat population of New York City, and the effect of Hurricane Sandy on rat sightings. The NYC rat sighting data is made [publicly available](https://www.kaggle.com/new-york-city/nyc-rat-sightings/data)
+
+More information on this assignment can be found on Dr. Andrew Heiss' [Data Visualization project](https://datavizs21.classes.andrewheiss.com/assignment/01-mini-project/) page.
 
 <!--more--> 
 
@@ -23,9 +25,6 @@ To begin, I set up my R Markdown file, loaded all the libraries I will be using,
 
 
 
-```r
-rats_raw <- read_csv("data/Rat_Sightings.csv", na = c("", "NA", "N/A"))
-```
 
 <br>
 
