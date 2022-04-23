@@ -1,0 +1,40 @@
+---
+title: 'Tip-Toeing Into Machine Learning'
+author: 'Rebecca Frost-Brewer'
+date: '2022-04-21'
+slug: intro-to-ml
+categories: []
+tags: []
+output: html_document
+---
+
+
+Eight weeks into the Flatiron School's Data Science program, I stand on the precipice of my foray into machine learning. Thus far, I've been introduced to Jupyter notebooks, Python, pandas, Matplotlib, NumPy, SciPy, and statsmodels. You can find examples of projects I've completed using these tools and modules in [the projects](https://www.frostbrewer.com/project/) section of my website.
+
+Most recently, I completed a project using multiple linear regression to predict home prices. Linear regression, whether simple linear regressions or multiple linear regression, describes the dependent relationship between two or more variables. The final regression model I built was able to explain 57.5% of the variance (adjusted R-squared) in the data with a Mean Absolute Error (MAE) of 106252.86, whereas our simple baseline model was only able to explain 38.98% (adjusted R-squared) of the variance with a MAE of 131878.02. The experience of iterating through different regression models with the goal of creating a model that performs as well as it can with the given data was a great learning experience and I enjoyed the thought exercises that came with each iteration. While, to date, I have zero experience with machine learning, this iterative process seems to be laying the ground work for that of machine learning algorithms.
+
+Based on some cursory Googling, machine learning is "a subfield of artificial intelligence that gives computers the ability to learn without explicitly being programmed" (Brown, 2021). More specifically, algorithms are trained to make "classifications or predictions, uncovering key insights within data mining projects. These insights subsequently drive decision making within applications and businesses, ideally impacting key growth metrics" (IBM Cloud Education) and I absolutely cannot wait to get started on learning and applying this content.
+
+As I write this, I am relying on my own cursory exploration of machine learning. In my readings, machine learning is all about training - feeding a computer a bunch of data and then that computer learns to make judgments or predictions based on the parameters you've been teaching it about the information it's processing based on the patterns the computer is recognizing. What seems potentially problematic within machine learning is algorithmic bias - that an algorithm can make vastly different decisions or predictions when applied to different populations. For example, there are widely known reports of algorithms making biased decisions against women and people of color. [One study](https://www.vox.com/science-and-health/2019/1/23/18194717/alexandria-ocasio-cortez-ai-bias) taught a computer to crawl through the internet, reading what other humans have written, and that computer would produce prejudices about Black people and women.
+
+So, as I start this next content phase on machine learning and as I move into my data science career, how do I ensure I am minimizing bias in my work? Unfortunately, Lily Hu, a doctoral candidate at Harvard, doesn't inspire much confidence. 
+
+>“You don’t have any guarantees because your algorithm performs ‘fairly’ on your old dataset...That’s just a >fundamental problem of machine learning. Machine learning works on old data [and] on training data. And it doesn’t >work on new data, because we haven’t collected that data yet.” (Heilweil, 2020)
+
+Furthermore, even if we've checked a predictive tool for bias against white women that doesn't mean it won't be biased towards Black women. We might also not be able to find data that is bias-free, and I've heard frequently, "garbage in, garbage out." Much of our historical data is rife with conscious and implicit biases as well as racist and sexist assumptions and prejudices. If the data we're feeding our algorithms is "dirty," how much confidence can we have in our predictions being unbiased?
+
+So, is there a way to build a model that takes into account the deleterious effects of systemic racism and sexism?
+
+Perhaps transparency is a good first place to start. Can the public be given access to how and why we see certain political advertisements, or how our applications to our dream jobs are screened, or how police officers are deployed in our neighborhoods, or even how our home’s risk of fire is predicted? It's highly doubtful companies will voluntarily detail their advertising and decision-making practices given the fact there's no business benefit to do so. Perhaps we must wait for government regulation to set standards for artificial intelligence... but given the fact that the average age for a member of Congress is roughly 60 years old and that most members of Congress don't even know [how the internet works](https://www.washingtonpost.com/lifestyle/style/theres-so-many-different-things-how-technology-baffled-an-elderly-congress-in-2018/2019/01/02/f583f368-ffe0-11e8-83c0-b06139e540e5_story.html) or [how Facebook makes money](https://www.vox.com/2018/4/11/17226742/congress-senate-house-facebook-ceo-zuckerberg-testimony-hearing), it seems unlikely our legislators will be able to keep up with the times.
+
+Which seems to leave discussions on biases to data scientists, software engineers, academics, and the like. But considering that "Machine learning is changing, or will change, every industry,...leaders need to understand the basic principles, the potential, and the limitations,” said MIT computer science professor Aleksander Madry (Brown, 2021).
+
+I look forward to revisiting these thoughts and musings once I've gained more experience knowledge about Machine Learning.
+
+
+
+**Further Reading**
+
+* Brown, Sara. [Machine learning, explained](https://mitsloan.mit.edu/ideas-made-to-matter/machine-learning-explained)
+* Heilweil, Rebecca [Why algorithms can be racist and sexist](https://www.vox.com/recode/2020/2/18/21121286/algorithms-bias-discrimination-facial-recognition-transparency)
+* IBM Cloud Education. [Machine learning](https://www.ibm.com/cloud/learn/machine-learning#toc-how-machin-NoVMSZI_)
