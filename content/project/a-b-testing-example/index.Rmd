@@ -1,0 +1,81 @@
+---
+title: 'A-B Testing Lab'
+author: 'Rebecca Frost-Brewer'
+date: '2022-05-01'
+slug: []
+categories: []
+tags: []
+---
+
+# Website A/B Testing - Lab
+
+## Introduction
+
+In this lab, you'll get another chance to practice your skills at conducting a full A/B test analysis. It will also be a chance to practice your data exploration and processing skills! The scenario you'll be investigating is data collected from the homepage of a music app page for audacity.
+
+<!--more--> 
+
+## Objectives
+
+You will be able to:
+* Analyze the data from a website A/B test to draw relevant conclusions
+* Explore and analyze web action data
+
+## Exploratory Analysis
+
+Start by loading in the dataset stored in the file 'homepage_actions.csv'. Then conduct an exploratory analysis to get familiar with the data.
+
+This data is collected from a homepage, with a control group and experiment group, and whether or not they viewed
+the page or clicked the page. It includes the timestamp of action as well as the participant id.
+
+Of the 8,188 participants, 6,328 viewed and only 1,860 clicked
+
+```{python eval=FALSE}
+
+eids = set(df[df.group=='experiment']['id'].unique())
+cids = set(df[df.group=='control']['id'].unique())
+print('Overlap of experiment and control groups: {}'.format(len(eids&cids)))
+
+```
+
+
+## Conduct a Statistical Test
+
+Conduct a statistical test to determine whether the experimental homepage was more effective than that of the control group.
+
+```{python eval=FALSE}
+
+#Convert clicks into a binary variable on a user-by-user-basis
+control = df[df.group=='control'].pivot(index='id', columns='action', values='count')
+control = control.fillna(value=0)
+
+experiment = df[df.group=='experiment'].pivot(index='id', columns='action', values='count')
+experiment = experiment.fillna(value=0)
+
+
+
+print("Sample sizes:\tControl: {}\tExperiment: {}".format(len(control), len(experiment)))
+# Sample sizes:	Control: 3332	Experiment: 2996
+
+print("Total Clicks:\tControl: {}\tExperiment: {}".format(control.click.sum(), experiment.click.sum()))
+# Total Clicks:	Control: 932.0	Experiment: 928.0
+
+print("Average click rate:\tControl: {}\tExperiment: {}".format(control.click.mean(), experiment.click.mean()))
+# Average click rate:	Control: 0.2797118847539016	Experiment: 0.3097463284379172
+
+import flatiron_stats as fs
+fs.p_value_welch_ttest(control.click, experiment.click)
+# 0.004466402814337078
+
+```
+
+### Analysis:
+
+Does this result roughly match that of the previous statistical test?
+
+> Comment: Yes, both p-values are < 0.05, so we would reject the null hypothesis, indicating the the 
+experimental page has a more effective design than does the control page.
+
+
+
+Attribution: [The Flatiron School](https://github.com/learn-co-curriculum/dsc-website-ab-testing-lab)

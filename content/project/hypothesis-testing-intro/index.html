@@ -1,0 +1,165 @@
+---
+title: 'Hypothesis Testing - Cumulative Lab'
+author: 'Rebecca Frost-Brewer'
+date: '2022-05-01'
+slug: hypothesis-testing-intro
+categories: []
+tags: []
+
+---
+
+
+
+<div id="hypothesis-testing---cumulative-lab" class="section level1">
+<h1>Hypothesis Testing - Cumulative Lab</h1>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>In this cumulative lab, you will use pandas to clean up a dataset and perform some EDA, then perform statistical tests and interpret their results in order to answer some business questions.</p>
+<!--more-->
+</div>
+<div id="objectives" class="section level2">
+<h2>Objectives</h2>
+<p>You will be able to:</p>
+<ul>
+<li>Practice using a data dictionary</li>
+<li>Practice using pandas to prepare data for statistical analysis</li>
+<li>Practice identifying an appropriate statistical test for a given question</li>
+<li>Practice defining the null and alternative hypotheses</li>
+<li>Practice executing statistical tests and interpreting their results</li>
+</ul>
+<div id="business-understanding" class="section level3">
+<h3>Business Understanding</h3>
+<p>Flatiron Health Insurance (FHI) is a growing private healthcare insurance provider founded on the premise that using data and analytics can improve the health insurance industry by providing better care and offerings to its patients. Every year, the Center for Disease Control (CDC) conducts surveys to understand the latest demographic, health, and fitness trends. You have been tasked with analyzing the recently published results of the 2017-2018 survey and providing your recommendations back to the Chief Analytics Officer and Chief Marketing Officer. You have been assigned the task of taking a first look at the data and beginning to answer several key questions:</p>
+<ol style="list-style-type: decimal">
+<li>How does health status, represented by average number of days with bad physical health in the past month (<code>PHYSHLTH</code>), differ by state?<br />
+</li>
+<li>Digging deeper into the data, what are some factors that impact health (demographics, behaviors, etc.)?</li>
+</ol>
+</div>
+<div id="data-understanding" class="section level3">
+<h3>Data Understanding</h3>
+<p>To get you started, the IT department formatted the data set into a tab delimited text file for only NY, NJ, and CT (FHI’s primary markets) called <code>case_study.csv</code>.</p>
+<p>There is also a PDF data dictionary called <code>data_dictionary.pdf</code>, which explains the meanings of the features and codes contained in this dataset.</p>
+<p>Both files are located in the <code>data/</code> directory of this repository.</p>
+<p>Prior to each statistical test, you will need to perform some data preparation, which could include:</p>
+<ul>
+<li>Filtering out rows with irrelevant values</li>
+<li>Transforming data from codes into human-readable values</li>
+<li>Binning data to transform it from numeric to categorical</li>
+<li>Creating new columns based on queries of the values in other columns</li>
+</ul>
+<p>For steps 2-5, you will need to select and execute an appropriate statistical test. Recall these tests we have learned so far:</p>
+<ol style="list-style-type: decimal">
+<li><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chi2_contingency.html">Chi-squared test</a>: used for comparing a categorical feature against a categorical feature, to determine whether they are independent</li>
+<li><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_ind.html">t-test</a>: used for comparing two categories of a numeric feature, to determine whether their means are the same across categories</li>
+<li><a href="https://www.statsmodels.org/stable/generated/statsmodels.stats.anova.anova_lm.html#statsmodels.stats.anova.anova_lm">ANOVA</a>: used for comparing more than two categories of a numeric feature, to determine whether their means are the same across categories</li>
+</ol>
+</div>
+</div>
+<div id="prepare-physhlth-data-for-analysis" class="section level2">
+<h2>1. Prepare <code>PHYSHLTH</code> Data for Analysis</h2>
+<p>Since we are comparing the numeric means of a continuous variable across three groups, ANOVA will be the best
+statistical test to determine if the differences in mean are significant.</p>
+<p>H0: There is no difference in bad health (as determined by number of days with bad health) based on state.
+HA: There is a difference in bad health based on state.</p>
+<pre class="python"><code># Run this cell without changes
+import statsmodels.api as sm
+from statsmodels.formula.api import ols
+
+formula = &#39;PHYSHLTH ~ C(_STATE)&#39;
+lm = ols(formula, df).fit()
+sm.stats.anova_lm(lm)</code></pre>
+<p>The p-value is less than 0.05 (0.0000000088), so we reject the null hypothesis and accept the alternate hypothesis.
+There is a difference in bad health based on state.</p>
+<p>I would recommend further data collection and analysis to understand what is causing or attributing to bad health.
+Is it lack of access to healthcare? Environmental effects? Behavioral (e.g., smoking)? Are the number of bad health
+days associated with a particular demographic? Does the number vary based on season?</p>
+</div>
+<div id="describe-the-relationship-between-health-status-and-home-ownership-status" class="section level2">
+<h2>3. Describe the Relationship between Health Status and Home Ownership Status</h2>
+<p>This time, we want to categorize respondents by demographic information: specifically, we’ll look at whether or not they own their home.</p>
+<pre class="python"><code>df.groupby(&quot;RENTHOM1&quot;)[&quot;PHYSHLTH&quot;].mean()</code></pre>
+<p>Does it seem like there a difference in the number of unhealthy days between those who rent their homes and those who own their homes? How does this compare to the distributions by state?</p>
+<p>Yes, it seems like those who own their home have fewer bad health days than those who rent their home. The difference in means is also larger: about 3.5 vs. about 5.2 unhealthy days per month. This distribution seems more binomial than the distributions by state.</p>
+<p>Since we comparing the numeric means of bad health days (PHYSHLTH) with a categorical variable (RENTHOM1) with
+two categories (rent vs own), we can conduct a t-test.</p>
+<p>H0: There is no difference in average bad health days between home owners and renters.
+HA: There is a difference in average bad health days between home owners and renters.</p>
+<p>Since we know based on our exploratory analysis that renters have a higher average of bad health days, this
+will be a one-tailed t-test since we know the means are not the same.</p>
+<pre class="python"><code>import scipy.stats as stats
+
+ttest_pvalue = stats.ttest_ind(rent, own, equal_var=False).pvalue / 2
+print(&quot;t-statistic p-value:&quot;, ttest_pvalue)
+
+# t-statistic p-value: 5.394649320817826e-54</code></pre>
+<p>The p-value is &lt; 0.05 thus we reject the null hypothesis and accept the alternate hypothesis that renters have,
+on average, more bad days per month than homeowners.</p>
+<p>From a business and public health standpoint, I would recommend examining the wealth and income metrics of
+the sample population to determine any relationship between bad health days and home ownership. Further,
+is there a relationship between home ownership and health insurance status? What about salaried vs. hourly jobs?
+Additionally, do we have access to data that may shed light on the quality of rental properties to determine
+if rental properties are more inherently unhealthy than owned homes?</p>
+</div>
+<div id="describe-the-relationship-between-chronic-sickness-and-nicotine-use" class="section level2">
+<h2>4. Describe the Relationship between Chronic Sickness and Nicotine Use</h2>
+<p>Once again, this will require some preparation before we can run the statistical test. Create a new column <code>NICOTINE_USE</code> with 1 representing someone who uses or has used nicotine in some form, and 0 representing someone who hasn’t.</p>
+<p>We define nicotine use as:</p>
+<ul>
+<li>Answered <code>Yes</code> to the <code>SMOKE100</code> question (<em>Have you smoked at least 100 cigarettes in your entire life?</em>, page 43), OR</li>
+<li>Answered <code>Every day</code> or <code>Some days</code> to the <code>USENOW3</code> question (<em>Do you currently use chewing tobacco, snuff, or snus every day, some days, or not at all?</em>, page 46), OR</li>
+<li>Answered <code>Yes</code> to the <code>ECIGARET</code> question (<em>Have you ever used an e-cigarette or other electronic vaping product, even just one time, in your entire life?</em>, page 46)</li>
+</ul>
+<p>If a record matches one or more of the above criteria, <code>NICOTINE_USE</code> should be 1. Otherwise, <code>NICOTINE_USE</code> should be 0. Go ahead and keep all of the “Don’t know” or “Refused” answers as 0.</p>
+<pre class="python"><code># Set everything to 0 initially
+df[&quot;NICOTINE_USE&quot;] = 0
+
+# Make a mask to select the relevant values
+# (this separate variable is not necessary
+# but helps with readability)
+mask = (
+    # Has smoked at least 100 cigarettes
+    (df[&quot;SMOKE100&quot;] == 1) |
+    # Uses chewing tobacco/snuff/snus every day or some days
+    (df[&quot;USENOW3&quot;] == 1) |
+    (df[&quot;USENOW3&quot;] == 2) |
+    # Has smoked an e-cigarette
+    (df[&quot;ECIGARET&quot;] == 1)
+)
+
+# Set values to 1 where the mask condition is true
+df.loc[mask, &quot;NICOTINE_USE&quot;] = 1
+
+# Look at the distribution of values
+df[&quot;NICOTINE_USE&quot;].value_counts(normalize=True)</code></pre>
+<p>Since we are comparing two categorical variables (chronic health and nicotine use), each of which has two categories
+(not chronically sick/chronically sick and no nicotine/nicotine use), we can conduct a chi-squared test since it
+compares observed proportions to expected proportions.</p>
+<p>H0: There is no difference in the proportion of people reporting chronic sickness and the proportion of those who
+use nicotine, i.e., chronic sickness and nicotine use are independent
+HA: There is a difference in the proportion of people reporting chronic sickness and the proportion of those who
+use nicotine, i.e., chronic sickness and nicotine use are not independent</p>
+<pre class="python"><code># Reusing the contingency_table created above
+chi2, p, dof, expected = stats.chi2_contingency(contingency_table)
+
+print(&quot;chi-squared p-value:&quot;, p)
+
+results_table = pd.concat([pd.DataFrame(expected), contingency_table])
+results_table.columns.name = &quot;NICOTINE_USE&quot;
+
+results_table.index = [&quot;0 (expected)&quot;, &quot;1 (expected)&quot;, &quot;0 (actual)&quot;, &quot;1 (actual)&quot;]
+results_table.index.name = &quot;CHRONIC&quot;
+results_table
+
+# chi-squared p-value: 1.4525226945056695e-51</code></pre>
+<p>The p-value is &lt; 0.05, so we can reject the null hypothesis and accept the alternate hypothesis, that chronic
+sickness and nicotine use dependent, or in other words, that there is a connection between the two.</p>
+<p>This table shows that based on the data, we would expect 2,076 people who did not use nicotine and had chronic
+sickness, and 1,611 people who did use nicotine and had chronic sickness.</p>
+<p>Instead, our observed findings show that 1,648 who did not use nicotine had chronic sickness and 2,040 people who
+did use nicotine had chronic sickness.</p>
+<p>Of course, correlation does not equal causation, so further analysis would be needed to determine the effect size
+and perhaps a regression of some kind to control for other factors.</p>
+<p>Attribution: <a href="https://github.com/learn-co-curriculum/dsc-hypothesis-testing-lab">The Flatiron School repo</a></p>
+</div>
+</div>

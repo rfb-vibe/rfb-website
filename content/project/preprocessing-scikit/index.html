@@ -1,0 +1,204 @@
+---
+title: 'Preprocessing Lab with Scikit-Learn'
+author: 'Rebecca Frost-Brewer'
+date: '2022-05-01'
+slug: []
+categories: []
+tags: []
+---
+
+
+
+<div id="preprocessing-with-scikit-learn---cumulative-lab" class="section level1">
+<h1>Preprocessing with scikit-learn - Cumulative Lab</h1>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>In this cumulative lab, you’ll practice applying various preprocessing techniques with scikit-learn (<code>sklearn</code>) to the Ames Housing dataset in order to prepare the data for predictive modeling. The main emphasis here is on preprocessing (not EDA or modeling theory), so we will skip over most of the visualization and metrics steps that you would take in an actual modeling process.</p>
+<!--more-->
+</div>
+<div id="objectives" class="section level2">
+<h2>Objectives</h2>
+<p>You will be able to:</p>
+<ul>
+<li>Practice identifying which preprocessing technique to use</li>
+<li>Practice filtering down to relevant columns</li>
+<li>Practice applying <code>sklearn.impute</code> to fill in missing values</li>
+<li>Practice applying <code>sklearn.preprocessing</code>:
+<ul>
+<li><code>OrdinalEncoder</code> for converting binary categories to 0 and 1 within a single column</li>
+<li><code>OneHotEncoder</code> for creating multiple “dummy” columns to represent multiple categories</li>
+</ul></li>
+</ul>
+</div>
+<div id="lab-setup" class="section level2">
+<h2>Lab Setup</h2>
+<p>The prediction target for this analysis is the sale price of the home, so we separate the data into <code>X</code> and <code>y</code> accordingly:</p>
+<pre class="python"><code># prediction target (DV)
+y = df[&quot;SalePrice&quot;]
+
+# features to predict sale price (IV)
+X = df.drop(&quot;SalePrice&quot;, axis=1)
+
+from sklearn.model_selection import train_test_split
+
+# Declare relevant columns
+relevant_columns = [
+    &#39;LotFrontage&#39;,  # Linear feet of street connected to property
+    &#39;LotArea&#39;,      # Lot size in square feet
+    &#39;Street&#39;,       # Type of road access to property
+    &#39;OverallQual&#39;,  # Rates the overall material and finish of the house
+    &#39;OverallCond&#39;,  # Rates the overall condition of the house
+    &#39;YearBuilt&#39;,    # Original construction date
+    &#39;YearRemodAdd&#39;, # Remodel date (same as construction date if no remodeling or additions)
+    &#39;GrLivArea&#39;,    # Above grade (ground) living area square feet
+    &#39;FullBath&#39;,     # Full bathrooms above grade
+    &#39;BedroomAbvGr&#39;, # Bedrooms above grade (does NOT include basement bedrooms)
+    &#39;TotRmsAbvGrd&#39;, # Total rooms above grade (does not include bathrooms)
+    &#39;Fireplaces&#39;,   # Number of fireplaces
+    &#39;FireplaceQu&#39;,  # Fireplace quality
+    &#39;MoSold&#39;,       # Month Sold (MM)
+    &#39;YrSold&#39;        # Year Sold (YYYY)
+]
+
+# Reassign X_train so that it only contains relevant columns
+X_train = X_train.loc[:, relevant_columns]
+
+# separate data (X = features, y = outcome/prediction) into train set and test set
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)</code></pre>
+<div id="fitting-a-model" class="section level4">
+<h4>Fitting a Model</h4>
+<p>For this lab we will be using a <code>LinearRegression</code> model from scikit-learn (<a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html">documentation here</a>).</p>
+</div>
+<div id="missing-indicator-for-lotfrontage" class="section level3">
+<h3>Missing Indicator for <code>LotFrontage</code></h3>
+<p>First, we import <code>sklearn.impute.MissingIndicator</code> (<a href="https://scikit-learn.org/stable/modules/generated/sklearn.impute.MissingIndicator.html">documentation here</a>). The goal of using a <code>MissingIndicator</code> is creating a new column to represent which values were NaN (or some other “missing” value) in the original dataset, in case NaN ends up being a meaningful indicator rather than a random missing bit of data.</p>
+<p>A <code>MissingIndicator</code> is a scikit-learn transformer, meaning that we will use the standard steps for any scikit-learn transformer:</p>
+<ol style="list-style-type: decimal">
+<li>Identify data to be transformed (typically not every column is passed to every transformer)</li>
+<li>Instantiate the transformer object</li>
+<li>Fit the transformer object (on training data only)</li>
+<li>Transform data using the transformer object</li>
+<li>Add the transformed data to the other data that was not transformed</li>
+</ol>
+<pre class="python"><code>from sklearn.impute import MissingIndicator
+
+# (1) Identify data to be transformed
+# We only want missing indicators for LotFrontage
+frontage_train = X_train[[&quot;LotFrontage&quot;]]
+
+# (2) Instantiate the transformer object
+missing_indicator = MissingIndicator()
+
+# (3) Fit the transformer object on frontage_train
+missing_indicator.fit(frontage_train)
+
+# (4) Transform frontage_train and assign the result
+# to frontage_missing_train
+frontage_missing_train = missing_indicator.transform(frontage_train)
+
+# Visually inspect frontage_missing_train
+frontage_missing_train</code></pre>
+</div>
+<div id="imputing-missing-values-for-lotfrontage" class="section level3">
+<h3>Imputing Missing Values for LotFrontage</h3>
+<p>Now that we have noted where missing values were originally present, let’s use a <code>SimpleImputer</code> (<a href="https://scikit-learn.org/stable/modules/generated/sklearn.impute.SimpleImputer.html">documentation here</a>) to fill in those NaNs in the <code>LotFrontage</code> column.</p>
+<p>The process is very similar to the <code>MissingIndicator</code> process, except that we want to replace the original <code>LotFrontage</code> column with the transformed version instead of just adding a new column on.</p>
+<p>In the cell below, create and use a <code>SimpleImputer</code> with <code>strategy="median"</code> to transform the value of <code>frontage_train</code> (declared above).</p>
+<pre class="python"><code>from sklearn.impute import SimpleImputer
+
+# (1) frontage_train was created previously, so we don&#39;t
+# need to extract the relevant data again
+
+# (2) Instantiate a SimpleImputer with strategy=&quot;median&quot;
+imputer = SimpleImputer(strategy = &#39;median&#39;)
+
+# (3) Fit the imputer on frontage_train
+imputer.fit(frontage_train)
+
+# (4) Transform frontage_train using the imputer and
+# assign the result to frontage_imputed_train
+frontage_imputed_train = imputer.transform(frontage_train)
+
+# Visually inspect frontage_imputed_train
+frontage_imputed_train</code></pre>
+</div>
+<div id="binary-categories" class="section level3">
+<h3>Binary Categories</h3>
+<p>For binary categories, we will use an <code>OrdinalEncoder</code> (<a href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OrdinalEncoder.html">documentation here</a>) to convert the categories of <code>Street</code> and <code>LotFrontage_Missing</code> into binary values (0s and 1s).</p>
+<p>Just like in Step 2 when we used the <code>MissingIndicator</code> and <code>SimpleImputer</code>, we will follow these steps:</p>
+<ol style="list-style-type: decimal">
+<li>Identify data to be transformed</li>
+<li>Instantiate the transformer object</li>
+<li>Fit the transformer object (on training data only)</li>
+<li>Transform data using the transformer object</li>
+<li>Add the transformed data to the other data that was not transformed</li>
+</ol>
+<p>Let’s start with transforming <code>Street</code>:</p>
+<pre class="python"><code>from sklearn.preprocessing import OrdinalEncoder
+
+# (1) Create a variable street_train that contains the
+# relevant column from X_train
+# (Use double brackets [[]] to get the appropriate shape)
+street_train = X_train[[&#39;Street&#39;]]
+
+# (2) Instantiate an OrdinalEncoder
+encoder_street = OrdinalEncoder()
+
+# (3) Fit the encoder on street_train
+encoder_street.fit(street_train)
+
+# (4) Transform street_train using the encoder and
+# assign the result to street_encoded_train
+street_encoded_train = encoder_street.transform(street_train)
+
+# Flatten for appropriate shape
+street_encoded_train = street_encoded_train.flatten()</code></pre>
+</div>
+<div id="multiple-categories" class="section level3">
+<h3>Multiple Categories</h3>
+<p>Unlike <code>Street</code> and <code>LotFrontage_Missing</code>, <code>FireplaceQu</code> has more than two categories. Therefore the process for encoding it numerically is a bit more complicated, because we will need to create multiple “dummy” columns that are each representing one category.</p>
+<p>To do this, we can use a <code>OneHotEncoder</code> from <code>sklearn.preprocessing</code> (<a href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html">documentation here</a>).</p>
+<p>The first several steps are very similar to all of the other transformers we’ve used so far, although the process of combining the data with the original data differs.</p>
+<p>In the cells below, complete steps <code>(0)</code>-<code>(4)</code> of preprocessing the <code>FireplaceQu</code> column using a <code>OneHotEncoder</code>:</p>
+<pre class="python"><code># (0) import OneHotEncoder from sklearn.preprocessing
+from sklearn.preprocessing import OneHotEncoder
+
+# (1) Create a variable fireplace_qu_train
+# extracted from X_train
+# (double brackets due to shape expected by OHE)
+fireplace_qu_train = X_train[[&quot;FireplaceQu&quot;]]
+
+# (2) Instantiate a OneHotEncoder with categories=&quot;auto&quot;,
+# sparse=False, and handle_unknown=&quot;ignore&quot;
+ohe = OneHotEncoder(categories = &#39;auto&#39;, sparse = False, handle_unknown = &#39;ignore&#39;)
+
+# (3) Fit the encoder on fireplace_qu_train
+ohe.fit(fireplace_qu_train)
+
+# (4) Transform fireplace_qu_train using the encoder and
+# assign the result to fireplace_qu_encoded_train
+fireplace_qu_encoded_train = ohe.transform(fireplace_qu_train)
+
+# (5a) Make the transformed data into a dataframe
+fireplace_qu_encoded_train = pd.DataFrame(
+    # Pass in NumPy array
+    fireplace_qu_encoded_train,
+    # Set the column names to the categories found by OHE
+    columns=ohe.categories_[0],
+    # Set the index to match X_train&#39;s index
+    index=X_train.index
+)
+
+# (5b) Drop original FireplaceQu column
+X_train.drop(&quot;FireplaceQu&quot;, axis=1, inplace=True)
+
+# (5c) Concatenate the new dataframe with current X_train
+X_train = pd.concat([X_train, fireplace_qu_encoded_train], axis=1)</code></pre>
+</div>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<p>In this cumulative lab, you used various techniques to prepare the Ames Housing data for modeling. You filtered down the full dataset to only relevant columns, filled in missing values, and converted categorical data into numeric data. Each time, you practiced the scikit-learn transformer workflow by instantiating the transformer, fitting on the relevant training data, transforming the training data, and transforming the test data at the end (without re-instantiating or re-fitting the transformer object).</p>
+<p>Attribution: <a href="https://github.com/learn-co-curriculum/dsc-website-ab-testing-lab">The Flatiron School</a></p>
+</div>
+</div>

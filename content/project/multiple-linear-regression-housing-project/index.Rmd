@@ -1,0 +1,215 @@
+---
+title: 'Multiple Linear Regression: Housing Sale Price Analysis'
+author: 'Rebecca Frost-Brewer'
+date: '2022-05-01'
+slug: []
+categories: []
+tags: []
+---
+
+# Housing Sale Price Analysis in King County, WA
+
+## Business Understanding
+Emerald City Realtors serves the King County community, providing prospective home sellers with guidance on how to improve the value of their home prior to listing. 
+
+* **Stakeholder**: Emerald City Realtors
+* **Business Problem**: Emerald City Realtors need to provide prospective home sellers with guidance on how to improve the value of their home prior to listing, including the predicted increase in value expected based on improvements to particular features.
+* **Business Question**: What features of their home can prospective home sellers change or improve to increase the value of their home, and by amount could this increase be specific to certain features?
+
+These recommendations will be valuable to Emerald City Realtors because they will help prospective home sellers confidently ascertain how they can improve the value of their home, and if the investment is worth the cost.
+
+
+## Data Understanding
+
+This project uses the King County House Sales dataset because Emerald City Realtors and its prospective homesellers are all based in King County. The dataset includes all data of single-family home sales from 2014-2015. The dataset itself can be found in `kc_house_data.csv` in the data folder of this GitHub repository along with the descriptions of the features, found in `column_names.md` Further information about the features can be found on the [King County Assessor Website](https://info.kingcounty.gov/assessor/esales/Glossary.aspx?type=r)
+
+<img src="img/seattle.png" alt="seattle" style="width: 600px;" align="center"/>
+
+The original dataset includes sales data for 21,597 homes with 20 different features, which include:
+
+* `date` - Date house was sold
+* `price` - Sale price (prediction target)
+* `bedrooms` - Number of bedrooms
+* `bathrooms` - Number of bathrooms
+* `sqft_living` - Square footage of living space in the home
+* `sqft_lot` - Square footage of the lot
+* `floors` - Number of floors (levels) in house
+* `waterfront` - Whether the house is on a waterfront
+* `view` - Quality of view from house
+* `condition` - How good the overall condition of the house is. Related to maintenance of house
+* `grade` - Overall grade of the house. Related to the construction and design of the house
+* `sqft_above` - Square footage of house apart from basement
+* `sqft_basement` - Square footage of the basement
+* `yr_built` - Year when house was built
+* `yr_renovated` - Year when house was renovated
+* `zipcode` - ZIP Code used by the United States Postal Service
+
+## Data Processing
+
+To assist with creating sound models, we completed some data cleaning including:
+
+* Dropping unrelated features to our business question (ID, sale date, zipcode, latitude, longitude, lot size, and the lot size and living space of a home's 15 closest neighbords)
+* Dummy-encode categorical variables (`condition` and `grade`)
+* Create binary variables for waterfront, view, and renovation status
+
+```{python eval=FALSE}
+
+# Let's remove the 'price' outliers in the top 5% of the observations
+kcdf = kcdf.query('price < price.quantile(.95)')
+
+# Create our dummy variables for the categorical features
+cond_dummies = pd.get_dummies(kcdf['condition'], prefix = 'cond', drop_first = True)
+grade_dummies = pd.get_dummies(kcdf['grade'], prefix = 'grade', drop_first = True)
+# The one that's dropped is where the coef comes from - Grage 10 to Grade 5, lose
+# No diff between a grade 10 and grade 13
+
+# Drop the original column and concatenate our dummy variable columns with our original dataframe
+kcdf = kcdf.drop(['condition', 'grade'], axis = 1)
+kcdf_clean = pd.concat([kcdf, cond_dummies, grade_dummies], axis = 1)
+
+```
+
+
+### Exploratory Correlations
+
+We are showing correlation and using regression coefficients in this analysis to be able to show the relationship between one or more features with sale price.
+
+Using regression and interpreting correlation coefficients is effective for this business problem because it will allow for us to determine how sale price is impacted by different features and to what degree.
+
+Building complex models with multiple features allows for us to be able to make more accurate, data-driven predictions.
+
+```{python eval=FALSE}
+
+# Let's check the correlations in an easy-to-read table
+# 0.7-0.9 highly correlated
+# 0.5-0.7 moderately correlated
+
+kcdf_corrs = kcdf_clean.corr()['price'].map(abs).sort_values(ascending = False)
+# sqft_living = 0.62
+# sqft_above = 0.53
+
+```
+
+
+## Modeling
+
+We are showing correlation and using regression coefficients in this analysis to be able to show the relationship between one or more features with sale price.
+
+Using regression and interpreting correlation coefficients is effective for this business problem because it will allow for us to determine how sale price is impacted by different features and to what degree.
+
+Building complex models with multiple features allows for us to be able to make more accurate, data-driven predictions.
+
+```{python eval=FALSE}
+
+def reg_qq_sced(y, X, add_constant=True, qq=True, sced=True):
+    """
+    Display a the summary output of a linear regression model, with predictors X and target y.
+
+    Also displays a QQ plot and residual plot by default. These can be toggled off.
+    
+    The function will add a constant to the predictors by default, and this can be toggled off.
+    """
+    # Run a linear regression and display the summary
+    if add_constant:
+        X_sm = sm.add_constant(X, has_constant='add')
+    else:
+        X_sm = X
+    model = sm.OLS(y, X_sm).fit()
+    display(model.summary())
+
+    # Display a QQ plot
+    if qq:
+        fig_qq = sm.graphics.qqplot(model.resid, line='45', fit=True,)
+        fig_qq.suptitle('QQ plot for residual normality check')
+    else:
+        pass
+
+    # Display a plot of predicted values vs. residuals
+    if sced:    
+        preds = model.predict(X_sm)
+        residuals = model.resid
+        fig_resid, ax = plt.subplots(figsize=(10,5))
+        fig_resid.suptitle('Predicted vs. residual plot for homoscedasticity check')
+        ax.scatter(preds, residuals, alpha=0.2)
+        ax.plot(preds, [0 for i in range(len(X_sm))])
+        ax.set_xlabel("Predicted Value")
+        ax.set_ylabel("Actual - Predicted Value");
+    else:
+        pass
+    lr = LinearRegression()
+    lr.fit(X_sm, y)
+    print(f'Model adjusted R-squared: {model.rsquared_adj}')
+    print(f'Model Mean Absolute Error: {metrics.mean_absolute_error(y, lr.predict(X_sm))}')
+    
+    
+# Code reference: https://github.com/zshoorbajee/King-County-House-Sales-Flatiron-Project2/
+# blob/main/King_County_analysis.ipynb
+
+```
+
+
+## Regression Results
+
+```{python eval=FALSE}
+
+X2_preds = kcdf_clean[['sqft_living',
+                      'sqft_basement',
+                      'bedrooms',
+                      'bathrooms',
+                      'floors',
+                      'yr_built',
+                      'cond_Fair',
+                      'cond_Good',
+                      'cond_Very Good',
+                      'grade_11 Excellent',
+                      'grade_3 Poor',
+                      'grade_4 Low',
+                      'grade_5 Fair',
+                      'grade_6 Low Average',
+                      'grade_7 Average',
+                      'grade_8 Good',
+                      'grade_9 Better',
+                      'waterfront',
+                      'view_YES']]
+
+
+reg_qq_sced(y_target, X2_preds)
+
+# Model adjusted R-squared: 0.575158941672169
+# Model Mean Absolute Error: 106248.25002570756
+
+```
+
+
+In our final model comprising of all features except that of `cond_Poor`, `grade_12 Luxury`, and `reno_status`, our model's performance based on its adjusted R-squared improved from 38.98 percent to 57.5 percent.
+
+Further, the Mean Absolute Error improved from our baseline score of 131878.02 to 106248.25, which is good.
+
+In our final model, all features have a statistically significant linear relationship with sale price.
+
+* While holding all other variables constant, the addition of a bathroom increases sale price by 29,020 dollars
+* While holding all other variables constant, the addition of one floor level increases sale price by 41,040 dollars
+* While holding all other variables constant, improving a home's condition from Average to Very Good increases sale price by 38,810 dollars
+* While holding all other variables constant, improving a home's grade from Better to High Quality increases sale price by 82,180 dollars
+
+## Recommendations
+
+1. Improve the grade of your home (construction quality) at a minimum to High Quality. An improvement from Better to High Quality is predicted to increase the sale price by 82,180 dollars
+2. Adding an additional bathroom to your home is predicted to increase its sale price by 29,020 dollars
+3. Each additional square foot of living space is predicted to add 81.12 dollars to the sale price; a 600-square foot addition would be predicted to increase the sale price by 48,672
+
+## Limitations and Next Steps
+
+Our model only explains 57.5 percent of the variation in sale price, so we ought to be cautious with our predictions and conclusions. Further, our final model does have high levels of heteroscedasticity, which violates one of the assumptions of linear regression, such that our conclusions may be premature without additional manipulation of the data.
+
+**Next Steps**:
+
+* Collect more recent sales data for more accurate representation of the market
+* Investigate influence of zipcode on sale price
+
+
+
+
+
+
+Attribution: [The Flatiron School](https://github.com/learn-co-curriculum/dsc-phase-2-project-v2-3)

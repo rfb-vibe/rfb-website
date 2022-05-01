@@ -1,0 +1,225 @@
+---
+title: 'Linear Regression Analysis Lab'
+author: 'Rebecca Frost-Brewer'
+date: '2022-05-01'
+slug: []
+categories: []
+tags: []
+---
+
+# Linear Regression - Cumulative Lab
+
+## Introduction 
+
+In this cumulative lab you'll perform a full linear regression analysis and report the findings of your final model, including both predictive model performance metrics and interpretation of fitted model parameters.
+
+<!--more--> 
+
+## Objectives
+
+You will be able to:
+
+* Perform a full linear regression analysis with iterative model development
+* Evaluate your final model and interpret its predictive performance metrics
+* Apply an inferential lens to interpret relationships between variables identified by the model
+
+
+### Business Understanding
+
+You just got hired by LEGO! Your first project is going to be to develop a pricing algorithm to help set a target price for new LEGO sets that are released to market. The goal is to save the company some time and to help ensure consistency in pricing between new products and past products.
+
+The main purpose of this algorithm is *predictive*, meaning that **your model should be able to take in attributes of a LEGO set that does not yet have a set price, and to predict a good price**. The effectiveness of your predictive model will be measured by how well it predicts prices in our test set, where we know what the actual prices were but the model does not.
+
+The secondary purpose of this algorithm is *inferential*, meaning that **your model should be able to tell us something about the relationship between the attributes of a LEGO set and its price**. You will apply your knowledge of statistics to include appropriate caveats about these relationships.
+
+### Data Understanding
+
+You have access to a dataset containing over 700 LEGO sets released in the past, including attributes of those sets as well as their prices. You can assume that the numeric attributes in this dataset have already been preprocessed appropriately for modeling (i.e. that there are no missing or invalid values), while the text attributes are simply there for your visual inspection and should not be used for modeling. Also, note that some of these attributes cannot be used in your analysis because they will be unavailable for future LEGO products or are otherwise irrelevant.
+
+You do not need to worry about inflation or differences in currency; just predict the same kinds of prices as are present in the past data, which have already been converted to USD.
+
+```{python eval=FALSE}
+
+train = pd.read_csv("data/lego_train.csv")
+test = pd.read_csv("data/lego_test.csv")
+
+X_train = train.drop("list_price", axis=1)
+y_train = train["list_price"]
+
+X_test = test.drop("list_price", axis=1)
+y_test = test["list_price"]
+
+X_train
+
+```
+
+
+```{python eval=FALSE}
+
+from sklearn.linear_model import LinearRegression
+
+baseline_model = LinearRegression()
+
+from sklearn.model_selection import cross_validate, ShuffleSplit
+
+# Perform 3 separate train-test splits within the X_train and y_train sets
+splitter = ShuffleSplit(n_splits=3, test_size=0.25, random_state=0)
+
+# Find the train and test scores for each
+baseline_scores = cross_validate(
+    estimator=baseline_model,
+    X=X_train[[most_correlated_feature]],
+    y=y_train,
+    return_train_score=True,
+    cv=splitter
+)
+
+print("Train score:     ", baseline_scores["train_score"].mean())
+# Train score:      0.7785726407224942
+
+print("Validation score:", baseline_scores["test_score"].mean())
+# Validation score: 0.7793473618106956
+
+```
+
+
+## 2. Build a Model with All Numeric Features
+
+Now that we have established a baseline, it's time to move on to more complex models.
+
+### Numeric Feature Selection
+
+One thing that you will almost always need to do in a modeling process is remove non-numeric data prior to modeling. While you could apply more-advanced techniques such as one-hot encoding or NLP in order to convert non-numeric columns into numbers, this time just create a dataframe `X_train_numeric` that is a copy of `X_train` that only contains numeric columns.
+
+```{python eval=FALSE}
+
+X_train_numeric = X_train.select_dtypes("number").copy()
+X_train_second_model = X_train_numeric.drop(["prod_id", "num_reviews", "star_rating"], axis=1).copy()
+
+second_model = LinearRegression()
+
+second_model_scores = cross_validate(
+    estimator=second_model,
+    X=X_train_second_model,
+    y=y_train,
+    return_train_score=True,
+    cv=splitter
+)
+
+print("Current Model")
+print("Train score:     ", second_model_scores["train_score"].mean())
+print("Validation score:", second_model_scores["test_score"].mean())
+
+# Current Model
+# Train score:      0.7884552982196166
+# Validation score: 0.755820363666055
+
+print("Baseline Model")
+print("Train score:     ", baseline_scores["train_score"].mean())
+print("Validation score:", baseline_scores["test_score"].mean())
+
+# Current Model
+# Train score:      0.7884552982196166
+# Validation score: 0.755820363666055
+
+```
+
+
+### Selecting Features Based on p-values
+
+Given that we suspect our model's issues are related to multicollinearity, let's try to narrow down those features. In this case, let's use the p-values assigned to the coefficients of the model.
+
+Looking at the model summary above, ***which features are statistically significant, with p-values below 0.05***? (P-values are labeled **P>|t|** in a StatsModels summary.)
+
+```{python eval=FALSE}
+
+significant_features = ["piece_count", "min_age"]
+
+third_model = LinearRegression()
+X_train_third_model = X_train[significant_features]
+
+third_model_scores = cross_validate(
+    estimator=third_model,
+    X=X_train_third_model,
+    y=y_train,
+    return_train_score=True,
+    cv=splitter
+)
+
+print("Current Model")
+print("Train score:     ", third_model_scores["train_score"].mean())
+print("Validation score:", third_model_scores["test_score"].mean())
+# Train score:      0.7869252233899845
+# Validation score: 0.7638761794341223
+
+
+print("Second Model")
+print("Train score:     ", second_model_scores["train_score"].mean())
+print("Validation score:", second_model_scores["test_score"].mean())
+# Train score:      0.7884552982196166
+# Validation score: 0.755820363666055
+
+
+print("Baseline Model")
+print("Train score:     ", baseline_scores["train_score"].mean())
+print("Validation score:", baseline_scores["test_score"].mean())
+# Train score:      0.7785726407224942
+# Validation score: 0.7793473618106956
+
+```
+
+
+### Selecting Features with `sklearn.feature_selection`
+
+Let's try a different approach. Scikit-learn has a submodule called `feature_selection` that includes tools to help reduce the feature set.
+
+We'll use `RFECV` ([documentation here](https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.RFECV.html#sklearn.feature_selection.RFECV)). "RFE" stands for "recursive feature elimination", meaning that it repeatedly scores the model, finds and removes the feature with the lowest "importance", then scores the model again. If the new score is better than the previous score, it continues removing features until the minimum is reached. "CV" stands for "cross validation" here, and we can use the same splitter we have been using to test our data so far.
+
+```{python eval=FALSE}
+
+from sklearn.feature_selection import RFECV
+from sklearn.preprocessing import StandardScaler
+
+# Importances are based on coefficient magnitude, so
+# we need to scale the data to normalize the coefficients
+X_train_for_RFECV = StandardScaler().fit_transform(X_train_second_model)
+
+model_for_RFECV = LinearRegression()
+
+# Instantiate and fit the selector
+selector = RFECV(model_for_RFECV, cv=splitter)
+selector.fit(X_train_for_RFECV, y_train)
+
+```
+
+
+## 4. Build and Evaluate a Final Predictive Model
+
+In the cell below, create a list `best_features` which contains the names of the best model features based on the findings of the previous step:
+
+```{python eval=FALSE}
+
+best_features = ["piece_count", "max_age", "difficulty_level"]
+X_train_final = X_train[best_features]
+X_test_final = X_test[best_features]
+
+final_model = LinearRegression()
+
+# Fit the model on X_train_final and y_train
+final_model.fit(X_train_final, y_train)
+
+# Score the model on X_test_final and y_test
+# (use the built-in .score method)
+final_model.score(X_test_final, y_test)
+# 0.6542913715071492
+
+from sklearn.metrics import mean_squared_error
+
+mean_squared_error(y_test, final_model.predict(X_test_final), squared=False)
+# 47.403687974333
+
+```
+
+
+
+Attribution: [The Flatiron School](https://github.com/learn-co-curriculum/dsc-linear-regression-lab)
