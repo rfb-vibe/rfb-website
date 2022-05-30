@@ -1,0 +1,241 @@
+---
+title: 'Intro Codethrough to Machine Learning Classification Algorithms'
+author: 'Rebecca Frost-Brewer'
+date: '2022-05-30'
+slug: intro-to-ml
+categories: []
+tags: []
+output: html_document
+---
+
+This post will be a simple, surface-level walk-through of some of the key components of machine learning classification algorithms.
+
+
+* Classifier: An algorithm that maps input data to a specific category
+* Classification Model: Tries to draw some conclusion from the input values to predict class labels/categories for new data
+* Feature: Individual, measurable property or characteristic of whatever is being observed
+* Binary Classification: Classification task with only two outcomes (Fraud, No Fraud)
+
+**Process**
+
+1. Split your data
+2. Initialize the classifier
+3. Train the classifier
+4. Predict the target 
+5. Evaluate the model
+
+
+## Train-Test-Split
+When training a machine learning algorithm, it's vital to keep a portion of the data separate, so that the algorithm never sees that small subset of data - this is the testing data that you will use once you've trained a model using the training data. Using the testing data last, you can identify how well the model is performing and if the model may be underfitting or overfitting the data.
+
+To prepare your data:
+
+```{python, eval=FALSE}
+
+# Split the data
+
+# Target variable 
+y = pre_df["target"]
+
+# Features
+X = pre_df.drop(["target"], axis=1)
+
+# Train-test-split function from scikit-learn
+from sklearn.model_selection import train_test_split
+
+# Create your training subset (X_train, y_train) and your testing subset (X_test, y_test)
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state = 47, test_size = .2)
+
+```
+
+
+## Classifiers
+### Decision Trees
+[Decision Trees](https://scikit-learn.org/stable/modules/tree.html) are a non-parametric supervised learning method used for classification and regression with the goal of creating a model that predicts the value of a target variable by learning simple decision rules inferred from the data features. In other words, a decision tree is a just series of IF-ELSE statements (rules). Each path from the root of a decision tree to one of its leaves can be transformed into a rule simply by combining the decisions along the path to form the antecedent, and taking the leaf’s class prediction as the consequence (IF-ELSE statements follow the form: IF antecedent THEN consequence).
+
+The tree is grown until some stopping criteria is achieved, whether that is the depth of the tree or a similar measure.
+
+![decision-tree](dt3.png)
+
+```{python, eval=FALSE}
+
+from sklearn.tree import DecisionTreeClassifier
+
+# Initialize decision tree classifier
+dt = DecisionTreeClassifier()
+
+# Fit the training data (training the classifier here - only fit the training data!)
+dt.fit(X_train, y_train)
+
+# Predict the target on the training and testing data
+training_preds = dt.predict(X_train)
+test_preds = dt.predict(X_test)
+
+# Evaluate the model
+# Evaluation metrics may differ depending on the classification problem
+
+accuracy_score(y_test, test_preds)
+precision_score(y_test, test_preds)
+recall_score(y_test, test_preds)
+f1_score(y_test, test_preds)
+
+```
+
+
+## Logistic Regression
+[Logistic regression](https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression) is a linear model that is used for classification and models the probability of one event or class (out of two alternatives) taking place and that the target variable is categorical, e.g., a patient has heart disease (1) or does not have heart disease (0).
+
+
+```{python, eval=FALSE}
+
+from sklearn.linear_model import LogisticRegression
+
+
+# Initialize the logistic regression classifier and fit the data
+lr = LogisticRegression()
+
+# Fit the training data (training the classifier here - only fit the training data!)
+lr.fit(X_train, y_train)
+
+# Predict the target on the training and testing data
+training_preds = lr.predict(X_train)
+test_preds = lr.predict(X_test)
+
+# Evaluate the model
+# Evaluation metrics may differ depending on the classification problem
+
+accuracy_score(y_test, test_preds)
+precision_score(y_test, test_preds)
+recall_score(y_test, test_preds)
+f1_score(y_test, test_preds)
+
+```
+
+
+## K-Nearest Neighbors
+The [neighbors-based classification](https://scikit-learn.org/stable/modules/neighbors.html#classification) is a type of instance-based learning that computes classification from a simple majority vote of the nearest neighbors of each point: a query point is assigned the data class which has the most representatives within the nearest neighbors of the point. For this modeling, $k$-Nearest Neighbors implements learning based on the  nearest neighbors of each query point, where $k$ is an integer value specified by the user.
+
+![knn](knn.png)
+
+```{python, eval=FALSE}
+
+from sklearn.neighbors import KNeighborsClassifier
+
+# Initialize the KNN classifier and fit the data
+knn = KNeighborsClassifier()
+
+# Fit the training data (training the classifier here - only fit the training data!)
+knn.fit(X_train, y_train)
+
+# Predict the target on the training and testing data
+training_preds = knn.predict(X_train)
+test_preds = knn.predict(X_test)
+
+# Evaluate the model
+# Evaluation metrics may differ depending on the classification problem
+
+accuracy_score(y_test, test_preds)
+precision_score(y_test, test_preds)
+recall_score(y_test, test_preds)
+f1_score(y_test, test_preds)
+
+```
+
+
+## Random Forest
+[Random Forest Classifiers](https://scikit-learn.org/stable/modules/ensemble.html#forest) are a type of ensemble method, which means a diverse set of classifiers is created by introducing randomness in the classifier construction; in this case, the prediction of the ensemble is given as the averaged prediction of the individual decision tree classifiers. In random forests, each tree in the ensemble is built from a sample drawn with replacement (i.e., a bootstrap sample) from the training set.
+
+![random-forest](rf.png)
+
+```{python, eval=FALSE}
+
+from sklearn.ensemble import RandomForestClassifier
+
+# Initialize the Random Forest classifier and fit the data
+rf = RandomForestClassifier()
+
+# Fit the training data (training the classifier here - only fit the training data!)
+rf.fit(X_train, y_train)
+
+# Predict the target on the training and testing data
+training_preds = rf.predict(X_train)
+test_preds = rf.predict(X_test)
+
+# Evaluate the model
+# Evaluation metrics may differ depending on the classification problem
+
+accuracy_score(y_test, test_preds)
+precision_score(y_test, test_preds)
+recall_score(y_test, test_preds)
+f1_score(y_test, test_preds)
+
+```
+
+## XGBoost
+From its documentation, [XGBoost](https://xgboost.readthedocs.io/en/latest/index.html) is an optimized distributed gradient boosting library designed to be highly efficient, flexible and portable. It implements machine learning algorithms under the Gradient Boosting framework.
+
+Gradient Boosting alogrithms are a more advanced boosting algorithm that makes use of Gradient Descent. It starts with a weak learner that makes predictions on the dataset. The algorithm then checks this learner's performance, identifying examples that it got right and wrong. The model then calculates the Residuals for each data point, to determine how far off the mark each prediction was. The model then combines these residuals with a Loss Function to calculate the overall loss.
+
+XGBoost, or eXtreme Gradient Boosting, provides a parallel tree boosting that solve many data science problems in a fast and accurate way. It is a stand-alone library that implements popular gradient boosting algorithms in the fastest, most performant way possible. In fact, XGBoost provides best-in-class performance compared to other classification algorithms.
+
+![xgboost](xgboost.png)
+
+```{python, eval=FALSE}
+
+from xgboost import XGBClassifier
+
+# Initialize the XGBoost classifier and fit the data
+xgb = XGBClassifier()
+
+# Fit the training data (training the classifier here - only fit the training data!)
+xgb.fit(X_train, y_train)
+
+# Predict the target on the training and testing data
+training_preds = xgb.predict(X_train)
+test_preds = xgb.predict(X_test)
+
+# Evaluate the model
+# Evaluation metrics may differ depending on the classification problem
+
+accuracy_score(y_test, test_preds)
+precision_score(y_test, test_preds)
+recall_score(y_test, test_preds)
+f1_score(y_test, test_preds)
+
+```
+
+
+## Classification Metrics
+How do we evaluate how well our classification models are predicting correct labels/classes? We can use evaluation metrics provided within the scikit-learn package.
+
+* `accuracy_score(y_true, y_pred)` calculates the accuracy classification score
+* `f1_score(y_true, y_pred)` calculates the F1-score, which is the harmonic mean of the precision and recall scores
+* `precision_score(y_true, y_pred)` calculates what percent of the predictions were correct
+* `recall_score(y_true, y_pred)` calculates what percent of the positive cases were caught
+* `roc_auc_score(y_true, y_pred)` calculates the Area Under the Receiver Operating Characteristic Curve (ROC AUC) from prediction scores
+
+The [**Classification Report**](https://scikit-learn.org/stable/modules/model_evaluation.html#classification-report) is a printed report showing the main classification metrics: precision, recall, and the F1 score, along with the sample size (indicated as 'support').
+
+```{python, eval=FALSE}
+
+from sklearn.metrics import classification_report
+
+classification_report(y_test, y_pred)
+
+```
+
+
+The [**Confusion Matrix**](https://scikit-learn.org/stable/modules/model_evaluation.html#confusion-matrix) is a function evaluates classification accuracy by computing the confusion matrix with each row corresponding to the true class. When creating a confusion matrix, you can normalize it such that it will show the percentage prediction of each class made by the model for that specific true label.
+
+The higher the diagonal values of the confusion matrix the better, indicating many correct predictions of True Positives and True Negatives.
+
+```{python, eval=FALSE}
+
+from sklearn.metrics import plot_confusion_matrix
+
+plot_confusion_matrix(clf, X_test_scaled, y_test, normalize = 'true', cmap = 'Blues');
+
+```
+
+
+![example-confusion-matrix](final-matrix.png)
