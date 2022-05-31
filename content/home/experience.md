@@ -34,6 +34,7 @@ experience:
         Tasks included:
         
         * Apply appropriate preprocessing and feature engineering steps in preparation for predictive modeling
+        
         * Demonstrate iterative approach to modeling, building different kind of models (decision trees, random forests, k-nearest neighbors, XGBoost), tuning hyperparameters, and assessing classification metrics (F1-scores)
         
   - title: Multiple Linear Regression
@@ -48,7 +49,9 @@ experience:
         Tasks included:
         
         * Identify the appropriate modeling technique given a problem statement based on the availability, variety, and quality of data
+        
         * Build a baseline linear regression model as well as several iterative models, and extract insights from a final multiple linear regression model to make business recommendations
+        
         * Communicate regression results of statistical analyses to diverse audience via writing and oral presentation
         
   - title: Accommodation Support Specialist
