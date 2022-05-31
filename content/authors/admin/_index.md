@@ -6,7 +6,7 @@ title: Rebecca Frost-Brewer
 superuser: true
 
 # Role/position/tagline
-role: Aspiring Data Scientist
+role: Data Scientist
 
 # Organizations/Affiliations to show in About widget
 #organizations:
@@ -17,10 +17,10 @@ role: Aspiring Data Scientist
 #bio: My research interests include distributed robotics, mobile computing and programmable matter.
 
 # Interests to show in About widget
-interests:
-- Research and data analytics
-- Data-informed problem-solving and decision-making
-- Utilizing data to improve access
+why me:
+- Excited by the challenge of solving problems using a wide array of modeling and quantitative techniques
+- Keen to deliver meaningful insights and predictions about emerging trends to inform business solutions
+- Deeply curious and comfortable solving unstructured business problems by exploring large datasets
 
 # Education to show in About widget
 education:
@@ -31,12 +31,6 @@ education:
   - course: MA in Political Science
     institution: Georgia State University
     year: 2021
-  - course: MS in Higher Education Administration
-    institution: Miami University
-    year: 2015
-  - course: BA in History
-    institution: Elon University
-    year: 2008
 
 # Social/Academic Networking
 # For available icons, see: https://wowchemy.com/docs/getting-started/page-builder/#icons
@@ -70,7 +64,13 @@ email: ""
 highlight_name: false
 ---
 
-I'm glad you're here. After six years working in higher education administration, I am embarking on a career change into data science and analytics. As I continue developing my skills and proficiency, this website will host examples of my work along with various blog posts to document my learning and development as a data scientist.
+I'm glad you're here. I am a data scientist, obsessed with solving challenging problems by exploring and analyzing large datasets. For six years, I worked in higher education where I conducted analysis of internal datasets to extract insights to drive program and service decision-making. Further, I defined measures of success, developed and communicated both findings and recommendations to non-technical audiences, and built self-service tools for ongoing monitoring of trends.
+
+While my professional experience as a data scientist may be limited, I am well-versed in the technical programs and languages (Python / R) necessary to meet the expectations of all job responsibilities. I am excited by the challenge of solving problems using a wide array of modeling and quantitative techniques; my portfolio includes projects using multiple linear regression, logistic regression, decision trees and random forest classifiers, and ensemble methods like XGBoost.
+
+I am deeply curious and comfortable solving unstructured business problems by exploring large datasets and keen to deliver meaningful insights and predictions about emerging trends to inform business solutions. I am obsessed with asking questions, researching, problem-solving, and presenting my findings.
+
+I look forward to every opportunity to demonstrate my proficiency as a data scientist.
 
 
 {{< icon name="download" pack="fas" >}} Download my {{< staticref "uploads/resume.pdf" "newtab" >}}résumé{{< /staticref >}}.
