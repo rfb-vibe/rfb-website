@@ -10,6 +10,7 @@ output: html_document
 
 This post will be a simple, surface-level walk-through of some of the key components of machine learning classification algorithms.
 
+<!--more--> 
 
 * Classifier: An algorithm that maps input data to a specific category
 * Classification Model: Tries to draw some conclusion from the input values to predict class labels/categories for new data

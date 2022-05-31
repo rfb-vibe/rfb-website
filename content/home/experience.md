@@ -22,6 +22,35 @@ date_format: Jan 2006
 #   Leave `date_end` empty if it's your current employer.
 #   Begin multi-line descriptions with YAML's `|2-` multi-line prefix.
 experience:
+  - title: Solving a Classification Problem
+    company: Flatiron School
+    company_url: ''
+    company_logo: 
+    location: 
+    date_start: '2022-05-30'
+    date_end: 
+    description: >-
+        
+        Tasks included:
+        
+        * Apply appropriate preprocessing and feature engineering steps in preparation for predictive modeling
+        * Demonstrate iterative approach to modeling, building different kind of models (decision trees, random forests, k-nearest neighbors, XGBoost), tuning hyperparameters, and assessing classification metrics (F1-scores)
+        
+  - title: Multiple Linear Regression
+    company: Flatiron School
+    company_url: ''
+    company_logo: 
+    location: 
+    date_start: '2022-04-30'
+    date_end: 
+    description: >-
+        
+        Tasks included:
+        
+        * Identify the appropriate modeling technique given a problem statement based on the availability, variety, and quality of data
+        * Build a baseline linear regression model as well as several iterative models, and extract insights from a final multiple linear regression model to make business recommendations
+        * Communicate regression results of statistical analyses to diverse audience via writing and oral presentation
+        
   - title: Accommodation Support Specialist
     company: SCAD
     company_url: ''
