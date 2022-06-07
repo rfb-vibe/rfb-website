@@ -11,37 +11,30 @@ tags: []
 
 ## Introduction
 
-In this lab, you'll get another chance to practice your skills at conducting a full A/B test analysis. It will also be a chance to practice your data exploration and processing skills! The scenario you'll be investigating is data collected from the homepage of a music app page for audacity.
+This lab demonstrates my knowledge related to A/B testing and analysis including data explorating and processing skills.
 
 <!--more--> 
 
-## Objectives
-
-You will be able to:
-* Analyze the data from a website A/B test to draw relevant conclusions
-* Explore and analyze web action data
-
 ## Exploratory Analysis
-
-Start by loading in the dataset stored in the file 'homepage_actions.csv'. Then conduct an exploratory analysis to get familiar with the data.
 
 This data is collected from a homepage, with a control group and experiment group, and whether or not they viewed
 the page or clicked the page. It includes the timestamp of action as well as the participant id.
 
-Of the 8,188 participants, 6,328 viewed and only 1,860 clicked
 
 ```{python eval=FALSE}
 
+# Create an object of the experimental group
 eids = set(df[df.group=='experiment']['id'].unique())
+
+# Create an object of the control group
 cids = set(df[df.group=='control']['id'].unique())
+
+# Print the overlap of the groups
 print('Overlap of experiment and control groups: {}'.format(len(eids&cids)))
 
 ```
 
-
 ## Conduct a Statistical Test
-
-Conduct a statistical test to determine whether the experimental homepage was more effective than that of the control group.
 
 ```{python eval=FALSE}
 

@@ -1,5 +1,5 @@
 ---
-title: 'Exploring the Ames Housing Dataset with Pandas'
+title: 'Data Exploration with Pandas'
 author: 'Rebecca Frost-Brewer'
 date: '2022-03-03'
 slug: []
@@ -7,17 +7,11 @@ categories: []
 tags: []
 ---
 
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(eval = FALSE)
-```
-
-Using the [Ames, IA Housing dataset](https://www.kaggle.com/c/house-prices-advanced-regression-techniques), this lab practices using `pandas` to calculate central tendency, create subsets of data, use data visualizations to explore data, and gain insight into the dataset.
+Using the [Ames, IA Housing dataset](https://www.kaggle.com/c/house-prices-advanced-regression-techniques), this lab demonstrates my utilization of `pandas` to calculate central tendency, create subsets of data, use data visualizations to explore data, and gain insight into the dataset.
 
 <!--more--> 
 
-Attribution: [The Flatiron School repo](https://github.com/learn-co-curriculum/dsc-pandas-eda-lab)
-
-#### 2. Explore Data Distributions
+## Explore Data Distributions
 
 Produce summary statistics, visualizations, and interpretive text describing the distributions of `SalePrice`, `TotRmsAbvGrd`, and `OverallCond`.
 
@@ -26,9 +20,11 @@ Produce summary statistics, visualizations, and interpretive text describing the
 
 # Create an object that is a list of the sale prices
 sp = df['SalePrice']
+
 # Create an object that is the mean of the list of sale prices
 sp.mean = df['SalePrice'].mean()
 
+# Plot distribution of sale price
 fig, ax = plt.subplots(figsize=(10,7))
 ax.hist(sp, bins = "auto", alpha = 0.7)
 ax.axvline(sp.mean, color = "black")
@@ -38,6 +34,7 @@ ax.set_title('Distribution of Sale Prices');
 
 ```
 
+![distribution of sale price](dist-of-saleprice.png)
 
 ```{python, eval=FALSE}
 
@@ -53,70 +50,9 @@ The standard deviation is: 79442.50
 
 The distribution of the sale prices is left-skewed with its mean sale price of $180,900 and median sale price of $163,000. There seem to be some significant outliers that are influencing the mean, so the median is helpful to know.
 
-**Rooms Above Ground**
-```{python, eval=FALSE}
+## Explore Differences between Subsets
 
-# rag for 'Rooms Above Ground'
-rag = df['TotRmsAbvGrd']
-rag.mean = df['TotRmsAbvGrd'].mean()
-
-fig, ax = plt.subplots(figsize=(10,7))
-ax.hist(rag, bins = "auto", alpha = 0.7)
-ax.axvline(rag.mean, color = "black")
-ax.set_xlabel('Numbers of Rooms Above Ground')
-ax.set_ylabel('Number of Houses')
-ax.set_title('Distribution of Rooms Above Ground');
-
-```
-
-
-```{python, eval=FALSE}
-
-print("The mean is:", rag.mean)
-print("The median is:", df['TotRmsAbvGrd'].median())
-print("The standard deviation is:", df['TotRmsAbvGrd'].std())
-
-```
-
-This looks like more of a normal distribution around the mean, with 6-7 rooms on average above ground.
-
-**Overall Condition**
-```{python, eval=FALSE}
-
-overall = df['OverallCond']
-overall.mean = df['OverallCond'].mean()
-
-fig, ax = plt.subplots(figsize=(10,7))
-ax.hist(overall, bins = "auto", alpha = 0.7)
-ax.axvline(overall.mean, color = "black")
-ax.set_xlabel('Overall Condition');
-ax.set_ylabel('Number of Houses')
-ax.set_title('Distribution of Overall Condition');
-
-```
-
-
-```{python, eval=FALSE}
-
-print("The mean is:", overall.mean)
-print("The median is:", df['OverallCond'].median())
-print("The standard deviation is:", df['OverallCond'].std())
-
-```
-
-The mean is: 5.58
-The median is: 5.0
-The standard deviation is: 1.11
-
-The overall condition of the homes sold is normally distributed, though a 10-item scale isn't necessarily continuous, so a histogram might not have been the best choice to visualize this data.
-
-That being said, the median condition of home sold is "Average," with some more homes being sold above average, thus bringing the mean up a bit.
-
-#### 3. Explore Differences between Subsets
-
-Separate the data into subsets based on `OverallCond`, then demonstrate how this split impacts the distribution of `SalePrice`.
-
-To do, we're going to create three variables, each of which represents a record-wise subset of `df` (meaning, it has the same columns as `df`, but only some of the rows).
+Separate the data into subsets based on `OverallCond`, create three variables, then demonstrate how this split impacts the distribution of `SalePrice`.
 
 * `below_average_condition`: home sales where the overall condition was less than 5
 * `average_condition`: home sales where the overall condition was exactly 5
@@ -131,7 +67,7 @@ above_average_condition = df[df['OverallCond'] > 5]
 ```
 
 
-Then we'll plot of the distributions of sale price for each of these subsets.
+Plot of the distributions of sale price for each of these subsets.
 
 ```{python, eval=FALSE}
 
@@ -173,10 +109,12 @@ ax.legend();
 
 ```
 
+![houses by condition](by-condition.png)
+
 It's pretty clear that fewer homes were sold if their condition were below average. What's more interesting to me is that the range of homes sold, both in number and price, seems greater for "average condition" than that of "above average." I suppose that maybe makes sense in terms of availability, but this visualization would give me pause if someone said that above average conditioned home sell more often and for more money than average homes.
 
 
-#### 4. Explore Correlations
+## Explore Correlations
 
 Find the features that have the strongest positive and negative correlations with `SalePrice`, and produce plots representing these relationships.
 
@@ -208,7 +146,7 @@ print("Minimum Correlation Value:", min_corr_value)
 Most Negatively Correlated Column: KitchenAbvGr
 Minimum Correlation Value: -0.14
 
-Now, we'll create a scatter plot of the relevant columns.
+Create a box plot of the relevant columns.
 
 ```{python, eval=FALSE}
 
@@ -239,11 +177,13 @@ ax2.set_ylabel("Sale Price");
 
 ```
 
+![boxplot](boxplot.png)
+
 With regards to the boxplot of the overall condition of the home sold, there is a clear positive correlation, that as the overall condition improves from "Average" to "Good" to "Excellent", so too does the sale price - logic saying that the nicer the condition, the nicer the home, the more expensive the home. We also see more variance in sale price with as the overall condition improves, so there must be more in the data to explain that.
 
 For the number of kitchens above ground, this seems like a silly correlation to highlight; while mathematically it may indicate the strongest negative correlation, what are additional factors that may be driving this other than just tbe number of kitchens above ground.
 
-#### 5. Engineer and Explore a New Feature
+## Engineer and Explore a New Feature
 
 What is the relationship between the year sold and the year built?
 
@@ -265,11 +205,12 @@ ax.set_ylabel("Sale Price");
 
 ```
 
+![scatterplot](scatter.png)
 
 Generally speaking, the newer the home, the more expensive the sale price. This could be associated with the overall condition of the home, so that would be an interesting factor to include in analysis.
 
 
 
-
+Attribution: [The Flatiron School repo](https://github.com/learn-co-curriculum/dsc-pandas-eda-lab)
 
 

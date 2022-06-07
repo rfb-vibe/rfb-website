@@ -1,5 +1,5 @@
 ---
-title: "Querying a Customer Database"
+title: "SQL Demonstration"
 subtitle: "A lab demonstrating knowledge of SQL queries"
 author: "Rebecca Frost-Brewer"
 date: "2022-03-07"
@@ -9,21 +9,19 @@ tags: []
 output: html_document
 ---
 
-Using a customer database provided to me, this lab practices using SQL to pull several reports on different segments of the database and analyze trends based on those queries.
+Using a customer database provided to me, this lab demonstrates how I would use SQL to pull several reports on different segments of the database and analyze trends based on those queries.
 
 <!--more--> 
 
 ## The Task
-Your employer makes miniature models of products such as classic cars, motorcycles, and planes. They want you to pull several reports on different segments of their past customers, in order to better understand past sales as well as determine which customers will receive promotional material.
 
-Here is the entity relationship diagram (ERD) of the customer database from which we'll be working.
+Here is the entity relationship diagram (ERD) of the customer database from which I'll be working.
 
 ![erd](images/Database-Schema.png)
 
 
-### Getting Started
-We can conduct SQL queries using `pandas` with the `sqlite3` library.
-
+## Getting Started
+Conduct SQL queries using `pandas` with the `sqlite3` library.
 
 ```{python, eval=FALSE}
 
@@ -36,7 +34,8 @@ conn = sqlite3.Connection("data.sqlite")
 ```
 
 
-#### Query: Customers with Credit Over 25,000 in California
+## Query: Customers with Credit Over 25,000 in California
+
 Write a query that gets the contact first name, contact last name, phone number, address line 1, and credit limit for all customers in California with a credit limit greater than 25000.00.
 
 ```{python, eval=FALSE}
@@ -64,10 +63,9 @@ q1_result
 Output
 ![query1](images/expected_output_q1.png)
 
-#### Query: Customers Outside of the USA with "Collect" in Their Name
+## Query: Customers Outside of the USA with "Collect" in Their Name
 
 Write a query that gets the customer name, state, and country, for all customers outside of the USA with `"Collect"` as part of their customer name.
-
 
 ```{python, eval=FALSE}
 
@@ -91,12 +89,11 @@ q2_result
 Output
 ![query2](images/expected_output_q2.png)
 
-#### Query : Average Credit Limit by State in USA
+## Query : Average Credit Limit by State in USA
 
 Write a query that gets the average credit limit per state in the USA.
 
 The two fields selected should be `state` and `average_credit_limit`, which is the average of the `creditLimit` field for that state.
-
 
 ```{python, eval=FALSE}
 
@@ -120,11 +117,11 @@ q3_result
 Output
 ![query3](images/expected_output_q3.png)
 
-#### Query: Joining Customers and Orders
+## Query: Joining Customers and Orders
 
 Write a query that uses `JOIN` statements to get the customer name, order number, and status for all orders. Refer to the ERD above to understand which tables contain these pieces of information, and the relationship between these tables.
 
-We will only display the first 15 results.
+Only display the first 15 results.
 
 ```{python, eval=FALSE}
 
@@ -148,12 +145,11 @@ q4_result.head(15)
 Output
 ![query4](images/expected_output_q4.png)
 
-#### Query: Products that Have Been Purchased 10 or More Times
+## Query: Products that Have Been Purchased 10 or More Times
 
 Write a query that, for each customer, finds all of the products that they have purchased 10 or more times cumulatively. For each record, return  the customer name, customer number, product name, product code, and total number ordered. Sort the rows in descending order by the quantity ordered.
 
 The five columns selected should be `customerName`, `customerNumber`, `productName`, `productCode`, and `total_ordered`, where `total_ordered` is the sum of all quantities of that product ordered by that customer.
-
 
 ```{python, eval=FALSE}
 
@@ -189,6 +185,6 @@ q5_result
 Output
 ![query5](images/expected_output_q5.png)
 
-### Summary
+## Summary
 
 In this code through, I provided examples of several data queries for a model car company, mainly focused around its customer data using many of the major concepts and keywords associated with SQL `SELECT` queries: `FROM`, `WHERE`, `GROUP BY`, `HAVING`, `ORDER BY`, `JOIN`, `SUM`, `COUNT`, and `AVG`.

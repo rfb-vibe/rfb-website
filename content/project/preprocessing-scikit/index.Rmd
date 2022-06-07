@@ -1,5 +1,5 @@
 ---
-title: 'Preprocessing Lab with Scikit-Learn'
+title: 'Preprocessing Data with Scikit-Learn'
 author: 'Rebecca Frost-Brewer'
 date: '2022-05-01'
 slug: []
@@ -7,26 +7,14 @@ categories: []
 tags: []
 ---
 
-# Preprocessing with scikit-learn - Cumulative Lab
+# Preprocessing Data with scikit-learn
 
 ## Introduction
-In this cumulative lab, you'll practice applying various preprocessing techniques with scikit-learn (`sklearn`) to the Ames Housing dataset in order to prepare the data for predictive modeling. The main emphasis here is on preprocessing (not EDA or modeling theory), so we will skip over most of the visualization and metrics steps that you would take in an actual modeling process.
+This codethrough example applies  various preprocessing techniques with scikit-learn (`sklearn`) to the Ames Housing dataset in order to prepare the data for predictive modeling. The main emphasis here is on preprocessing (not EDA or modeling theory).
 
 <!--more--> 
 
-## Objectives
-
-You will be able to:
-
-* Practice identifying which preprocessing technique to use
-* Practice filtering down to relevant columns
-* Practice applying `sklearn.impute` to fill in missing values
-* Practice applying `sklearn.preprocessing`:
-  * `OrdinalEncoder` for converting binary categories to 0 and 1 within a single column
-  * `OneHotEncoder` for creating multiple "dummy" columns to represent multiple categories
-
-
-## Lab Setup
+## Data Setup
 
 The prediction target for this analysis is the sale price of the home, so we separate the data into `X` and `y` accordingly:
 
@@ -66,11 +54,6 @@ X_train = X_train.loc[:, relevant_columns]
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
 
 ```
-
-
-#### Fitting a Model
-
-For this lab we will be using a `LinearRegression` model from scikit-learn ([documentation here](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html)).
 
 
 ### Missing Indicator for `LotFrontage`
@@ -228,12 +211,6 @@ X_train.drop("FireplaceQu", axis=1, inplace=True)
 X_train = pd.concat([X_train, fireplace_qu_encoded_train], axis=1)
 
 ```
-
-
-## Summary
-
-In this cumulative lab, you used various techniques to prepare the Ames Housing data for modeling. You filtered down the full dataset to only relevant columns, filled in missing values, and converted categorical data into numeric data. Each time, you practiced the scikit-learn transformer workflow by instantiating the transformer, fitting on the relevant training data, transforming the training data, and transforming the test data at the end (without re-instantiating or re-fitting the transformer object).
-
 
 
 

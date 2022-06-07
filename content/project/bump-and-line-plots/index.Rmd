@@ -1,5 +1,5 @@
 ---
-title: "Visualizing Refugees to the United States"
+title: "Data Visualization Using Bump Charts and Line Plots with `ggplot`"
 author: "Rebecca Frost-Brewer"
 date: '2021-07-14'
 slug: []
@@ -11,7 +11,7 @@ This project highlights the code and outputs of a project visualizing the number
 
 <!--more-->
 
-
+## Data Preprocessing
 ```{r clean-raw-data, eval=FALSE}
 
 # Create vector of non-countries to filter out
@@ -40,15 +40,10 @@ refugees_countries_cumulative <- refugees_clean %>%
 
 ```
 
-<br>
-
-
-## Clean the data
-<br>
 
 I pivoted wider to be able to calculate the rankings of each country within the 2006-2015 time period. I then sorted each year to determine the top five ranking score so that I could note the top 5 countries of origin of refugees for each year. I then returned to our tidy dataframe and created a new dataframe with all those countries that ranked in the top 5 over the 2006-2015 time period. And lastly, I saved this newly created dataframe.
 
-<br>
+
 ```{r clean-data, eval=FALSE}
 
 top_refugees_all <- refugees_countries_cumulative %>%
@@ -82,10 +77,8 @@ write.csv(alltime_refugee, "alltime_refugees.csv")
 
 ```
 
-<br>
 
-
-## Import the refined data
+### Import the refined data
 <br>
 
 Offline, I added the number of refugees granted asylum each year as both a number and proportion to total number of refugees as well as the GDP per capita for each country each year. The number of refugees granted asylym came from the [2015 Yearbook of Immigration Statistics](https://www.dhs.gov/sites/default/files/publications/Yearbook_Immigration_Statistics_2015.pdf) from the Department of Homeland Security. The GDP per capita numbers came from the [World Bank's DataBank](https://databank.worldbank.org/home).
@@ -94,10 +87,8 @@ I then imported that dataframe to work with for the visualizations.
 
 <br>
 
-# **The Story**
 
-
-## Visualizations of refugee data
+## Visualizations of refugee data with a lollipop chart
 
 ```{r total-refugees-plots, eval=FALSE}
 

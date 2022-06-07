@@ -1,5 +1,5 @@
 ---
-title: 'Linear Regression Analysis Lab'
+title: 'Linear Regression Analysis'
 author: 'Rebecca Frost-Brewer'
 date: '2022-05-01'
 slug: []
@@ -7,36 +7,23 @@ categories: []
 tags: []
 ---
 
-# Linear Regression - Cumulative Lab
+# Linear Regression Analysis
 
-## Introduction 
-
-In this cumulative lab you'll perform a full linear regression analysis and report the findings of your final model, including both predictive model performance metrics and interpretation of fitted model parameters.
+This project demonstrates a full linear regression analysis and reports the findings of a final model, including both predictive model performance metrics and interpretation of fitted model parameters.
 
 <!--more--> 
 
-## Objectives
+## Business Understanding
 
-You will be able to:
+Develop a pricing algorithm to help set a target price for new LEGO sets that are released to market. The goal is to save the company some time and to help ensure consistency in pricing between new products and past products.
 
-* Perform a full linear regression analysis with iterative model development
-* Evaluate your final model and interpret its predictive performance metrics
-* Apply an inferential lens to interpret relationships between variables identified by the model
+The main purpose of this algorithm is *predictive*, meaning that **the model should be able to take in attributes of a LEGO set that does not yet have a set price, and to predict a good price**. 
 
+The secondary purpose of this algorithm is *inferential*, meaning that **the model should be able to tell us something about the relationship between the attributes of a LEGO set and its price**. 
 
-### Business Understanding
+## Data Understanding
 
-You just got hired by LEGO! Your first project is going to be to develop a pricing algorithm to help set a target price for new LEGO sets that are released to market. The goal is to save the company some time and to help ensure consistency in pricing between new products and past products.
-
-The main purpose of this algorithm is *predictive*, meaning that **your model should be able to take in attributes of a LEGO set that does not yet have a set price, and to predict a good price**. The effectiveness of your predictive model will be measured by how well it predicts prices in our test set, where we know what the actual prices were but the model does not.
-
-The secondary purpose of this algorithm is *inferential*, meaning that **your model should be able to tell us something about the relationship between the attributes of a LEGO set and its price**. You will apply your knowledge of statistics to include appropriate caveats about these relationships.
-
-### Data Understanding
-
-You have access to a dataset containing over 700 LEGO sets released in the past, including attributes of those sets as well as their prices. You can assume that the numeric attributes in this dataset have already been preprocessed appropriately for modeling (i.e. that there are no missing or invalid values), while the text attributes are simply there for your visual inspection and should not be used for modeling. Also, note that some of these attributes cannot be used in your analysis because they will be unavailable for future LEGO products or are otherwise irrelevant.
-
-You do not need to worry about inflation or differences in currency; just predict the same kinds of prices as are present in the past data, which have already been converted to USD.
+The dataset contains over 700 LEGO sets released in the past, including attributes of those sets as well as their prices. The files have already been split into train and test sets.
 
 ```{python eval=FALSE}
 
@@ -53,6 +40,8 @@ X_train
 
 ```
 
+
+## Baseline Model
 
 ```{python eval=FALSE}
 
@@ -82,14 +71,11 @@ print("Validation score:", baseline_scores["test_score"].mean())
 
 ```
 
-
-## 2. Build a Model with All Numeric Features
-
-Now that we have established a baseline, it's time to move on to more complex models.
+## Build a Model with All Numeric Features
 
 ### Numeric Feature Selection
 
-One thing that you will almost always need to do in a modeling process is remove non-numeric data prior to modeling. While you could apply more-advanced techniques such as one-hot encoding or NLP in order to convert non-numeric columns into numbers, this time just create a dataframe `X_train_numeric` that is a copy of `X_train` that only contains numeric columns.
+Create a dataframe `X_train_numeric` that is a copy of `X_train` that only contains numeric columns.
 
 ```{python eval=FALSE}
 
@@ -127,9 +113,7 @@ print("Validation score:", baseline_scores["test_score"].mean())
 
 ### Selecting Features Based on p-values
 
-Given that we suspect our model's issues are related to multicollinearity, let's try to narrow down those features. In this case, let's use the p-values assigned to the coefficients of the model.
-
-Looking at the model summary above, ***which features are statistically significant, with p-values below 0.05***? (P-values are labeled **P>|t|** in a StatsModels summary.)
+In the previous model, both `piece_count` and `min_age` had p-values less then 0.05. This model is built using just those two features.
 
 ```{python eval=FALSE}
 
@@ -171,9 +155,7 @@ print("Validation score:", baseline_scores["test_score"].mean())
 
 ### Selecting Features with `sklearn.feature_selection`
 
-Let's try a different approach. Scikit-learn has a submodule called `feature_selection` that includes tools to help reduce the feature set.
-
-We'll use `RFECV` ([documentation here](https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.RFECV.html#sklearn.feature_selection.RFECV)). "RFE" stands for "recursive feature elimination", meaning that it repeatedly scores the model, finds and removes the feature with the lowest "importance", then scores the model again. If the new score is better than the previous score, it continues removing features until the minimum is reached. "CV" stands for "cross validation" here, and we can use the same splitter we have been using to test our data so far.
+This model uses `RFECV` ([documentation here](https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.RFECV.html#sklearn.feature_selection.RFECV)). "RFE" stands for "recursive feature elimination", meaning that it repeatedly scores the model, finds and removes the feature with the lowest "importance", then scores the model again. If the new score is better than the previous score, it continues removing features until the minimum is reached. "CV" stands for "cross validation" here, and we can use the same splitter we have been using to test our data so far.
 
 ```{python eval=FALSE}
 
@@ -193,9 +175,9 @@ selector.fit(X_train_for_RFECV, y_train)
 ```
 
 
-## 4. Build and Evaluate a Final Predictive Model
+## Build and Evaluate a Final Predictive Model
 
-In the cell below, create a list `best_features` which contains the names of the best model features based on the findings of the previous step:
+Create a list `best_features` which contains the names of the best model features based on the findings of the previous step:
 
 ```{python eval=FALSE}
 

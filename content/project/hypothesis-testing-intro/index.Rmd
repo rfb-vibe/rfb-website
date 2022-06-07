@@ -1,62 +1,32 @@
 ---
-title: 'Hypothesis Testing - Cumulative Lab'
+title: 'Hypothesis Testing Codethrough'
 author: 'Rebecca Frost-Brewer'
 date: '2022-05-01'
-slug: hypothesis-testing-intro
+slug: hypothesis-testing-codethrough
 categories: []
 tags: []
 
 ---
 
-# Hypothesis Testing - Cumulative Lab
+# Hypothesis Testing
 
 ## Introduction
 
-In this cumulative lab, you will use pandas to clean up a dataset and perform some EDA, then perform statistical tests and interpret their results in order to answer some business questions.
+This hypothesis testing codethrough uses `pandas` to clean up a dataset and perform some EDA, then perform statistical tests and interpret their results in order to answer some business questions.
 
 <!--more--> 
 
-## Objectives
+## Business Understanding
 
-You will be able to:
-
-* Practice using a data dictionary
-* Practice using pandas to prepare data for statistical analysis
-* Practice identifying an appropriate statistical test for a given question
-* Practice defining the null and alternative hypotheses
-* Practice executing statistical tests and interpreting their results
-
-### Business Understanding
-
-Flatiron Health Insurance (FHI) is a growing private healthcare insurance provider founded on the premise that using data and analytics can improve the health insurance industry by providing better care and offerings to its patients. Every year, the Center for Disease Control (CDC) conducts surveys to understand the latest demographic, health, and fitness trends. You have been tasked with analyzing the recently published results of the 2017-2018 survey and providing your recommendations back to the Chief Analytics Officer and Chief Marketing Officer. You have been assigned the task of taking a first look at the data and beginning to answer several key questions:
+Flatiron Health Insurance (FHI) is a growing private healthcare insurance provider founded on the premise that using data and analytics can improve the health insurance industry by providing better care and offerings to its patients. Every year, the Center for Disease Control (CDC) conducts surveys to understand the latest demographic, health, and fitness trends. I have been tasked with analyzing the recently published results of the 2017-2018 survey and providing your recommendations back to the Chief Analytics Officer and Chief Marketing Officer. I have been assigned the task of taking a first look at the data and beginning to answer several key questions:
 											 								
 1. How does health status, represented by average number of days with bad physical health in the past month (`PHYSHLTH`), differ by state?					 								
 2. Digging deeper into the data, what are some factors that impact health (demographics, behaviors, etc.)?	
 
-### Data Understanding
+## Data Cleaning
 
-To get you started, the IT department formatted the data set into a tab delimited text file for only NY, NJ, and CT (FHI’s primary markets) called `case_study.csv`.
-
-There is also a PDF data dictionary called `data_dictionary.pdf`, which explains the meanings of the features and codes contained in this dataset.
-
-Both files are located in the `data/` directory of this repository.
-
-Prior to each statistical test, you will need to perform some data preparation, which could include:
-
-* Filtering out rows with irrelevant values
-* Transforming data from codes into human-readable values
-* Binning data to transform it from numeric to categorical
-* Creating new columns based on queries of the values in other columns
-
-For steps 2-5, you will need to select and execute an appropriate statistical test. Recall these tests we have learned so far:
-
-1. [Chi-squared test](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chi2_contingency.html): used for comparing a categorical feature against a categorical feature, to determine whether they are independent
-2. [t-test](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_ind.html): used for comparing two categories of a numeric feature, to determine whether their means are the same across categories
-3. [ANOVA](https://www.statsmodels.org/stable/generated/statsmodels.stats.anova.anova_lm.html#statsmodels.stats.anova.anova_lm): used for comparing more than two categories of a numeric feature, to determine whether their means are the same across categories
-
-
-## 1. Prepare `PHYSHLTH` Data for Analysis
-Since we are comparing the numeric means of a continuous variable across three groups, ANOVA will be the best
+### 1. Prepare `PHYSHLTH` Data for Analysis
+Since I am comparing the numeric means of a continuous variable across three groups, ANOVA will be the best
 statistical test to determine if the differences in mean are significant.
 
 H0: There is no difference in bad health (as determined by number of days with bad health) based on state.
@@ -81,9 +51,9 @@ I would recommend further data collection and analysis to understand what is cau
 Is it lack of access to healthcare? Environmental effects? Behavioral (e.g., smoking)? Are the number of bad health
 days associated with a particular demographic? Does the number vary based on season?
 
-## 3. Describe the Relationship between Health Status and Home Ownership Status
+### 2. Describe the Relationship between Health Status and Home Ownership Status
 
-This time, we want to categorize respondents by demographic information: specifically, we'll look at whether or not they own their home.
+Categorize respondents by demographic information: specifically, whether or not they own their home.
 
 ```{python eval=FALSE}
 
@@ -123,7 +93,7 @@ is there a relationship between home ownership and health insurance status? What
 Additionally, do we have access to data that may shed light on the quality of rental properties to determine
 if rental properties are more inherently unhealthy than owned homes?
 
-## 4. Describe the Relationship between Chronic Sickness and Nicotine Use
+### 3. Describe the Relationship between Chronic Sickness and Nicotine Use
 
 Once again, this will require some preparation before we can run the statistical test. Create a new column `NICOTINE_USE` with 1 representing someone who uses or has used nicotine in some form, and 0 representing someone who hasn't.
 

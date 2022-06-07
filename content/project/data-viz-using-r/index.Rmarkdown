@@ -1,5 +1,5 @@
 ---
-title: 'NYC Rats'
+title: 'Data Visualizing using R and `ggplot2`'
 author: 'Rebecca Frost-Brewer'
 excerpt: 'Data visualizations and the effect of Hurricane Sandy on rat sightings in NYC'
 date: ''

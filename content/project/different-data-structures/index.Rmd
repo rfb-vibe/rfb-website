@@ -1,5 +1,5 @@
 ---
-title: "The Relationship between Population and Men's World Cup Success"
+title: "Working with Different Data Structures"
 author: "Rebecca Frost-Brewer"
 date: '2022-02-27'
 slug: []
@@ -9,14 +9,9 @@ output: html_document
 ---
 
 
-Using data from the 2018 Men's World Cup, this lab practices reading serialized JSON and CSV files into Python objects; extracting information from nested data structures; cleaning and merging data from multiple sources; and interpreting descriptive statistics and visualizations.
+This lab practices reading serialized JSON and CSV files into Python objects; extracting information from nested data structures; cleaning and merging data from multiple sources; and interpreting descriptive statistics and visualizations.
 
 <!--more-->
-
-Attribution: [The Flatiron School repo](https://github.com/learn-co-curriculum/dsc-data-serialization-lab)
-
-### The Task: To Analyze the Relationship between Population and Men's World Cup Success
-Using data from the 2018 Men's World Cup, we are going to ascertain if any relationship exists between participating countries' population and success (as measured by cumulative wins).
 
 ### Data Understanding
 
@@ -410,3 +405,4 @@ I'd want to evaluate available government funding of soccer in these countries. 
 
 
 
+Attribution: [The Flatiron School repo](https://github.com/learn-co-curriculum/dsc-data-serialization-lab)

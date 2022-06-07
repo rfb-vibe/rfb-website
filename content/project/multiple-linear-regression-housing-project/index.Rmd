@@ -1,5 +1,5 @@
 ---
-title: 'Multiple Linear Regression: Housing Sale Price Analysis'
+title: 'Using Multiple Linear Regression for Housing Sale Price Analysis'
 author: 'Rebecca Frost-Brewer'
 date: '2022-05-01'
 slug: []
