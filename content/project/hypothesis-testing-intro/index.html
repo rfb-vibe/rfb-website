@@ -1,8 +1,8 @@
 ---
-title: 'Hypothesis Testing - Cumulative Lab'
+title: 'Hypothesis Testing Codethrough'
 author: 'Rebecca Frost-Brewer'
 date: '2022-05-01'
-slug: hypothesis-testing-intro
+slug: hypothesis-testing-codethrough
 categories: []
 tags: []
 
@@ -10,55 +10,27 @@ tags: []
 
 
 
-<div id="hypothesis-testing---cumulative-lab" class="section level1">
-<h1>Hypothesis Testing - Cumulative Lab</h1>
+<div id="hypothesis-testing" class="section level1">
+<h1>Hypothesis Testing</h1>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>In this cumulative lab, you will use pandas to clean up a dataset and perform some EDA, then perform statistical tests and interpret their results in order to answer some business questions.</p>
+<p>This hypothesis testing codethrough uses <code>pandas</code> to clean up a dataset and perform some EDA, then perform statistical tests and interpret their results in order to answer some business questions.</p>
 <!--more-->
 </div>
-<div id="objectives" class="section level2">
-<h2>Objectives</h2>
-<p>You will be able to:</p>
-<ul>
-<li>Practice using a data dictionary</li>
-<li>Practice using pandas to prepare data for statistical analysis</li>
-<li>Practice identifying an appropriate statistical test for a given question</li>
-<li>Practice defining the null and alternative hypotheses</li>
-<li>Practice executing statistical tests and interpreting their results</li>
-</ul>
-<div id="business-understanding" class="section level3">
-<h3>Business Understanding</h3>
-<p>Flatiron Health Insurance (FHI) is a growing private healthcare insurance provider founded on the premise that using data and analytics can improve the health insurance industry by providing better care and offerings to its patients. Every year, the Center for Disease Control (CDC) conducts surveys to understand the latest demographic, health, and fitness trends. You have been tasked with analyzing the recently published results of the 2017-2018 survey and providing your recommendations back to the Chief Analytics Officer and Chief Marketing Officer. You have been assigned the task of taking a first look at the data and beginning to answer several key questions:</p>
+<div id="business-understanding" class="section level2">
+<h2>Business Understanding</h2>
+<p>Flatiron Health Insurance (FHI) is a growing private healthcare insurance provider founded on the premise that using data and analytics can improve the health insurance industry by providing better care and offerings to its patients. Every year, the Center for Disease Control (CDC) conducts surveys to understand the latest demographic, health, and fitness trends. I have been tasked with analyzing the recently published results of the 2017-2018 survey and providing your recommendations back to the Chief Analytics Officer and Chief Marketing Officer. I have been assigned the task of taking a first look at the data and beginning to answer several key questions:</p>
 <ol style="list-style-type: decimal">
 <li>How does health status, represented by average number of days with bad physical health in the past month (<code>PHYSHLTH</code>), differ by state?<br />
 </li>
 <li>Digging deeper into the data, what are some factors that impact health (demographics, behaviors, etc.)?</li>
 </ol>
 </div>
-<div id="data-understanding" class="section level3">
-<h3>Data Understanding</h3>
-<p>To get you started, the IT department formatted the data set into a tab delimited text file for only NY, NJ, and CT (FHI’s primary markets) called <code>case_study.csv</code>.</p>
-<p>There is also a PDF data dictionary called <code>data_dictionary.pdf</code>, which explains the meanings of the features and codes contained in this dataset.</p>
-<p>Both files are located in the <code>data/</code> directory of this repository.</p>
-<p>Prior to each statistical test, you will need to perform some data preparation, which could include:</p>
-<ul>
-<li>Filtering out rows with irrelevant values</li>
-<li>Transforming data from codes into human-readable values</li>
-<li>Binning data to transform it from numeric to categorical</li>
-<li>Creating new columns based on queries of the values in other columns</li>
-</ul>
-<p>For steps 2-5, you will need to select and execute an appropriate statistical test. Recall these tests we have learned so far:</p>
-<ol style="list-style-type: decimal">
-<li><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chi2_contingency.html">Chi-squared test</a>: used for comparing a categorical feature against a categorical feature, to determine whether they are independent</li>
-<li><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_ind.html">t-test</a>: used for comparing two categories of a numeric feature, to determine whether their means are the same across categories</li>
-<li><a href="https://www.statsmodels.org/stable/generated/statsmodels.stats.anova.anova_lm.html#statsmodels.stats.anova.anova_lm">ANOVA</a>: used for comparing more than two categories of a numeric feature, to determine whether their means are the same across categories</li>
-</ol>
-</div>
-</div>
-<div id="prepare-physhlth-data-for-analysis" class="section level2">
-<h2>1. Prepare <code>PHYSHLTH</code> Data for Analysis</h2>
-<p>Since we are comparing the numeric means of a continuous variable across three groups, ANOVA will be the best
+<div id="data-cleaning" class="section level2">
+<h2>Data Cleaning</h2>
+<div id="prepare-physhlth-data-for-analysis" class="section level3">
+<h3>1. Prepare <code>PHYSHLTH</code> Data for Analysis</h3>
+<p>Since I am comparing the numeric means of a continuous variable across three groups, ANOVA will be the best
 statistical test to determine if the differences in mean are significant.</p>
 <p>H0: There is no difference in bad health (as determined by number of days with bad health) based on state.
 HA: There is a difference in bad health based on state.</p>
@@ -75,9 +47,9 @@ There is a difference in bad health based on state.</p>
 Is it lack of access to healthcare? Environmental effects? Behavioral (e.g., smoking)? Are the number of bad health
 days associated with a particular demographic? Does the number vary based on season?</p>
 </div>
-<div id="describe-the-relationship-between-health-status-and-home-ownership-status" class="section level2">
-<h2>3. Describe the Relationship between Health Status and Home Ownership Status</h2>
-<p>This time, we want to categorize respondents by demographic information: specifically, we’ll look at whether or not they own their home.</p>
+<div id="describe-the-relationship-between-health-status-and-home-ownership-status" class="section level3">
+<h3>2. Describe the Relationship between Health Status and Home Ownership Status</h3>
+<p>Categorize respondents by demographic information: specifically, whether or not they own their home.</p>
 <pre class="python"><code>df.groupby(&quot;RENTHOM1&quot;)[&quot;PHYSHLTH&quot;].mean()</code></pre>
 <p>Does it seem like there a difference in the number of unhealthy days between those who rent their homes and those who own their homes? How does this compare to the distributions by state?</p>
 <p>Yes, it seems like those who own their home have fewer bad health days than those who rent their home. The difference in means is also larger: about 3.5 vs. about 5.2 unhealthy days per month. This distribution seems more binomial than the distributions by state.</p>
@@ -101,8 +73,8 @@ is there a relationship between home ownership and health insurance status? What
 Additionally, do we have access to data that may shed light on the quality of rental properties to determine
 if rental properties are more inherently unhealthy than owned homes?</p>
 </div>
-<div id="describe-the-relationship-between-chronic-sickness-and-nicotine-use" class="section level2">
-<h2>4. Describe the Relationship between Chronic Sickness and Nicotine Use</h2>
+<div id="describe-the-relationship-between-chronic-sickness-and-nicotine-use" class="section level3">
+<h3>3. Describe the Relationship between Chronic Sickness and Nicotine Use</h3>
 <p>Once again, this will require some preparation before we can run the statistical test. Create a new column <code>NICOTINE_USE</code> with 1 representing someone who uses or has used nicotine in some form, and 0 representing someone who hasn’t.</p>
 <p>We define nicotine use as:</p>
 <ul>
@@ -161,5 +133,6 @@ did use nicotine had chronic sickness.</p>
 <p>Of course, correlation does not equal causation, so further analysis would be needed to determine the effect size
 and perhaps a regression of some kind to control for other factors.</p>
 <p>Attribution: <a href="https://github.com/learn-co-curriculum/dsc-hypothesis-testing-lab">The Flatiron School repo</a></p>
+</div>
 </div>
 </div>

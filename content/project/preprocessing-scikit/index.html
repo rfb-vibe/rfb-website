@@ -1,5 +1,5 @@
 ---
-title: 'Preprocessing Lab with Scikit-Learn'
+title: 'Preprocessing Data with Scikit-Learn'
 author: 'Rebecca Frost-Brewer'
 date: '2022-05-01'
 slug: []
@@ -9,29 +9,15 @@ tags: []
 
 
 
-<div id="preprocessing-with-scikit-learn---cumulative-lab" class="section level1">
-<h1>Preprocessing with scikit-learn - Cumulative Lab</h1>
+<div id="preprocessing-data-with-scikit-learn" class="section level1">
+<h1>Preprocessing Data with scikit-learn</h1>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>In this cumulative lab, you’ll practice applying various preprocessing techniques with scikit-learn (<code>sklearn</code>) to the Ames Housing dataset in order to prepare the data for predictive modeling. The main emphasis here is on preprocessing (not EDA or modeling theory), so we will skip over most of the visualization and metrics steps that you would take in an actual modeling process.</p>
+<p>This codethrough example applies various preprocessing techniques with scikit-learn (<code>sklearn</code>) to the Ames Housing dataset in order to prepare the data for predictive modeling. The main emphasis here is on preprocessing (not EDA or modeling theory).</p>
 <!--more-->
 </div>
-<div id="objectives" class="section level2">
-<h2>Objectives</h2>
-<p>You will be able to:</p>
-<ul>
-<li>Practice identifying which preprocessing technique to use</li>
-<li>Practice filtering down to relevant columns</li>
-<li>Practice applying <code>sklearn.impute</code> to fill in missing values</li>
-<li>Practice applying <code>sklearn.preprocessing</code>:
-<ul>
-<li><code>OrdinalEncoder</code> for converting binary categories to 0 and 1 within a single column</li>
-<li><code>OneHotEncoder</code> for creating multiple “dummy” columns to represent multiple categories</li>
-</ul></li>
-</ul>
-</div>
-<div id="lab-setup" class="section level2">
-<h2>Lab Setup</h2>
+<div id="data-setup" class="section level2">
+<h2>Data Setup</h2>
 <p>The prediction target for this analysis is the sale price of the home, so we separate the data into <code>X</code> and <code>y</code> accordingly:</p>
 <pre class="python"><code># prediction target (DV)
 y = df[&quot;SalePrice&quot;]
@@ -65,10 +51,6 @@ X_train = X_train.loc[:, relevant_columns]
 
 # separate data (X = features, y = outcome/prediction) into train set and test set
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)</code></pre>
-<div id="fitting-a-model" class="section level4">
-<h4>Fitting a Model</h4>
-<p>For this lab we will be using a <code>LinearRegression</code> model from scikit-learn (<a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html">documentation here</a>).</p>
-</div>
 <div id="missing-indicator-for-lotfrontage" class="section level3">
 <h3>Missing Indicator for <code>LotFrontage</code></h3>
 <p>First, we import <code>sklearn.impute.MissingIndicator</code> (<a href="https://scikit-learn.org/stable/modules/generated/sklearn.impute.MissingIndicator.html">documentation here</a>). The goal of using a <code>MissingIndicator</code> is creating a new column to represent which values were NaN (or some other “missing” value) in the original dataset, in case NaN ends up being a meaningful indicator rather than a random missing bit of data.</p>
@@ -194,11 +176,7 @@ X_train.drop(&quot;FireplaceQu&quot;, axis=1, inplace=True)
 
 # (5c) Concatenate the new dataframe with current X_train
 X_train = pd.concat([X_train, fireplace_qu_encoded_train], axis=1)</code></pre>
-</div>
-</div>
-<div id="summary" class="section level2">
-<h2>Summary</h2>
-<p>In this cumulative lab, you used various techniques to prepare the Ames Housing data for modeling. You filtered down the full dataset to only relevant columns, filled in missing values, and converted categorical data into numeric data. Each time, you practiced the scikit-learn transformer workflow by instantiating the transformer, fitting on the relevant training data, transforming the training data, and transforming the test data at the end (without re-instantiating or re-fitting the transformer object).</p>
 <p>Attribution: <a href="https://github.com/learn-co-curriculum/dsc-website-ab-testing-lab">The Flatiron School</a></p>
+</div>
 </div>
 </div>

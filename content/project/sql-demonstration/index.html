@@ -1,5 +1,5 @@
 ---
-title: "Querying a Customer Database"
+title: "SQL Demonstration"
 subtitle: "A lab demonstrating knowledge of SQL queries"
 author: "Rebecca Frost-Brewer"
 date: "2022-03-07"
@@ -11,26 +11,27 @@ output: html_document
 
 
 
-<p>Using a customer database provided to me, this lab practices using SQL to pull several reports on different segments of the database and analyze trends based on those queries.</p>
+<p>Using a customer database provided to me, this lab demonstrates how I would use SQL to pull several reports on different segments of the database and analyze trends based on those queries.</p>
 <!--more-->
 <div id="the-task" class="section level2">
 <h2>The Task</h2>
-<p>Your employer makes miniature models of products such as classic cars, motorcycles, and planes. They want you to pull several reports on different segments of their past customers, in order to better understand past sales as well as determine which customers will receive promotional material.</p>
-<p>Here is the entity relationship diagram (ERD) of the customer database from which we’ll be working.</p>
+<p>Here is the entity relationship diagram (ERD) of the customer database from which I’ll be working.</p>
 <div class="figure">
 <img src="images/Database-Schema.png" alt="" />
 <p class="caption">erd</p>
 </div>
-<div id="getting-started" class="section level3">
-<h3>Getting Started</h3>
-<p>We can conduct SQL queries using <code>pandas</code> with the <code>sqlite3</code> library.</p>
+</div>
+<div id="getting-started" class="section level2">
+<h2>Getting Started</h2>
+<p>Conduct SQL queries using <code>pandas</code> with the <code>sqlite3</code> library.</p>
 <pre class="python"><code>import sqlite3
 import pandas
 
 # conn establishes a connection between pandas and the sql database
 conn = sqlite3.Connection(&quot;data.sqlite&quot;)</code></pre>
-<div id="query-customers-with-credit-over-25000-in-california" class="section level4">
-<h4>Query: Customers with Credit Over 25,000 in California</h4>
+</div>
+<div id="query-customers-with-credit-over-25000-in-california" class="section level2">
+<h2>Query: Customers with Credit Over 25,000 in California</h2>
 <p>Write a query that gets the contact first name, contact last name, phone number, address line 1, and credit limit for all customers in California with a credit limit greater than 25000.00.</p>
 <pre class="python"><code>q1 = &quot;&quot;&quot;
 SELECT
@@ -52,8 +53,8 @@ q1_result</code></pre>
 <p>Output
 <img src="images/expected_output_q1.png" alt="query1" /></p>
 </div>
-<div id="query-customers-outside-of-the-usa-with-collect-in-their-name" class="section level4">
-<h4>Query: Customers Outside of the USA with “Collect” in Their Name</h4>
+<div id="query-customers-outside-of-the-usa-with-collect-in-their-name" class="section level2">
+<h2>Query: Customers Outside of the USA with “Collect” in Their Name</h2>
 <p>Write a query that gets the customer name, state, and country, for all customers outside of the USA with <code>"Collect"</code> as part of their customer name.</p>
 <pre class="python"><code>q2 = &quot;&quot;&quot;
 SELECT
@@ -72,8 +73,8 @@ q2_result</code></pre>
 <p>Output
 <img src="images/expected_output_q2.png" alt="query2" /></p>
 </div>
-<div id="query-average-credit-limit-by-state-in-usa" class="section level4">
-<h4>Query : Average Credit Limit by State in USA</h4>
+<div id="query-average-credit-limit-by-state-in-usa" class="section level2">
+<h2>Query : Average Credit Limit by State in USA</h2>
 <p>Write a query that gets the average credit limit per state in the USA.</p>
 <p>The two fields selected should be <code>state</code> and <code>average_credit_limit</code>, which is the average of the <code>creditLimit</code> field for that state.</p>
 <pre class="python"><code>q3 = &quot;&quot;&quot;
@@ -93,10 +94,10 @@ q3_result</code></pre>
 <p>Output
 <img src="images/expected_output_q3.png" alt="query3" /></p>
 </div>
-<div id="query-joining-customers-and-orders" class="section level4">
-<h4>Query: Joining Customers and Orders</h4>
+<div id="query-joining-customers-and-orders" class="section level2">
+<h2>Query: Joining Customers and Orders</h2>
 <p>Write a query that uses <code>JOIN</code> statements to get the customer name, order number, and status for all orders. Refer to the ERD above to understand which tables contain these pieces of information, and the relationship between these tables.</p>
-<p>We will only display the first 15 results.</p>
+<p>Only display the first 15 results.</p>
 <pre class="python"><code>q4 = &quot;&quot;&quot;
 SELECT
     customerName,
@@ -114,8 +115,8 @@ q4_result.head(15)</code></pre>
 <p>Output
 <img src="images/expected_output_q4.png" alt="query4" /></p>
 </div>
-<div id="query-products-that-have-been-purchased-10-or-more-times" class="section level4">
-<h4>Query: Products that Have Been Purchased 10 or More Times</h4>
+<div id="query-products-that-have-been-purchased-10-or-more-times" class="section level2">
+<h2>Query: Products that Have Been Purchased 10 or More Times</h2>
 <p>Write a query that, for each customer, finds all of the products that they have purchased 10 or more times cumulatively. For each record, return the customer name, customer number, product name, product code, and total number ordered. Sort the rows in descending order by the quantity ordered.</p>
 <p>The five columns selected should be <code>customerName</code>, <code>customerNumber</code>, <code>productName</code>, <code>productCode</code>, and <code>total_ordered</code>, where <code>total_ordered</code> is the sum of all quantities of that product ordered by that customer.</p>
 <pre class="python"><code>q5 = &quot;&quot;&quot;
@@ -147,9 +148,7 @@ q5_result</code></pre>
 <p>Output
 <img src="images/expected_output_q5.png" alt="query5" /></p>
 </div>
-</div>
-<div id="summary" class="section level3">
-<h3>Summary</h3>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
 <p>In this code through, I provided examples of several data queries for a model car company, mainly focused around its customer data using many of the major concepts and keywords associated with SQL <code>SELECT</code> queries: <code>FROM</code>, <code>WHERE</code>, <code>GROUP BY</code>, <code>HAVING</code>, <code>ORDER BY</code>, <code>JOIN</code>, <code>SUM</code>, <code>COUNT</code>, and <code>AVG</code>.</p>
-</div>
 </div>

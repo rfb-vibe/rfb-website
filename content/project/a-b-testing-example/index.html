@@ -13,28 +13,24 @@ tags: []
 <h1>Website A/B Testing - Lab</h1>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>In this lab, you’ll get another chance to practice your skills at conducting a full A/B test analysis. It will also be a chance to practice your data exploration and processing skills! The scenario you’ll be investigating is data collected from the homepage of a music app page for audacity.</p>
+<p>This lab demonstrates my knowledge related to A/B testing and analysis including data explorating and processing skills.</p>
 <!--more-->
-</div>
-<div id="objectives" class="section level2">
-<h2>Objectives</h2>
-<p>You will be able to:
-* Analyze the data from a website A/B test to draw relevant conclusions
-* Explore and analyze web action data</p>
 </div>
 <div id="exploratory-analysis" class="section level2">
 <h2>Exploratory Analysis</h2>
-<p>Start by loading in the dataset stored in the file ‘homepage_actions.csv’. Then conduct an exploratory analysis to get familiar with the data.</p>
 <p>This data is collected from a homepage, with a control group and experiment group, and whether or not they viewed
 the page or clicked the page. It includes the timestamp of action as well as the participant id.</p>
-<p>Of the 8,188 participants, 6,328 viewed and only 1,860 clicked</p>
-<pre class="python"><code>eids = set(df[df.group==&#39;experiment&#39;][&#39;id&#39;].unique())
+<pre class="python"><code># Create an object of the experimental group
+eids = set(df[df.group==&#39;experiment&#39;][&#39;id&#39;].unique())
+
+# Create an object of the control group
 cids = set(df[df.group==&#39;control&#39;][&#39;id&#39;].unique())
+
+# Print the overlap of the groups
 print(&#39;Overlap of experiment and control groups: {}&#39;.format(len(eids&amp;cids)))</code></pre>
 </div>
 <div id="conduct-a-statistical-test" class="section level2">
 <h2>Conduct a Statistical Test</h2>
-<p>Conduct a statistical test to determine whether the experimental homepage was more effective than that of the control group.</p>
 <pre class="python"><code>#Convert clicks into a binary variable on a user-by-user-basis
 control = df[df.group==&#39;control&#39;].pivot(index=&#39;id&#39;, columns=&#39;action&#39;, values=&#39;count&#39;)
 control = control.fillna(value=0)
