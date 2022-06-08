@@ -1,0 +1,244 @@
+---
+title: 'Nonparametric Machine Learning Model Example'
+author: 'Rebecca Frost-Brewer'
+date: '2022-06-08'
+slug: nonparametric-ml-model-example
+categories: []
+tags: []
+---
+
+
+
+<div id="nonparametric-ml-models---cumulative-lab" class="section level1">
+<h1>Nonparametric ML Models - Cumulative Lab</h1>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>This demonstrates my applications of two nonparametric models — k-nearest neighbors and decision trees — to the forest cover dataset.</p>
+<blockquote>
+<p>Here I will be using an adapted version of the forest cover dataset from the <a href="https://archive.ics.uci.edu/ml/datasets/covertype">UCI Machine Learning Repository</a>. Each record represents a 30 x 30 meter cell of land within Roosevelt National Forest in northern Colorado, which has been labeled as <code>Cover_Type</code> 1 for “Cottonwood/Willow” and <code>Cover_Type</code> 0 for “Ponderosa Pine”. (The original dataset contained 7 cover types but this has been simplified.)</p>
+</blockquote>
+<p>The task is to predict the <code>Cover_Type</code> based on the available cartographic variables:</p>
+<blockquote>
+<p>There are over 38,000 rows, each with 52 feature columns and 1 target column:</p>
+</blockquote>
+<blockquote>
+<ul>
+<li><code>Elevation</code>: Elevation in meters</li>
+<li><code>Aspect</code>: Aspect in degrees azimuth</li>
+<li><code>Slope</code>: Slope in degrees</li>
+<li><code>Horizontal_Distance_To_Hydrology</code>: Horizontal dist to nearest surface water features in meters</li>
+<li><code>Vertical_Distance_To_Hydrology</code>: Vertical dist to nearest surface water features in meters</li>
+<li><code>Horizontal_Distance_To_Roadways</code>: Horizontal dist to nearest roadway in meters</li>
+<li><code>Hillshade_9am</code>: Hillshade index at 9am, summer solstice</li>
+<li><code>Hillshade_Noon</code>: Hillshade index at noon, summer solstice</li>
+<li><code>Hillshade_3pm</code>: Hillshade index at 3pm, summer solstice</li>
+<li><code>Horizontal_Distance_To_Fire_Points</code>: Horizontal dist to nearest wildfire ignition points, meters</li>
+<li><code>Wilderness_Area_x</code>: Wilderness area designation (3 columns)</li>
+<li><code>Soil_Type_x</code>: Soil Type designation (39 columns)</li>
+<li><code>Cover_Type</code>: 1 for cottonwood/willow, 0 for ponderosa pine</li>
+</ul>
+</blockquote>
+<p>This is also an imbalanced dataset, since cottonwood/willow trees are relatively rare in this forest:</p>
+</div>
+<div id="set-up-modeling" class="section level2">
+<h2>1. Set Up Modeling</h2>
+<pre class="python"><code># Import train_test_split 
+from sklearn.model_selection import train_test_split
+
+# Split the data
+X = df.drop(&quot;Cover_Type&quot;, axis=1)
+y = df[&quot;Cover_Type&quot;]
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state = 42, stratify = y)</code></pre>
+<pre class="python"><code># Import StandardScaler
+from sklearn.preprocessing import StandardScaler
+
+# Instantiate StandardScaler
+scaler = scaler = StandardScaler()
+
+# Transform the training and test sets
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)</code></pre>
+</div>
+<div id="build-a-baseline-knn-model" class="section level2">
+<h2>2. Build a Baseline kNN Model</h2>
+<p>Build a scikit-learn kNN model with default hyperparameters. Then use <code>cross_val_score</code> with <code>scoring="neg_log_loss"</code> to find the mean log loss for this model (passing in <code>X_train_scaled</code> and <code>y_train</code> to <code>cross_val_score</code>). Find the mean of the cross-validated scores, and negate the value (either put a <code>-</code> at the beginning or multiply by <code>-1</code>) so that the answer is a log loss rather than a negative log loss.</p>
+<pre class="python"><code>from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import cross_val_score
+
+knn_baseline_model = KNeighborsClassifier()
+
+knn_baseline_log_loss = -cross_val_score(knn_baseline_model, X_train_scaled, y_train, scoring=&quot;neg_log_loss&quot;).mean()
+knn_baseline_log_loss</code></pre>
+<pre><code>0.1255288892455634</code></pre>
+<p>The best logistic regression model completed previously had a log loss of 0.13, so log loss of this vanilla kNN model is better; however, it was also much slower, taking around a minute to complete the cross-validation on this machine.</p>
+</div>
+<div id="build-iterative-models-to-find-the-best-knn-model" class="section level2">
+<h2>3. Build Iterative Models to Find the Best kNN Model</h2>
+<pre class="python"><code>knn_model2 = KNeighborsClassifier(n_neighbors = 25)
+
+knn_model2_log_loss = -cross_val_score(knn_model2, X_train_scaled, y_train, scoring=&quot;neg_log_loss&quot;).mean()
+knn_model2_log_loss</code></pre>
+<pre><code>0.06425722742416393</code></pre>
+<pre class="python"><code>knn_model3 = KNeighborsClassifier(n_neighbors = 50)
+
+knn_model3_log_loss = -cross_val_score(knn_model3, X_train_scaled, y_train, scoring=&quot;neg_log_loss&quot;).mean()
+knn_model3_log_loss</code></pre>
+<pre><code>0.078613760394212</code></pre>
+<pre class="python"><code>knn_model4 = KNeighborsClassifier(n_neighbors = 50, metric = &#39;manhattan&#39;)
+
+knn_model4_log_loss = -cross_val_score(knn_model4, X_train_scaled, y_train, scoring=&quot;neg_log_loss&quot;).mean()
+knn_model4_log_loss</code></pre>
+<pre><code>0.07621145166565102</code></pre>
+<pre class="python"><code>knn_model5 = KNeighborsClassifier(n_neighbors = 25, metric = &#39;manhattan&#39;)
+
+knn_model5_log_loss = -cross_val_score(knn_model5, X_train_scaled, y_train, scoring=&quot;neg_log_loss&quot;).mean()
+knn_model5_log_loss</code></pre>
+<pre><code>0.06519186918054885</code></pre>
+<p>This fifth model has the smallest log loss value and thus is our best performing kNN model.</p>
+</div>
+<div id="build-a-baseline-decision-tree-model" class="section level2">
+<h2>4. Build a Baseline Decision Tree Model</h2>
+<p>Now, start investigating decision tree models.</p>
+<pre class="python"><code>from sklearn.tree import DecisionTreeClassifier
+
+dtree_baseline_model = DecisionTreeClassifier(random_state=42)
+
+dtree_baseline_log_loss = -cross_val_score(dtree_baseline_model, X_train, y_train, scoring=&quot;neg_log_loss&quot;).mean()
+dtree_baseline_log_loss</code></pre>
+<pre><code>0.7045390124149022</code></pre>
+<p>This is much worse than either the logistic regression (0.1303) or the best of kNN model iterations (0.0643). We can probably assume that the model is badly overfitting, since we have not “pruned” it at all.</p>
+</div>
+<div id="build-iterative-models-to-find-the-best-decision-tree-model" class="section level2">
+<h2>5. Build Iterative Models to Find the Best Decision Tree Model</h2>
+<p>Build and evaluate two more decision tree models to find the best one.</p>
+<pre class="python"><code>dtree_model2 = DecisionTreeClassifier(random_state=42, criterion=&#39;entropy&#39;)
+
+dtree_model2_log_loss = -cross_val_score(dtree_model2, X_train, y_train, scoring=&quot;neg_log_loss&quot;).mean()
+dtree_model2_log_loss</code></pre>
+<pre><code>0.6543002106787194</code></pre>
+<pre class="python"><code>from sklearn.metrics import roc_curve, auc
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Identify the optimal tree depth for given data
+max_depths = np.linspace(1, 32, 32, endpoint=True)
+train_results = []
+test_results = []
+for max_depth in max_depths:
+   dt = DecisionTreeClassifier(criterion=&#39;entropy&#39;, max_depth=max_depth, random_state=10)
+   dt.fit(X_train, y_train)
+   train_pred = dt.predict(X_train)
+   false_positive_rate, true_positive_rate, thresholds = roc_curve(y_train, train_pred)
+   roc_auc = auc(false_positive_rate, true_positive_rate)
+   # Add auc score to previous train results
+   train_results.append(roc_auc)
+   y_pred = dt.predict(X_test)
+   false_positive_rate, true_positive_rate, thresholds = roc_curve(y_test, y_pred)
+   roc_auc = auc(false_positive_rate, true_positive_rate)
+   # Add auc score to previous test results
+   test_results.append(roc_auc)
+
+plt.figure(figsize=(12,6))
+plt.plot(max_depths, train_results, &#39;b&#39;, label=&#39;Train AUC&#39;)
+plt.plot(max_depths, test_results, &#39;r&#39;, label=&#39;Test AUC&#39;)
+plt.ylabel(&#39;AUC score&#39;)
+plt.xlabel(&#39;Tree depth&#39;)
+plt.legend()
+plt.show()</code></pre>
+<div class="figure">
+<img src="output_30_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre class="python"><code>dtree_model3 = DecisionTreeClassifier(random_state=42,
+                                      criterion=&#39;entropy&#39;,
+                                      max_depth = 8)
+
+dtree_model3_log_loss = -cross_val_score(dtree_model3, X_train, y_train, scoring=&quot;neg_log_loss&quot;).mean()
+dtree_model3_log_loss</code></pre>
+<pre><code>0.1775668139810499</code></pre>
+<pre class="python"><code>dtree_model4 = DecisionTreeClassifier(random_state=42,
+                                      criterion=&#39;entropy&#39;,
+                                      max_depth = 8,
+                                      min_samples_leaf = 10)
+
+dtree_model4_log_loss = -cross_val_score(dtree_model4, X_train, y_train, scoring=&quot;neg_log_loss&quot;).mean()
+dtree_model4_log_loss</code></pre>
+<pre><code>0.1407497348442239</code></pre>
+<pre class="python"><code>dtree_model5 = DecisionTreeClassifier(random_state=42,
+                                      criterion=&#39;entropy&#39;,
+                                      max_depth = 8,
+                                      min_samples_leaf = 100)
+
+dtree_model5_log_loss = -cross_val_score(dtree_model5, X_train, y_train, scoring=&quot;neg_log_loss&quot;).mean()
+dtree_model5_log_loss</code></pre>
+<pre><code>0.10910816433690831</code></pre>
+<pre class="python"><code># Find the best value for optimal maximum feature size
+max_features = list(range(1, X_train.shape[1]))
+train_results = []
+test_results = []
+for max_feature in max_features:
+   dt = DecisionTreeClassifier(criterion=&#39;entropy&#39;, max_features=max_feature, random_state=10)
+   dt.fit(X_train, y_train)
+   train_pred = dt.predict(X_train)
+   false_positive_rate, true_positive_rate, thresholds = roc_curve(y_train, train_pred)
+   roc_auc = auc(false_positive_rate, true_positive_rate)
+   train_results.append(roc_auc)
+   y_pred = dt.predict(X_test)
+   false_positive_rate, true_positive_rate, thresholds = roc_curve(y_test, y_pred)
+   roc_auc = auc(false_positive_rate, true_positive_rate)
+   test_results.append(roc_auc)
+
+plt.figure(figsize=(12,6))
+plt.plot(max_features, train_results, &#39;b&#39;, label=&#39;Train AUC&#39;)
+plt.plot(max_features, test_results, &#39;r&#39;, label=&#39;Test AUC&#39;)
+plt.ylabel(&#39;AUC score&#39;)
+plt.xlabel(&#39;max features&#39;)
+plt.legend()
+plt.show()</code></pre>
+<div class="figure">
+<img src="output_34_0.png" alt="" />
+<p class="caption">png</p>
+</div>
+<pre class="python"><code>dtree_model6 = DecisionTreeClassifier(random_state=42,
+                                      criterion=&#39;entropy&#39;,
+                                      max_depth = 8,
+                                      min_samples_leaf = 100,
+                                      max_features = 25)
+
+dtree_model6_log_loss = -cross_val_score(dtree_model6, X_train, y_train, scoring=&quot;neg_log_loss&quot;).mean()
+dtree_model6_log_loss</code></pre>
+<pre><code>0.10486292521511258</code></pre>
+</div>
+<div id="choose-and-evaluate-an-overall-best-model" class="section level2">
+<h2>6. Choose and Evaluate an Overall Best Model</h2>
+<p>The kNN model with n_neighbors of 25 was the best performing model. Instantiate a variable <code>final_model</code> using your best model with the best hyperparameters.</p>
+<pre class="python"><code># Replace None with appropriate code
+final_model = KNeighborsClassifier(n_neighbors = 25)
+
+# Fit the model on the full training data
+# (scaled or unscaled depending on the model)
+final_model.fit(X_train_scaled, y_train)</code></pre>
+<p>Evaluate the log loss, accuracy, precision, and recall.</p>
+<pre class="python"><code>from sklearn.metrics import accuracy_score, precision_score, recall_score, log_loss
+
+preds = final_model.predict(X_test_scaled)
+probs = final_model.predict_proba(X_test_scaled)
+
+print(&quot;log loss: &quot;, log_loss(y_test, probs))
+print(&quot;accuracy: &quot;, accuracy_score(y_test, preds))
+print(&quot;precision:&quot;, precision_score(y_test, preds))
+print(&quot;recall:   &quot;, recall_score(y_test, preds))</code></pre>
+<pre><code>log loss:  0.08075852922963977
+accuracy:  0.9754830666943695
+precision: 0.9033989266547406
+recall:    0.735080058224163</code></pre>
+<p>This model has <strong>97.5% accuracy</strong>, meaning that it assigns the correct label 97.5% of the time. This is definitely an improvement over a “dummy” model, which would have about 92% accuracy.</p>
+<p>If the model labels a given forest area a 1, there is about a 90% chance that it really is class 1, compared to about a 67% chance with the logistic regression (<strong>precision</strong>).</p>
+<p>The recall score is also improved from the logistic regression model. If a given cell of forest really is class 1, there is about a 73.5% chance that our model will label it correctly (<strong>recall</strong>). This is better than the 48% of the logistic regression model, but still doesn’t instill a lot of confidence. If the business really cared about avoiding “false negatives” (labeling cottonwood/willow as ponderosa pine) more so than avoiding “false positives” (labeling ponderosa pine as cottonwood/willow), then we might want to adjust the decision threshold on this.</p>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>In this lab, I demonstrated the end-to-end machine learning process with multiple model algorithms, including tuning the hyperparameters for those different algorithms. Nonparametric models can be more flexible than linear models, potentially leading to overfitting but also potentially reducing underfitting by being able to learn non-linear relationships between variables, but there can be a tradeoff between speed and performance, with good metrics correlating with slow speeds.</p>
+</div>
+</div>

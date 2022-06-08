@@ -1,0 +1,191 @@
+---
+title: 'GridsearchCV - Example'
+author: 'Rebecca Frost-Brewer'
+date: '2022-06-08'
+slug: gridsearch-example
+categories: []
+tags: []
+---
+
+
+
+<div id="gridsearchcv---example" class="section level1">
+<h1>GridSearchCV - Example</h1>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>This post explores how to use scikit-learn’s <code>GridSearchCV</code> class to exhaustively search through every combination of hyperparameters until we find optimal values for a given model.</p>
+</div>
+<div id="the-dataset" class="section level2">
+<h2>The dataset</h2>
+<p>For this lab, we’ll be working with the <a href="https://archive.ics.uci.edu/ml/datasets/wine+quality">Wine Quality Dataset</a> from the UCI Machine Learning dataset repository. We’ll be using data about the various features of wine to predict the quality of the wine on a scale from 1-10 stars, making this a multiclass classification problem.</p>
+<div id="getting-started" class="section level3">
+<h3>Getting started</h3>
+<p>Before we can begin grid searching our way to optimal hyperparameters, we’ll need to go through the basic steps of modeling. This means that we’ll need to:</p>
+<ul>
+<li>Import and inspect the dataset (and clean, if necessary)</li>
+<li>Split the data into training and test sets</li>
+<li>Build and fit a baseline model that we can compare against our grid search results</li>
+</ul>
+<p>Run the cell below to import everything we’ll need for this lab:</p>
+<pre class="python"><code>import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+import seaborn as sns
+from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
+from sklearn.metrics import accuracy_score</code></pre>
+</div>
+<div id="preprocessing-the-data" class="section level3">
+<h3>Preprocessing the data</h3>
+<ul>
+<li>Assign the data in the <code>quality</code> column to the <code>y</code> variable</li>
+<li>Drop the <code>quality</code> column from the dataset and assign it to <code>X</code></li>
+</ul>
+<pre class="python"><code>y = df[&#39;quality&#39;]
+X = df.drop(&#39;quality&#39;, axis=1)</code></pre>
+</div>
+<div id="training-testing-and-cross-validation" class="section level3">
+<h3>Training, testing, and cross-validation</h3>
+<p>Conduct a train-test split to create a holdout set to evaluate how good the final model is. Any time we make modeling decisions based on a section of our data, we risk overfitting to that data. We can make use of <strong><em>Cross Validation</em></strong> when using <code>GridSearchCV</code> to do model selection and hyperparameter tuning, then test our final model choice on the test set.</p>
+<ul>
+<li>Create a training and test set using <code>train_test_split()</code> (set <code>random_state=42</code> for reproducability)</li>
+</ul>
+<pre class="python"><code># Split the data into training and test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state = 42)</code></pre>
+</div>
+<div id="create-a-baseline-model-decision-trees" class="section level3">
+<h3>Create a baseline model: Decision Trees</h3>
+<ul>
+<li>Instantiate a <code>DecisionTreeClassifier</code><br />
+</li>
+<li>Perform a 3-fold cross-validation on the training data using this classifier</li>
+<li>Calculate and print the mean cross-validation score from the model</li>
+</ul>
+<pre class="python"><code>dt_clf = DecisionTreeClassifier()
+dt_cv_score = cross_val_score(dt_clf, X_train, y_train, cv = 3)
+mean_dt_cv_score = np.mean(dt_cv_score)
+
+print(f&quot;Mean Cross Validation Score: {mean_dt_cv_score :.2%}&quot;)</code></pre>
+<pre><code>Mean Cross Validation Score: 56.63%</code></pre>
+<ul>
+<li>Our model did poorly overall, but still significantly better than wewould expect from random guessing, which would have ~10% accuracy.</li>
+</ul>
+</div>
+</div>
+<div id="grid-search-decision-trees" class="section level2">
+<h2>Grid search: Decision trees</h2>
+<ul>
+<li>Complete the <code>param_grid</code> dictionary with each key representing a parameter to tune and each corresponding value a list of every parameter value to check for that parameter</li>
+</ul>
+<pre class="python"><code>dt_param_grid = {
+    &#39;criterion&#39;: [&#39;gini&#39;, &#39;entropy&#39;],
+    &#39;max_depth&#39;: [None, 2, 3, 4, 5, 6],
+    &#39;min_samples_split&#39;: [2, 5, 10],
+    &#39;min_samples_leaf&#39;: [1, 2, 3, 4, 5, 6]
+}</code></pre>
+<p>Grid Search works by training a model on the data for each unique combination of parameters and then returning the parameters of the model that performed best. In order to protect us from randomness, it is common to implement K-Fold cross-validation during this step.</p>
+<ul>
+<li>Instantiate <code>GridSearchCV</code>. Pass in the model, the parameter grid, and <code>cv=3</code> to use 3-fold cross-validation. Also set <code>return_train_score</code> to <code>True</code></li>
+<li>Call the grid search object’s <code>fit()</code> method and pass in the data and labels</li>
+</ul>
+<pre class="python"><code># Instantiate GridSearchCV
+dt_grid_search = GridSearchCV(dt_clf,
+                              dt_param_grid,
+                              cv = 3,
+                              return_train_score = True)
+
+# Fit to the data
+dt_grid_search.fit(X_train, y_train)</code></pre>
+<pre><code>GridSearchCV(cv=3, estimator=DecisionTreeClassifier(),
+             param_grid={&#39;criterion&#39;: [&#39;gini&#39;, &#39;entropy&#39;],
+                         &#39;max_depth&#39;: [None, 2, 3, 4, 5, 6],
+                         &#39;min_samples_leaf&#39;: [1, 2, 3, 4, 5, 6],
+                         &#39;min_samples_split&#39;: [2, 5, 10]},
+             return_train_score=True)</code></pre>
+<div id="examine-the-best-parameters" class="section level3">
+<h3>Examine the best parameters</h3>
+<ul>
+<li>Calculate the the mean training score</li>
+<li>Calculate the testing score using the the grid search model’s <code>.score()</code> method by passing in the data and labels<br />
+</li>
+<li>Examine the appropriate attribute to discover the best estimator parameters found during the grid search</li>
+</ul>
+<pre class="python"><code># Mean training score
+dt_gs_training_score = np.mean(dt_grid_search.cv_results_[&#39;mean_train_score&#39;])
+
+# Mean test score
+dt_gs_testing_score = dt_grid_search.score(X_test, y_test)
+
+print(f&quot;Mean Training Score: {dt_gs_training_score :.2%}&quot;)
+print(f&quot;Mean Test Score: {dt_gs_testing_score :.2%}&quot;)
+print(&quot;Best Parameter Combination Found During Grid Search:&quot;)
+dt_grid_search.best_params_</code></pre>
+<pre><code>Mean Training Score: 67.58%
+Mean Test Score: 54.00%
+Best Parameter Combination Found During Grid Search:
+
+
+{&#39;criterion&#39;: &#39;gini&#39;,
+ &#39;max_depth&#39;: 6,
+ &#39;min_samples_leaf&#39;: 6,
+ &#39;min_samples_split&#39;: 5}</code></pre>
+<p>The parameter tuning using GridSearchCV improved the model’s performance by over 20%, from ~44% to ~66%. The model also shows no signs of overfitting, as evidenced by the close training and testing scores. GridSearch does not guarantee that we will always find the globally optimal combination of parameter values. Since it only exhaustively searches through the parameter values we provide, not every possible combination of every possible value for each parameter is tested. This means that the model is only as good as the possible combinations of the parameters we include in our parameter grid.</p>
+</div>
+<div id="tuning-more-advanced-models-random-forests" class="section level3">
+<h3>Tuning more advanced models: Random forests</h3>
+<ul>
+<li>Instantiate a <code>RandomForestClassifier</code></li>
+<li>Use 3-fold cross-validation to generate a baseline score for this model type</li>
+</ul>
+<pre class="python"><code>rf_clf = RandomForestClassifier()
+mean_rf_cv_score = np.mean(cross_val_score(rf_clf, X_train, y_train, cv=3))
+
+print(f&quot;Mean Cross Validation Score for Random Forest Classifier: {mean_rf_cv_score :.2%}&quot;)</code></pre>
+<pre><code>Mean Cross Validation Score for Random Forest Classifier: 65.06%</code></pre>
+<p>Now that we have the baseline score, create a parameter grid specific to a random forest classifier.</p>
+<pre class="python"><code>rf_param_grid = {
+    &#39;n_estimators&#39;: [10, 30, 100],
+    &#39;criterion&#39;: [&#39;gini&#39;, &#39;entropy&#39;],
+    &#39;max_depth&#39;: [None, 2, 6, 10],
+    &#39;min_samples_split&#39;: [5, 10],
+    &#39;min_samples_leaf&#39;: [3, 6]
+    
+}</code></pre>
+<p>Instantiate <code>GridSearchCV</code> and pass in:
+* our random forest classifier
+* the parameter grid
+* <code>cv=3</code>
+* <strong><em>do not</em></strong> specify <code>return_train_score</code> as we did with our decision trees example above.</p>
+<pre class="python"><code>rf_grid_search = GridSearchCV(rf_clf,
+                              rf_param_grid,
+                              cv = 3)
+rf_grid_search.fit(X_train, y_train)
+
+
+print(f&quot;Testing Accuracy: {rf_grid_search.best_score_ :.2%}&quot;)
+print(&quot;&quot;)
+print(f&quot;Optimal Parameters: {rf_grid_search.best_params_}&quot;)</code></pre>
+<pre><code>Testing Accuracy: 64.22%
+
+Optimal Parameters: {&#39;criterion&#39;: &#39;gini&#39;, &#39;max_depth&#39;: None, &#39;min_samples_leaf&#39;: 3, &#39;min_samples_split&#39;: 5, &#39;n_estimators&#39;: 100}</code></pre>
+</div>
+<div id="interpret-results" class="section level3">
+<h3>Interpret results</h3>
+<p>Parameter tuning improved performance marginally, by about 6%. This is good, but still falls short of the top testing score of the Decision Tree Classifier by about 7%. Which model to ship to production would depend on several factors, such as the overall goal, and how noisy the dataset is. If the dataset is particularly noisy, the Random Forest model would likely be preferable, since the ensemble approach makes it more resistant to variance in the data. If the data is fairly stable from batch to batch and not too noisy, or if higher accuracy had a disproportionate effect on our business goals, then I would go with the Decision Tree Classifier because it scored higher.</p>
+</div>
+</div>
+<div id="which-model-performed-the-best-on-the-holdout-set" class="section level2">
+<h2>Which model performed the best on the holdout set?</h2>
+<p>Run the following cell to see the accuracy of the various grid search models on the test set:</p>
+<pre class="python"><code>dt_score = dt_grid_search.score(X_test, y_test)
+rf_score = rf_grid_search.score(X_test, y_test)
+
+print(&#39;Decision tree grid search: &#39;, dt_score)
+print(&#39;Random forest grid search: &#39;, rf_score)</code></pre>
+<pre><code>Decision tree grid search:  0.54
+Random forest grid search:  0.6375</code></pre>
+<p>So the random forest model performed the best!</p>
+</div>
+</div>

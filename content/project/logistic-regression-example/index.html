@@ -1,0 +1,330 @@
+---
+title: 'Logistic Regression Example: Predicting Forest Cover Type'
+author: 'Rebecca Frost-Brewer'
+date: '2022-06-08'
+slug: logistic-regression-example
+categories: []
+tags: []
+---
+
+
+
+<div id="logistic-regression---predicting-forest-cover-type" class="section level1">
+<h1>Logistic Regression - Predicting Forest Cover Type</h1>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>In this project example, I walk through a complete machine learning workflow of logistic regression, including data preparation, modeling (including hyperparameter tuning), and final model evaluation.</p>
+</div>
+<div id="business-and-data-understanding" class="section level2">
+<h2>Business and Data Understanding</h2>
+<p>I will be using an adapted version of the forest cover dataset from the <a href="https://archive.ics.uci.edu/ml/datasets/covertype">UCI Machine Learning Repository</a>. Each record represents a 30 x 30 meter cell of land within Roosevelt National Forest in northern Colorado, which has been labeled as <code>Cover_Type</code> 1 for “Cottonwood/Willow” and <code>Cover_Type</code> 0 for “Ponderosa Pine”. (The original dataset contained 7 cover types but we have simplified it.)</p>
+<p>The task is to predict the <code>Cover_Type</code> based on the available cartographic variables.</p>
+<p>In the dataset, there are over 38,000 rows, each with 52 feature columns and 1 target column:</p>
+<ul>
+<li><code>Elevation</code>: Elevation in meters</li>
+<li><code>Aspect</code>: Aspect in degrees azimuth</li>
+<li><code>Slope</code>: Slope in degrees</li>
+<li><code>Horizontal_Distance_To_Hydrology</code>: Horizontal dist to nearest surface water features in meters</li>
+<li><code>Vertical_Distance_To_Hydrology</code>: Vertical dist to nearest surface water features in meters</li>
+<li><code>Horizontal_Distance_To_Roadways</code>: Horizontal dist to nearest roadway in meters</li>
+<li><code>Hillshade_9am</code>: Hillshade index at 9am, summer solstice</li>
+<li><code>Hillshade_Noon</code>: Hillshade index at noon, summer solstice</li>
+<li><code>Hillshade_3pm</code>: Hillshade index at 3pm, summer solstice</li>
+<li><code>Horizontal_Distance_To_Fire_Points</code>: Horizontal dist to nearest wildfire ignition points, meters</li>
+<li><code>Wilderness_Area_x</code>: Wilderness area designation (3 columns)</li>
+<li><code>Soil_Type_x</code>: Soil Type designation (39 columns)</li>
+<li><code>Cover_Type</code>: 1 for cottonwood/willow, 0 for ponderosa pine</li>
+</ul>
+<p>This is also an imbalanced dataset, since cottonwood/willow trees are relatively rare in this forest:</p>
+<pre class="python"><code># Run this cell without changes
+print(&quot;Raw Counts&quot;)
+print(df[&quot;Cover_Type&quot;].value_counts())
+print()
+print(&quot;Percentages&quot;)
+print(df[&quot;Cover_Type&quot;].value_counts(normalize=True))</code></pre>
+<pre><code>Raw Counts
+0    35754
+1     2747
+Name: Cover_Type, dtype: int64
+
+Percentages
+0    0.928651
+1    0.071349
+Name: Cover_Type, dtype: float64</code></pre>
+<ul>
+<li>35,754 observations of ponderosa pine, representing 92.87% of the dataset. In other words, if the model always said the cover type was ponderosa pine, our accuracy score would be 92.87%</li>
+<li>2,747 observations of cottonwood/willow, representing 7% of the dataset</li>
+</ul>
+</div>
+<div id="perform-a-train-test-split" class="section level2">
+<h2>1. Perform a Train-Test Split</h2>
+<pre class="python"><code>from sklearn.model_selection import train_test_split
+
+# Split df into X and y
+X = df.drop(columns = &#39;Cover_Type&#39;, axis = 1)
+y = df[&#39;Cover_Type&#39;]
+
+# Perform train-test split with random_state=42 and stratify=y
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state = 42, stratify = y)</code></pre>
+</div>
+<div id="build-and-evaluate-a-baseline-model" class="section level2">
+<h2>2. Build and Evaluate a Baseline Model</h2>
+<pre class="python"><code># Import relevant class and function
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import cross_val_score
+
+# Instantiate a LogisticRegression with random_state=42
+baseline_model = LogisticRegression(random_state = 42)
+baseline_model.fit(X_train, y_train)
+
+# Use cross_val_score with scoring=&quot;neg_log_loss&quot; to evaluate the model
+# on X_train and y_train
+baseline_neg_log_loss_cv = cross_val_score(baseline_model, X_train, y_train, scoring = &#39;neg_log_loss&#39;)
+
+baseline_log_loss = -(baseline_neg_log_loss_cv.mean())
+baseline_log_loss</code></pre>
+<pre><code>0.1723165500699139</code></pre>
+<p>We get a log loss of around 0.172 with the baseline model, which is hard to say if that’s “good” without further metrics. Even though it is difficult to interpret, the <strong>0.172 value will be a useful baseline</strong> as I continue modeling, to see if the model iterations are actually making improvements or just getting slightly better performance by chance.</p>
+</div>
+<div id="preprocessing" class="section level2">
+<h2>3. Preprocessing</h2>
+<p>Apply these preprocessing techniques:</p>
+<ol style="list-style-type: decimal">
+<li>Fit a <code>StandardScaler</code> object on the training subset (not the full training data) and transform both the train and test subsets</li>
+<li>Fit a <code>SMOTE</code> object and transform only the training subset</li>
+</ol>
+<div id="writing-a-custom-cross-validation-function-with-stratifiedkfold" class="section level3">
+<h3>Writing a Custom Cross Validation Function with <code>StratifiedKFold</code></h3>
+<p>In the cell below, we have set up a function <code>custom_cross_val_score</code> that has an interface that resembles the <code>cross_val_score</code> function from scikit-learn.</p>
+<p>Most of it is set up for you already, all you need to do is add the <code>SMOTE</code> and <code>StandardScaler</code> steps described above.</p>
+<pre class="python"><code># Import relevant sklearn and imblearn classes
+from sklearn.preprocessing import StandardScaler
+from imblearn.over_sampling import SMOTE
+
+def custom_cross_val_score(estimator, X, y):
+    # Create a list to hold the scores from each fold
+    kfold_train_scores = np.ndarray(5)
+    kfold_val_scores = np.ndarray(5)
+
+    # Instantiate a splitter object and loop over its result
+    kfold = StratifiedKFold(n_splits=5)
+    for fold, (train_index, val_index) in enumerate(kfold.split(X, y)):
+        # Extract train and validation subsets using the provided indices
+        X_t, X_val = X.iloc[train_index], X.iloc[val_index]
+        y_t, y_val = y.iloc[train_index], y.iloc[val_index]
+        
+        # Instantiate StandardScaler
+        scaler = StandardScaler()
+        # Fit and transform X_t
+        X_t_scaled = scaler.fit_transform(X_t)
+        # Transform X_val
+        X_val_scaled = scaler.transform(X_val)
+        
+        # Instantiate SMOTE with random_state=42 and sampling_strategy=0.28
+        sm = SMOTE(random_state=42, sampling_strategy=0.28)
+        # Fit and transform X_t_scaled and y_t using sm
+        X_t_oversampled, y_t_oversampled = sm.fit_resample(X_t_scaled, y_t)
+        
+        # Clone the provided model and fit it on the train subset
+        temp_model = clone(estimator)
+        temp_model.fit(X_t_oversampled, y_t_oversampled)
+        
+        # Evaluate the provided model on the train and validation subsets
+        neg_log_loss_score_train = neg_log_loss(temp_model, X_t_oversampled, y_t_oversampled)
+        neg_log_loss_score_val = neg_log_loss(temp_model, X_val_scaled, y_val)
+        kfold_train_scores[fold] = neg_log_loss_score_train
+        kfold_val_scores[fold] = neg_log_loss_score_val
+        
+    return kfold_train_scores, kfold_val_scores
+
+model_with_preprocessing = LogisticRegression(random_state=42, class_weight={1: 0.28})
+preprocessed_train_scores, preprocessed_neg_log_loss_cv = custom_cross_val_score(model_with_preprocessing, X_train, y_train)
+- (preprocessed_neg_log_loss_cv.mean())</code></pre>
+<pre><code>0.132358995512103</code></pre>
+<p>Let’s compare that to the baseline log loss:</p>
+<pre class="python"><code># Run this cell without changes
+print(-baseline_neg_log_loss_cv.mean())
+print(-preprocessed_neg_log_loss_cv.mean())</code></pre>
+<pre><code>0.1723165500699139
+0.132358995512103</code></pre>
+<p>Looks like the preprocessing with <code>StandardScaler</code> and <code>SMOTE</code> has provided some improvement over the baseline!</p>
+</div>
+</div>
+<div id="build-and-evaluate-additional-logistic-regression-models" class="section level2">
+<h2>4. Build and Evaluate Additional Logistic Regression Models</h2>
+<p>To determine whether we are overfitting, examine the training scores vs. the validation scores from the existing modeling process:</p>
+<pre class="python"><code># Run this cell without changes
+print(&quot;Train:     &quot;, -preprocessed_train_scores)
+print(&quot;Validation:&quot;, -preprocessed_neg_log_loss_cv)</code></pre>
+<pre><code>Train:      [0.29227141 0.28801243 0.29282026 0.28652204 0.28910185]
+Validation: [0.13067576 0.13636961 0.12628191 0.13715658 0.13131112]</code></pre>
+<p>Overfitting would mean getting significantly better scores on the training data than the validation data. We are getting better metrics on the validation data (where synthetic examples have not been added) so it <strong>does not</strong> appear that we are overfitting. But, it’s also possible that we are underfitting due to too high of regularization. Remember that <code>LogisticRegression</code> from scikit-learn has regularization by default.</p>
+<div id="reduce-regularization" class="section level3">
+<h3>Reduce Regularization</h3>
+<p>Instantiate a <code>LogisticRegression</code> model with lower regularization (i.e. higher <code>C</code>), along with <code>random_state=42</code> and <code>class_weight={1: 0.28}</code>.</p>
+<pre class="python"><code>model_less_regularization = LogisticRegression(random_state = 42, class_weight = {1: 0.28}, C = 1e5)</code></pre>
+<p>Now, evaluate that model using <code>custom_cross_val_score</code>. Recall that <code>custom_cross_val_score</code> takes 3 arguments: <code>estimator</code>, <code>X</code>, and <code>y</code>. In this case, <code>estimator</code> should be <code>model_less_regularization</code>, <code>X</code> should be <code>X_train</code>, and <code>y</code> should be <code>y_train</code>.</p>
+<pre class="python"><code>less_regularization_train_scores, less_regularization_val_scores = custom_cross_val_score(
+    model_less_regularization,
+    X_train,
+    y_train
+)
+
+print(&quot;Previous Model&quot;)
+print(&quot;Train average:     &quot;, -preprocessed_train_scores.mean())
+print(&quot;Validation average:&quot;, -preprocessed_neg_log_loss_cv.mean())
+print(&quot;Current Model&quot;)
+print(&quot;Train average:     &quot;, -less_regularization_train_scores.mean())
+print(&quot;Validation average:&quot;, -less_regularization_val_scores.mean())</code></pre>
+<pre><code>Previous Model
+Train average:      0.28974560105233593
+Validation average: 0.132358995512103
+
+Current Model
+Train average:      0.2895752558726792
+Validation average: 0.1323443569205182</code></pre>
+<p>We can also try different regularization penalties.</p>
+<p>From the docs:</p>
+<blockquote>
+<ul>
+<li>‘newton-cg’, ‘lbfgs’, ‘sag’ and ‘saga’ handle L2 or no penalty</li>
+<li>‘liblinear’ and ‘saga’ also handle L1 penalty</li>
+<li>‘saga’ also supports ‘elasticnet’ penalty</li>
+</ul>
+</blockquote>
+<p>In other words, the only models that support L1 or elastic net penalties are <code>liblinear</code> and <code>saga</code>. <code>liblinear</code> is going to be quite slow with the size of the dataset, so this will use <code>saga</code>.</p>
+<pre class="python"><code>model_alternative_solver = LogisticRegression(
+    random_state = 42,
+    class_weight = {1: 0.28},
+    C = 1e5,
+    solver = &#39;saga&#39;,
+    penalty = &#39;elasticnet&#39;,
+    l1_ratio = .5
+)
+
+alternative_solver_train_scores, alternative_solver_val_scores = custom_cross_val_score(
+    model_alternative_solver,
+    X_train,
+    y_train
+)
+
+print(&quot;Previous Model (Less Regularization)&quot;)
+print(&quot;Train average:     &quot;, -less_regularization_train_scores.mean())
+print(&quot;Validation average:&quot;, -less_regularization_val_scores.mean())
+print(&quot;Current Model&quot;)
+print(&quot;Train average:     &quot;, -alternative_solver_train_scores.mean())
+print(&quot;Validation average:&quot;, -alternative_solver_val_scores.mean())</code></pre>
+<pre><code>Previous Model (Less Regularization)
+Train average:      0.2895752558726792
+Validation average: 0.1323443569205182
+Current Model
+Train average:      0.29297684099860494
+Validation average: 0.13604493761082842</code></pre>
+</div>
+<div id="adjusting-gradient-descent-parameters" class="section level3">
+<h3>Adjusting Gradient Descent Parameters</h3>
+<p>In this case, the model is getting slightly worse metrics on both the train and the validation data (compared to a different solver strategy), so increasing the number of iterations (<code>max_iter</code>) seems like a better strategy. Essentially this is allowing the gradient descent algorithm to take more steps as it tries to find an optimal solution.</p>
+<pre class="python"><code>model_more_iterations = LogisticRegression(
+    random_state = 42,
+    class_weight = {1: 0.28},
+    C = 1e5,
+    solver = &#39;saga&#39;,
+    penalty = &#39;elasticnet&#39;,
+    l1_ratio = .5,
+    max_iter = 1000
+)
+
+more_iterations_train_scores, more_iterations_val_scores = custom_cross_val_score(
+    model_more_iterations,
+    X_train,
+    y_train
+)
+
+print(&quot;Previous Best Model (Less Regularization)&quot;)
+print(&quot;Train average:     &quot;, -less_regularization_train_scores.mean())
+print(&quot;Validation average:&quot;, -less_regularization_val_scores.mean())
+print(&quot;Previous Model with This Solver&quot;)
+print(&quot;Train average:     &quot;, -alternative_solver_train_scores.mean())
+print(&quot;Validation average:&quot;, -alternative_solver_val_scores.mean())
+print(&quot;Current Model&quot;)
+print(&quot;Train average:     &quot;, -more_iterations_train_scores.mean())
+print(&quot;Validation average:&quot;, -more_iterations_val_scores.mean())</code></pre>
+<p>At this point, the <code>model_less_regularization</code> the best model, and I will move on to the final evaluation phase.</p>
+</div>
+</div>
+<div id="choose-and-evaluate-a-final-model" class="section level2">
+<h2>5. Choose and Evaluate a Final Model</h2>
+<pre class="python"><code>final_model = model_less_regularization</code></pre>
+<p>In order to evaluate our final model, we need to preprocess the full training and test data, fit the model on the full training data, and evaluate it on the full test data. Initially we’ll continue to use log loss for the evaluation step.</p>
+<div id="preprocessing-the-full-dataset" class="section level3">
+<h3>Preprocessing the Full Dataset</h3>
+<pre class="python"><code># Instantiate StandardScaler
+scaler = StandardScaler()
+
+# Fit and transform X_train
+X_train_scaled = scaler.fit_transform(X_train)
+
+# Transform X_test
+X_test_scaled = scaler.transform(X_test)
+
+# Instantiate SMOTE with random_state=42 and sampling_strategy=0.28
+sm = SMOTE(random_state = 42, sampling_strategy = 0.28)
+
+# Fit and transform X_train_scaled and y_train using sm
+X_train_oversampled, y_train_oversampled = sm.fit_resample(X_train_scaled, y_train)</code></pre>
+</div>
+<div id="fitting-the-model-on-the-full-training-data" class="section level3">
+<h3>Fitting the Model on the Full Training Data</h3>
+<pre class="python"><code>final_model.fit(X_train_oversampled, y_train_oversampled)</code></pre>
+<pre><code>LogisticRegression(C=100000.0, class_weight={1: 0.28}, random_state=42)</code></pre>
+</div>
+<div id="evaluating-the-model-on-the-test-data" class="section level3">
+<h3>Evaluating the Model on the Test Data</h3>
+<div id="log-loss" class="section level4">
+<h4>Log Loss</h4>
+<pre class="python"><code>log_loss(y_test, final_model.predict_proba(X_test_scaled))</code></pre>
+<pre><code>0.13031294393913376</code></pre>
+<p>Great! This model is getting slightly better performance when we train the model with the full training set, compared to the average cross-validated performance. This is typical since models tend to perform better with more training data.</p>
+<p>This model has improved log loss compared to the initial baseline model, which had about 0.172.</p>
+</div>
+<div id="accuracy" class="section level4">
+<h4>Accuracy</h4>
+<p>Although there are issues with accuracy as a metric on unbalanced datasets, accuracy is also a very intuitive metric.</p>
+<pre class="python"><code>from sklearn.metrics import accuracy_score
+
+accuracy_score(y_test, final_model.predict(X_test_scaled))</code></pre>
+<pre><code>0.9456679825472678</code></pre>
+<p>In other words, the final model correctly identifies the type of forest cover about 94.6% of the time, whereas always guessing the majority class (ponderosa pine) would only be accurate about 92.9% of the time.</p>
+</div>
+<div id="precision" class="section level4">
+<h4>Precision</h4>
+<pre class="python"><code># Import the relevant function
+from sklearn.metrics import precision_score
+
+# Display the precision score
+precision_score(y_test, final_model.predict(X_test_scaled))</code></pre>
+<pre><code>0.6659919028340081</code></pre>
+<p>In other words, if the final model labels a given cell of forest as class 1, there is about a 66.6% chance that it is actually class 1 (cottonwood/willow) and about a 33.4% chance that it is actually class 0 (ponderosa pine).</p>
+</div>
+<div id="recall" class="section level4">
+<h4>Recall</h4>
+<pre class="python"><code># Import the relevant function
+from sklearn.metrics import recall_score
+
+# Display the recall score
+recall_score(y_test, final_model.predict(X_test_scaled))</code></pre>
+<pre><code>0.47889374090247455</code></pre>
+<p>In other words, if a given cell of forest is actually class 1, there is about a 47.9% chance that the final model will correctly label it as class 1 (cottonwood/willow) and about a 52.1% chance that the final model will incorrectly label it as class 0 (ponderosa pine).</p>
+</div>
+<div id="interpretation" class="section level4">
+<h4>Interpretation</h4>
+<p>Depending on the stakeholder, my reported findings may vary. For example:</p>
+<ul>
+<li>If false positives are a bigger problem (labeled cottonwood/willow when it’s really ponderosa pine), precision is the important metric to report</li>
+<li>If false negatives are a bigger problem (labeled ponderosa pine when it’s really cottonwood/willow), recall is the important metric to report</li>
+</ul>
+<p>If those problems have truly equal importance, I could report an f1-score instead, although this is somewhat more difficult for the average person to interpret.</p>
+</div>
+</div>
+</div>
+</div>
