@@ -1,5 +1,5 @@
 ---
-title: "Visualizing Refugees to the United States"
+title: "Data Visualization Using Bump Charts and Line Plots with `ggplot`"
 author: "Rebecca Frost-Brewer"
 date: '2021-07-14'
 slug: []
@@ -11,6 +11,8 @@ tags: []
 
 <p>This project highlights the code and outputs of a project visualizing the number of refugees to the US that was completed as an assignment for Dr. Andrew Heiss’ <a href="https://datavizs21.classes.andrewheiss.com/assignment/02-mini-project/">Data Visualization course</a>.</p>
 <!--more-->
+<div id="data-preprocessing" class="section level2">
+<h2>Data Preprocessing</h2>
 <pre class="r"><code># Create vector of non-countries to filter out
 non_countries &lt;- c(&quot;Africa&quot;, &quot;Asia&quot;, &quot;Europe&quot;, &quot;North America&quot;, &quot;Oceania&quot;, 
                    &quot;South America&quot;, &quot;Unknown&quot;, &quot;Other&quot;, &quot;Total&quot;)
@@ -33,12 +35,7 @@ refugees_countries_cumulative &lt;- refugees_clean %&gt;%
   arrange(year_date) %&gt;%
   group_by(origin_country) %&gt;%
   mutate(cumulative_total = cumsum(number))</code></pre>
-<p><br></p>
-<div id="clean-the-data" class="section level2">
-<h2>Clean the data</h2>
-<p><br></p>
 <p>I pivoted wider to be able to calculate the rankings of each country within the 2006-2015 time period. I then sorted each year to determine the top five ranking score so that I could note the top 5 countries of origin of refugees for each year. I then returned to our tidy dataframe and created a new dataframe with all those countries that ranked in the top 5 over the 2006-2015 time period. And lastly, I saved this newly created dataframe.</p>
-<p><br></p>
 <pre class="r"><code>top_refugees_all &lt;- refugees_countries_cumulative %&gt;%
   filter(year %in% c(2006:2015)) %&gt;% 
   drop_na(cumulative_total) %&gt;% 
@@ -67,19 +64,16 @@ alltime_refugee &lt;- refugees_countries_cumulative %&gt;%
                                &quot;Myanmar (Burma)&quot;,&quot;Iraq&quot;))
 
 write.csv(alltime_refugee, &quot;alltime_refugees.csv&quot;)</code></pre>
-<p><br></p>
-</div>
-<div id="import-the-refined-data" class="section level2">
-<h2>Import the refined data</h2>
+<div id="import-the-refined-data" class="section level3">
+<h3>Import the refined data</h3>
 <p><br></p>
 <p>Offline, I added the number of refugees granted asylum each year as both a number and proportion to total number of refugees as well as the GDP per capita for each country each year. The number of refugees granted asylym came from the <a href="https://www.dhs.gov/sites/default/files/publications/Yearbook_Immigration_Statistics_2015.pdf">2015 Yearbook of Immigration Statistics</a> from the Department of Homeland Security. The GDP per capita numbers came from the <a href="https://databank.worldbank.org/home">World Bank’s DataBank</a>.</p>
 <p>I then imported that dataframe to work with for the visualizations.</p>
 <p><br></p>
 </div>
-<div id="the-story" class="section level1">
-<h1><strong>The Story</strong></h1>
-<div id="visualizations-of-refugee-data" class="section level2">
-<h2>Visualizations of refugee data</h2>
+</div>
+<div id="visualizations-of-refugee-data-with-a-lollipop-chart" class="section level2">
+<h2>Visualizations of refugee data with a lollipop chart</h2>
 <pre class="r"><code>total &lt;- refugees_countries_cumulative %&gt;%
   group_by(year_date) %&gt;%
   summarise(total = sum(cumulative_total, na.rm = TRUE))
@@ -159,6 +153,5 @@ total_over_time_plot &lt;- ggplot(complete_refugees,
 <div class="figure">
 <img src="mini-project-2-final-image.png" alt="" />
 <p class="caption">final product</p>
-</div>
 </div>
 </div>
